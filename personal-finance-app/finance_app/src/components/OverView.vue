@@ -17,7 +17,7 @@
   </section>
   <section class="content">
     <div class="left-side">
-     <div class="pots">
+     <section class="pots">
       <div class="pots-title">
         <p>Pots</p>
        
@@ -56,9 +56,79 @@
           </div>
 
       </div>
-     </div>
+    </section>
+     <section class="transactions">
+      <div class="transactions-title">
+        <p>Transactions</p>
+        <button class="see" href="#">Vew All <img src="../assets/picture/icon-caret-right.svg" alt=""></button>
+      </div>
+      <div class="transaction-info">
+        <div class="profil">
+          <img class="profile-pic" src="../assets/avatars/emma-richardson.jpg" alt="">
+        <p class="transaction-name">Emma Richardson</p>
+        </div>
+        <div class="transaction">
+          <p class="summ-plus">+$575.5</p>
+          <p class="date">19th Aug 2024</p>
+        </div>
+      </div>
+      <div class="transaction-info">
+        <div class="profil">
+          <img class="profile-pic" src="../assets/avatars/savory-bites-bistro.jpg" alt="">
+        <p class="transaction-name">Savory Bites Bistro</p>
+        </div>
+        <div class="transaction">
+          <p class="summ-minus">+$575.5</p>
+          <p class="date">10th Aug 2024</p>
+        </div>
+      </div>
+      <div class="transaction-info">
+        <div class="profil">
+          <img class="profile-pic" src="../assets/avatars/daniel-carter.jpg" alt="">
+        <p class="transaction-name">Daniel Carter</p>
+        </div>
+        <div class="transaction">
+          <p class="summ-minus">-42.30</p>
+          <p class="date">18th Aug 2024</p>
+        </div>
+      </div>
+      <div class="transaction-info">
+        <div class="profil">
+          <img class="profile-pic" src="../assets/avatars/sun-park.jpg" alt="">
+        <p class="transaction-name">Sun Park</p>
+        </div>
+        <div class="transaction">
+          <p class="summ-plus">+$120.00</p>
+          <p class="date">17th Aug 2024</p>
+        </div>
+      </div>
+      <div class="transaction-info">
+        <div class="profil">
+          <img class="profile-pic" src="../assets/avatars/urban-services-hub.jpg" alt="">
+        <p class="transaction-name">Urban Services Hub</p>
+        </div>
+        <div class="transaction">
+          <p class="summ-minus">-65.00</p>
+          <p class="date">17th Aug 2024</p>
+        </div>
+      </div>
+  
+  
+  
+  
+  
+     </section>
     </div>
-    <div class="right-side"></div>
+    <div class="right-side">
+      <section class="budgets">
+      </section>
+      <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut">
+  <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+  <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d2d3d4" stroke-width="3"></circle>
+
+  <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#ce4b99" stroke-width="3"></circle>
+</svg>
+    </div>
   </section>
 </div>
 </template>
@@ -884,4 +954,284 @@ align-self: stretch;
 flex-grow: 0;
 
 }
+.transactions{
+  /* Transactions */
+  /* Transactions */
+  /* Frame 502 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px;
+gap: 32px;
+
+width: 608px;
+height: 519px;
+
+background: #FFFFFF;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.transactions-title{
+  /* Transactions */
+  /* Small Content Title */
+  /* Small Content Title */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 11px;
+
+width: 544px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.transactions-title p{
+  /* Transactions */
+  /* Transactions */
+  /* Transactions */
+  /* Transactions */
+
+
+width: 124px;
+height: 24px;
+
+/* text-preset-2 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 120%;
+/* identical to box height, or 24px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.transaction-info{
+  /* Frame 535 */
+  /* List */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+
+width: 100%;
+height: 47px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.profil{
+  /* Frame 522 */
+  /* Frame 522 */
+  /* Frame 522 */
+  /* Frame 522 */
+  /* Image and Title */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+margin: 0 auto;
+width: 474px;
+height: 40px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+}
+.profile-pic{
+  /* Emma Richardson */
+  /* Profile Picture */
+
+width: 40px;
+height: 40px;
+border-radius: 50%;
+
+background: url(emma-richardson.jpg), #F8F4F0;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.transaction-name{
+  /* Frame 523 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+.transaction{
+  /* Frame 523 */
+  /* Value and Date */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-end;
+padding: 0px;
+gap: 8px;
+
+
+
+height: 47px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+.summ-plus{
+  /* -$25.00 */
+
+width: 59px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+text-align: right;
+
+color: #277C78;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.summ-minus{
+  /* -$25.00 */
+  /* +$450.00 */
+
+width: 57px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+text-align: right;
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.date{
+  /* 10th Aug 2024 */
+  /* 29 Aug 2024, 21:45 */
+
+width: 100%;
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+
+.right-side{
+  /* Right Side */
+  /* Right Side */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 428px;
+height: 754px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+}
+
 </style>
