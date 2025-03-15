@@ -9,3 +9,14 @@ export default {
     <router-view />
   </div>
 </template>
+
+
+<style>
+#app {
+  font-family:Public Sans, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ 
+}
+
+</style>
