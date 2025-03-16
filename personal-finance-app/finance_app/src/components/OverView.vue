@@ -34,21 +34,21 @@
         </div>
         <div class="small">
           <div class="line1">
-            <div class="micro saving">
+            <div class="micro green">
               <h5>Savings</h5>
               <span class="micro-value">$159</span>
             </div>
-            <div class="micro gift">
+            <div class="micro blue">
               <h5>Gift</h5>
               <span class="micro-value">$40</span>
             </div>
           </div>
           <div class="line2">
-            <div class="micro concert">
+            <div class="micro black">
               <h5>Concert Ticket</h5>
               <span class="micro-value">$110</span>
             </div>
-            <div class="micro new">
+            <div class="micro orange">
               <h5>New Laptop</h5>
               <span class="micro-value">$10</span>
             </div>
@@ -121,13 +121,56 @@
     </div>
     <div class="right-side">
       <section class="budgets">
-      </section>
-      <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut">
-  <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
-  <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d2d3d4" stroke-width="3"></circle>
+      <div class="budget-title">
+        <p>Budgets</p>
+        <button class="see" href="#">See Details <img src="../assets/picture/icon-caret-right.svg" alt=""></button>
+      </div>
+      <section class="budget-info">
+        <section class="chart">
+          <div class="budget-chart">
+          
+          <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut">
+            <circle class="donut-ring-big" cx="42" cy="42" r="31,830988618"></circle>
+  <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954"></circle>
+  <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent"></circle>
 
-  <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#ce4b99" stroke-width="3"></circle>
+  <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent"></circle>
+  <g class="chart-text">
+    <text x="50%" y="50%" class="chart-number">
+      $338
+    </text>
+    <text x="50%" y="50%" class="chart-label">
+      of $975 limit
+    </text>
+  </g>
 </svg>
+        </div>
+        </section>
+        <section class="budget-small">
+          
+          <div class="value-entertaiment green">
+            <p>Entertaiment</p>
+            <span class="entertaiment-value">$50.00</span>
+          </div>
+          
+          <div class="value-bills blue">
+            <p>Bills</p>
+            <span class="bills-value">$750.00</span>
+        </div>
+        <div class="value-dining orange">
+          <p>Dining Out</p>
+          <span class="dining-value">$250.00</span>
+        </div>
+        <div class="value-care black">
+          <p>Personal Care</p>
+          <span class="care-value">$100.00</span>
+        </div>
+        </section>
+        
+      </section>
+      </section>
+
+     
     </div>
   </section>
 </div>
@@ -844,7 +887,7 @@ order: 0;
 flex-grow: 1;
 
 }
-.saving{
+.green{
 
  /* Color Tag */
 
@@ -862,7 +905,7 @@ flex-grow: 1;
 
 
 }
-.gift{
+.blue{
   /* Gift */
   /* Gift */
   /* Gift */
@@ -873,7 +916,7 @@ flex-grow: 1;
 
 
 }
-.concert{
+.black{
   /* Concert Ticket */
   /* Concert Ticket */
   /* Concert Ticket */
@@ -887,7 +930,7 @@ flex-grow: 1;
 
 
 }
-.new{
+.orange{
   /* New Laptop */
   /* New Laptop */
   /* New Laptop */
@@ -1217,6 +1260,7 @@ flex-grow: 0;
 
 /* Auto layout */
 display: flex;
+
 flex-direction: column;
 align-items: flex-start;
 padding: 0px;
@@ -1233,5 +1277,575 @@ align-self: stretch;
 flex-grow: 1;
 
 }
+.budgets{
+  /* Budgets */
+  /* Budgets */
+  /* Frame 501 */
+  /* Frame 501 */
 
+/* Auto layout */
+
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px;
+gap: 20px;
+
+width: 428px;
+height: 403px;
+
+background: #FFFFFF;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 1;
+
+}
+.budget-title{
+  /* Budgets */
+  /* Small Content Title */
+  /* Small Content Title */
+  /* Small Content Title */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 24px;
+
+width: 364px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.budget-title p{
+  /* Budgets */
+  /* Budgets */
+  /* Budgets */
+  /* Budgets */
+  /* Budgets */
+  /* My Budgets */
+
+
+width: 80px;
+height: 24px;
+
+/* text-preset-2 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 120%;
+/* identical to box height, or 24px */
+display: flex;
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.budget-info{
+  /* Frame 34 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 8px 0px;
+gap: 16px;
+
+width: 364px;
+height: 295px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+}
+.chart{
+  /* Chart */
+  /* Chart */
+  /* Chart */
+
+/* Auto layout */
+position: relative;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+width: 247px;
+height: 240px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+}
+.budget-chart{
+/* Chart */
+
+width: 240px;
+height: 240px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.donut{
+  /* Donut Chart */
+  /* Shape */
+
+/* Shape */
+
+position: absolute;
+width: 187.5px;
+height: 187.5px;
+left: calc(50% - 187.5px/2 - 0.25px);
+top: calc(50% - 187.5px/2 - 0.25px);
+
+background: #FFFFFF;
+
+
+
+}
+.donut-hole{
+  /* Donut Hole */
+  /* Donut Hole */
+  /* Shape */
+
+/* Shape */
+
+/* Shape */
+
+position: absolute;
+width: 162px;
+height: 162px;
+left: calc(50% - 162px/2 + 0px);
+top: calc(50% - 162px/2 + 0px);
+fill:#fff;
+
+
+
+
+}
+.donut-ring{
+  /* Donut Ring */
+  /* Donut Ring */
+/* Shape */
+
+position: absolute;
+width: 187.5px;
+height: 187.5px;
+left: calc(50% - 187.5px/2 - 0.25px);
+top: calc(50% - 187.5px/2 - 0.25px);
+
+background: #FFFFFF;
+opacity: 0.25;
+stroke: #08eee2;
+stroke-width: 3;
+
+
+}
+.donut-ring-big{
+  /* Donut Ring Big */
+  /* Donut Ring Big */
+  /* Shape */
+  /* Shape */
+
+position: absolute;
+width: 187.5px;
+height: 187.5px;
+left: calc(50% - 187.5px/2 - 0.25px);
+top: calc(50% - 187.5px/2 - 0.25px);
+
+background: #FFFFFF;
+opacity: 0.25;
+stroke: #010c0b;
+stroke-width: 3;
+}
+.donut-segment{
+  /* Donut Segment */
+  /* Donut Segment */
+  /* Shape */
+/* Pie */
+
+position: absolute;
+width: 240px;
+height: 240px;
+left: 3.5px;
+top: 0px;
+stroke: #277C78;
+stroke-width: 3;
+stroke-dasharray:  85 15;
+
+}
+.chart-text {
+  font-family:Public Sans;
+  
+  -moz-transform: translateY(0.25em);
+  -ms-transform: translateY(0.25em);
+  -webkit-transform: translateY(0.25em);
+  transform: translateY(0.25em);
+}
+
+.chart-number {
+  
+
+  font-size: 0.45em;
+  line-height: 1;
+  text-anchor: middle;
+  -moz-transform: translateY(-0.25em);
+  -ms-transform: translateY(-0.25em);
+  -webkit-transform: translateY(-0.25em);
+  transform: translateY(-0.25em);
+  
+}
+
+.chart-label {
+  font-size: 0.15em;
+ 
+  text-anchor: middle;
+  -moz-transform: translateY(0.7em);
+  -ms-transform: translateY(0.7em);
+  -webkit-transform: translateY(0.7em);
+  transform: translateY(0.7em);
+}
+.budget-small{
+  /* Small */
+  /* Small */
+  /* Small */
+  /* Budgets Small */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding-top: 16px;
+gap: 16px;
+
+width: 101px;
+height: 220px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+.value-entertaiment{
+  /* Budgets Micro */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 16px;
+
+
+width: 101px;
+height: 43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.value-entertaiment > p{
+  /* Entertainment */
+
+width: 81px;
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.entertaiment-value{
+  /* $25.00 */
+
+width: 50px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+.value-bills{
+  /* Bills */
+  /* Budgets Micro */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 16px;
+
+
+width: 79px;
+height: 43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+.value-bills > p{
+  /* Bills */
+  /* Bills */
+
+width: 25px;
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.bills-value{
+  /* $25.00 */
+  /* $250.00 */
+
+width: 59px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+.value-dining{
+  /* Dining Out */
+  /* Budgets Micro */
+  /* Budgets Micro */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 16px;
+
+width: 80px;
+height: 43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+}
+.value-dining > p{
+  /* Dining Out */
+  /* Dining Out */
+  /* Dining Out */
+
+width: 60px;
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.dining-value{
+  /* $25.00 */
+  /* $250.00 */
+  /* $250.00 */
+
+/* $67.00 */
+
+width: 50px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+.value-care{
+  /* Personal Care */
+  /* Budgets Micro */
+  /* Budgets Micro */
+  /* Budgets Micro */
+  /* Budgets Micro */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 16px;
+
+width: 98px;
+height: 43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+}
+.value-care > p{
+  /* Personal Care */
+  /* Personal Care */
+  /* Personal Care */
+  /* Personal Care */
+  /* Personal Care */
+
+width: 78px;
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.care-value{
+  /* $25.00 */
+  /* $250.00 */
+  /* $250.00 */
+  /* $250.00 */
+  /* $65.00 */
+
+width: 56px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
 </style>
