@@ -8,10 +8,12 @@ export default {
         { label: 'Budgets', icon: 'icon-nav-budgets.svg' },
         { label: 'Pots', icon: 'icon-nav-pots.svg' },
         { label: 'Recurring Bills', icon: 'icon-nav-recurring-bills.svg' },
+       
 
       ],
       activeIndex: null,
       hoverIndex: null,
+      isMinimized: false,
     };
   },
 
@@ -22,12 +24,21 @@ export default {
     getIconPath(icon) {
       return new URL(`../assets/icons/${icon}`, import.meta.url).href;
     },
+    toggleMenu() {
+      this.isMinimized = !this.isMinimized;
+    }
+  
   },
+  computed: {
+    isMinimized() {
+      return this.isMinimized;
+    }
+  }
 };
 </script>
 
 <template>
-  <nav>
+  <nav :class="['show-bar', { 'hide-bar': isMinimized }]">
     <img class="logo" src="../assets/icons/logo-large.svg" alt="logo">
     <div class="nav-links">
       <button
@@ -38,14 +49,24 @@ export default {
         @click="setActive(index)"
       >
         <img :src="getIconPath(button.icon)" alt="icon">
-        <span>{{ button.label }}</span>
+        <span class="btn-label">{{ button.label }}</span>
       </button>
     
     </div>
-    <button class="btn-min">
+    <!-- <button class="btn-min">
         <img class="icon-nav" src="../assets/icons/icon-minimize-menu.svg" alt="house">Minimize Menue
-      </button>
+      </button> -->
+      <button v-if="!isMinimized" class="btn-min" @click="toggleMenu">
+        <img class="icon-nav" src="../assets/icons/icon-minimize-menu.svg" alt="house">Minimize Menue
+    </button>
+    <button v-else class="btn-min"
+    @click="toggleMenu">
+      <img class="icon-min" src="../assets/icons/icon-menu.svg" alt="house">
+    </button>
+  
+  
   </nav>
+     
 
 <!--   <nav>
     <img class="logo" src="../assets/picture/logo-large.svg" alt="logo">
@@ -83,7 +104,7 @@ export default {
 </template>
 
 <style scoped>
-nav {
+.show-bar {
 /* Sidebar/Sidebar */
 
 box-sizing: border-box;
@@ -164,12 +185,13 @@ gap: 16px;
 
 width: 276px;
 height: 56px;
-
+color: #fff;
+opacity: 0.6;
 background:none;
 border-left: 4px solid #277C78;
 border-radius: 0px 12px 12px 0px;
 cursor: pointer;
-  transition: background 0.3s ease;
+transition: background 0.3s ease ransform 0.2s ease;
 
 /* Inside auto layout */
 flex: none;
@@ -178,6 +200,40 @@ align-self: stretch;
 flex-grow: 0;
 
 }
+
+
+.btn-nav img {
+  /* Icons/Icons Collection (Phosphor Icons) */
+
+width: 24px;
+height: 24px;
+color: #fff;
+transition: filter 0.3s ease, transform 0.2s ease;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+
+/* Sidebar/test */
+
+.btn-nav:hover {
+  color: #fff;
+  opacity: 1;
+}
+.btn-nav.active {
+  background: #fff;
+  color:black;
+  opacity: 1;
+}
+.btn-nav.active img {
+  filter: brightness(0) saturate(100%) invert(28%) sepia(38%) saturate(384%) hue-rotate(133deg) brightness(92%) contrast(92%);
+  transform: scale(1.1);
+}
+
+
 .btn-min {
   /* Sidebar/Sidebar Minimize Button */
 
@@ -193,6 +249,7 @@ height: 56px;
 
 border-radius: 0px 12px 12px 0px;
 color: #F8F4F0;
+cursor: pointer;
 /* Inside auto layout */
 flex: none;
 order: 2;
@@ -200,44 +257,24 @@ align-self: stretch;
 flex-grow: 0;
 
 }
-.icon-nav {
-  /* Icons/Icons Collection (Phosphor Icons) */
-
-width: 24px;
-height: 24px;
-
-/* Inside auto layout */
-flex: none;
-order: 0;
-flex-grow: 0;
-
-}
-
-/* Sidebar/test */
-.sidebar {
+.hide-bar {
   /* Sidebar/Sidebar */
-  display: flex;
-  flex-direction: column;
-  width: 200px;
-  gap: 10px;
+  width: 90px;
 }
-.menu-button {
-  /* Sidebar/Sidebar Menu */
-  padding: 10px;
-  border: none;
-  background: none;
-  color:#ddd;
-  cursor: pointer;
-  transition: background 0.3s ease;
+.hide-bar .btn-label {
+  display: none;
 }
-.btn-nav:hover {
-  background: #bbb;
+.hide-bar .logo {
+  padding: 40px 8px;
 }
-.btn-nav.active {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+.hide-bar .btn-nav {
+  background-color: transparent;
+  border-left: none;
 }
-.btn-nav.active img {
-  filter: invert(1) brightness(0);
+.icon-min {
+  width: 32px;
+  height: 32px;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+  transition: filter 0.3s ease, transform 0.2s ease;
 }
 </style>
