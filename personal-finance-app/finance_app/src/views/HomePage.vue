@@ -4,11 +4,10 @@ import SideBar from '../components/SideBar.vue';
 </script>
 
 <template>
-  
-    <article class="container" >
+  <article class="container">
     <SideBar />
     <OverView />
-    </article>
+  </article>
 </template>
 
 <style scoped>
@@ -33,5 +32,4 @@ height: 1064px;
 background: #F8F4F0;
 
 }
-
 </style>
