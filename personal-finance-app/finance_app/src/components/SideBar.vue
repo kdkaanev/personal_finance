@@ -1,23 +1,112 @@
-<template>
+<script>
+export default {
+  emits: ['change-component'],
+  data() {
+    return {
+      buttons: [
+        { label: 'Overview', icon: 'icon-nav-overview.svg', component: 'OverView' },
+        { label: 'Transactions', icon: 'icon-nav-transactions.svg', component: 'TransActions' },
+        { label: 'Budgets', icon: 'icon-nav-budgets.svg', component: 'BudGets' },
+        { label: 'Pots', icon: 'icon-nav-pots.svg', component: 'PotsCart' },
+        { label: 'Recurring Bills', icon: 'icon-nav-recurring-bills.svg', component: 'RecurringBills' },
+       
 
-      
+      ],
+      activeIndex: null,
+      hoverIndex: null,
+      isMinimized: false,
+    };
+  },
+
+  methods: {
+    setActive(index, component) {
+      this.activeIndex = index;
+      this.$emit("change-component", component)
+    },
+    getIconPath(icon) {
+      return new URL(`../assets/icons/${icon}`, import.meta.url).href;
+    },
+    toggleMenu() {
+      this.isMinimized = !this.isMinimized;
+    }
   
-  <nav>
+  },
+  computed: {
+    isMinimized() {
+      return this.isMinimized;
+    }
+  }
+};
+</script>
+
+<template>
+  <nav :class="['show-bar', { 'hide-bar': isMinimized }]">
+    <img class="logo" src="../assets/icons/logo-large.svg" alt="logo">
+    <div class="nav-links">
+      <button
+        v-for="(button, index) in buttons" :key="index"
+        class="btn-nav" :class="[{ active: activeIndex === index }]"
+        @mouseover="hoverIndex = index"
+        @mouseleave="hoverIndex = null"
+        @click="setActive(index, button.component)"
+      >
+        <img :src="getIconPath(button.icon)" alt="icon">
+        <span class="btn-label">{{ button.label }}</span>
+      </button>
+    
+    </div>
+    <!-- <button class="btn-min">
+        <img class="icon-nav" src="../assets/icons/icon-minimize-menu.svg" alt="house">Minimize Menue
+      </button> -->
+      <button v-if="!isMinimized" class="btn-min" @click="toggleMenu">
+        <img class="icon-nav" src="../assets/icons/icon-minimize-menu.svg" alt="house">Minimize Menue
+    </button>
+    <button v-else class="btn-min"
+    @click="toggleMenu">
+      <img class="icon-min" src="../assets/icons/icon-menu.svg" alt="house">
+    </button>
+  
+  
+  </nav>
+     
+
+<!--   <nav>
     <img class="logo" src="../assets/picture/logo-large.svg" alt="logo">
     <ul class="nav-links">
-      <li><button class="btn-nav"><img class="icon-nav" src="../assets/picture/icon-nav-overview.svg" alt="house"> Overview</button></li>
-      <li><button class="btn-nav"><img class="icon-nav" src="../assets/picture/icon-nav-transactions.svg" alt="house"> Transactions</button></li>
-      <li><button class="btn-nav"><img class="icon-nav" src="../assets/picture/icon-nav-budgets.svg" alt="house"> Budgets</button></li>
-      <li><button class="btn-nav"><img class="icon-nav" src="../assets/picture/icon-nav-pots.svg" alt="house"> Pots</button></li>
-      <li><button class="btn-nav"><img class="icon-nav" src="../assets/picture/icon-nav-recurring-bills.svg" alt="house"> Recurring Bills</button></li>
-
+      <li>
+        <button class=" btn-nav">
+          <img class="icon-nav" src="../assets/picture/icon-nav-overview.svg" alt="house"> Overview
+        </button>
+      </li>
+      <li>
+        <button class="btn-nav">
+          <img class="icon-nav" src="../assets/picture/icon-nav-transactions.svg" alt="house"> Transactions
+        </button>
+      </li>
+      <li>
+        <button class="btn-nav">
+          <img class="icon-nav" src="../assets/picture/icon-nav-budgets.svg" alt="house"> Budgets
+        </button>
+      </li>
+      <li>
+        <button class="btn-nav">
+          <img class="icon-nav" src="../assets/picture/icon-nav-pots.svg" alt="house"> Pots
+        </button>
+      </li>
+      <li>
+        <button class="btn-nav">
+          <img class="icon-nav" src="../assets/picture/icon-nav-recurring-bills.svg" alt="house"> Recurring Bills
+        </button>
+      </li>
     </ul>
-    <button class="btn-min"><img class="icon-nav" src="../assets/picture/icon-minimize-menu.svg" alt="house">Minimize Menue</button>
-  </nav>
+    <button class="btn-min">
+      <img class="icon-nav" src="../assets/picture/icon-minimize-menu.svg" alt="house">Minimize Menue
+    </button>
+  </nav> -->
 </template>
 
 <style scoped>
-nav {
+.show-bar {
 /* Sidebar/Sidebar */
 
 box-sizing: border-box;
@@ -57,7 +146,6 @@ gap: 8px;
 width: 300px;
 height: 101.76px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -79,7 +167,6 @@ width: 300px;
 height: 800px;
 max-height: 800px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 1;
@@ -100,10 +187,13 @@ gap: 16px;
 
 width: 276px;
 height: 56px;
-
-background: #F8F4F0;
+color: #fff;
+opacity: 0.6;
+background:none;
 border-left: 4px solid #277C78;
 border-radius: 0px 12px 12px 0px;
+cursor: pointer;
+transition: background 0.3s ease ransform 0.2s ease;
 
 /* Inside auto layout */
 flex: none;
@@ -112,6 +202,40 @@ align-self: stretch;
 flex-grow: 0;
 
 }
+
+
+.btn-nav img {
+  /* Icons/Icons Collection (Phosphor Icons) */
+
+width: 24px;
+height: 24px;
+color: #fff;
+transition: filter 0.3s ease, transform 0.2s ease;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+
+/* Sidebar/test */
+
+.btn-nav:hover {
+  color: #fff;
+  opacity: 1;
+}
+.btn-nav.active {
+  background: #fff;
+  color:black;
+  opacity: 1;
+}
+.btn-nav.active img {
+  filter: brightness(0) saturate(100%) invert(28%) sepia(38%) saturate(384%) hue-rotate(133deg) brightness(92%) contrast(92%);
+  transform: scale(1.1);
+}
+
+
 .btn-min {
   /* Sidebar/Sidebar Minimize Button */
 
@@ -127,6 +251,7 @@ height: 56px;
 
 border-radius: 0px 12px 12px 0px;
 color: #F8F4F0;
+cursor: pointer;
 /* Inside auto layout */
 flex: none;
 order: 2;
@@ -134,18 +259,24 @@ align-self: stretch;
 flex-grow: 0;
 
 }
-.icon-nav {
-  /* Icons/Icons Collection (Phosphor Icons) */
-
-width: 24px;
-height: 24px;
-
-
-/* Inside auto layout */
-flex: none;
-order: 0;
-flex-grow: 0;
-
+.hide-bar {
+  /* Sidebar/Sidebar */
+  width: 90px;
 }
-
+.hide-bar .btn-label {
+  display: none;
+}
+.hide-bar .logo {
+  padding: 40px 8px;
+}
+.hide-bar .btn-nav {
+  background-color: transparent;
+  border-left: none;
+}
+.icon-min {
+  width: 32px;
+  height: 32px;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+  transition: filter 0.3s ease, transform 0.2s ease;
+}
 </style>

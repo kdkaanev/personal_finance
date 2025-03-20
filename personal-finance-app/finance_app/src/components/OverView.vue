@@ -1,3 +1,16 @@
+<script>
+import DonutChart from './sub-component/DounutChart.vue';
+
+export default {
+  components: {
+    DonutChart,
+  },
+};
+
+
+</script>
+
+
 <template>
 <div class="over-container">
   <section class="title"> Overview</section>
@@ -21,12 +34,12 @@
       <div class="pots-title">
         <p>Pots</p>
        
-        <button class="see" href="#">See Details <img src="../assets/picture/icon-caret-right.svg" alt=""></button>
+        <button class="see" href="#">See Details <img src="../assets/icons/icon-caret-right.svg" alt=""></button>
         
       </div>
       <div class="info">
         <div class="total">
-          <img src="../assets/picture/icon-nav-pots.svg" alt="">
+          <img src="../assets/icons/icon-nav-pots.svg" alt="">
           <div class="value">
             <h5>Total saved</h5>
             <div class="amount">$850</div>
@@ -60,7 +73,7 @@
      <section class="transactions">
       <div class="transactions-title">
         <p>Transactions</p>
-        <button class="see" href="#">Vew All <img src="../assets/picture/icon-caret-right.svg" alt=""></button>
+        <button class="see" href="#">Vew All <img src="../assets/icons/icon-caret-right.svg" alt=""></button>
       </div>
       <div class="transaction-info">
         <div class="profil">
@@ -123,27 +136,13 @@
       <section class="budgets">
       <div class="budget-title">
         <p>Budgets</p>
-        <button class="see" href="#">See Details <img src="../assets/picture/icon-caret-right.svg" alt=""></button>
+        <button class="see" href="#">See Details <img src="../assets/icons/icon-caret-right.svg" alt=""></button>
       </div>
       <section class="budget-info">
         <section class="chart">
           <div class="budget-chart">
-          
-          <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut">
-            <circle class="donut-ring-big" cx="42" cy="42" r="31,830988618"></circle>
-  <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954"></circle>
-  <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent"></circle>
-
-  <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent"></circle>
-  <g class="chart-text">
-    <text x="50%" y="50%" class="chart-number">
-      $338
-    </text>
-    <text x="50%" y="50%" class="chart-label">
-      of $975 limit
-    </text>
-  </g>
-</svg>
+          <DonutChart />
+         
         </div>
         </section>
         <section class="budget-small">
@@ -174,6 +173,7 @@
     </div>
   </section>
 </div>
+
 </template>
 
 

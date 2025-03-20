@@ -1,14 +1,40 @@
-<script setup>
-import OverView from '../components/OverView.vue';
+<script>
 import SideBar from '../components/SideBar.vue';
+import OverView from '../components/OverView.vue';
+import TransActions from '../components/TransActions.vue';
+import BudGets from '../components/BudGets.vue';
+import PotsCart from '../components/PotsCart.vue';
+import RecurringBills from '../components/RecurringBills.vue';
+
+
+export default {
+  components: {
+    SideBar,
+    OverView,
+    TransActions,
+    BudGets,
+    PotsCart,
+    RecurringBills,
+  },
+  data() {
+    return {
+      currentComponent: 'OverView',
+    };
+  },
+};
+
+
+
+
 </script>
 
 <template>
-  
-    <article class="container" >
-    <SideBar />
-    <OverView />
-    </article>
+  <article class="container">
+    <SideBar @change-component="currentComponent = $event" />
+    <transition name="fade" mode="out-in">
+      <component :is="currentComponent" />
+    </transition>
+  </article>
 </template>
 
 <style scoped>
@@ -33,5 +59,12 @@ height: 1064px;
 background: #F8F4F0;
 
 }
-
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
