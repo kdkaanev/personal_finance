@@ -1,13 +1,14 @@
 <script>
 export default {
+  emits: ['change-component'],
   data() {
     return {
       buttons: [
-        { label: 'Overview', icon: 'icon-nav-overview.svg' },
-        { label: 'Transactions', icon: 'icon-nav-transactions.svg' },
-        { label: 'Budgets', icon: 'icon-nav-budgets.svg' },
-        { label: 'Pots', icon: 'icon-nav-pots.svg' },
-        { label: 'Recurring Bills', icon: 'icon-nav-recurring-bills.svg' },
+        { label: 'Overview', icon: 'icon-nav-overview.svg', component: 'OverView' },
+        { label: 'Transactions', icon: 'icon-nav-transactions.svg', component: 'TransActions' },
+        { label: 'Budgets', icon: 'icon-nav-budgets.svg', component: 'BudGets' },
+        { label: 'Pots', icon: 'icon-nav-pots.svg', component: 'PotsCart' },
+        { label: 'Recurring Bills', icon: 'icon-nav-recurring-bills.svg', component: 'RecurringBills' },
        
 
       ],
@@ -18,8 +19,9 @@ export default {
   },
 
   methods: {
-    setActive(index) {
+    setActive(index, component) {
       this.activeIndex = index;
+      this.$emit("change-component", component)
     },
     getIconPath(icon) {
       return new URL(`../assets/icons/${icon}`, import.meta.url).href;
@@ -46,7 +48,7 @@ export default {
         class="btn-nav" :class="[{ active: activeIndex === index }]"
         @mouseover="hoverIndex = index"
         @mouseleave="hoverIndex = null"
-        @click="setActive(index)"
+        @click="setActive(index, button.component)"
       >
         <img :src="getIconPath(button.icon)" alt="icon">
         <span class="btn-label">{{ button.label }}</span>

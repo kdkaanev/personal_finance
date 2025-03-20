@@ -34,7 +34,7 @@ export default {
       <div class="pots-title">
         <p>Pots</p>
        
-        <button class="see" href="#">See Details <img src="../assets/picture/icon-caret-right.svg" alt=""></button>
+        <button class="see" href="#">See Details <img src="../assets/icons/icon-caret-right.svg" alt=""></button>
         
       </div>
       <div class="info">
@@ -73,7 +73,7 @@ export default {
      <section class="transactions">
       <div class="transactions-title">
         <p>Transactions</p>
-        <button class="see" href="#">Vew All <img src="../assets/picture/icon-caret-right.svg" alt=""></button>
+        <button class="see" href="#">Vew All <img src="../assets/icons/icon-caret-right.svg" alt=""></button>
       </div>
       <div class="transaction-info">
         <div class="profil">
@@ -136,7 +136,7 @@ export default {
       <section class="budgets">
       <div class="budget-title">
         <p>Budgets</p>
-        <button class="see" href="#">See Details <img src="../assets/picture/icon-caret-right.svg" alt=""></button>
+        <button class="see" href="#">See Details <img src="../assets/icons/icon-caret-right.svg" alt=""></button>
       </div>
       <section class="budget-info">
         <section class="chart">
