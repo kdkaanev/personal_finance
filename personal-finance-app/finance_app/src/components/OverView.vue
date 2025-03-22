@@ -168,6 +168,27 @@ export default {
         
       </section>
       </section>
+      <section class="recurring-bills">
+      <div class="recurring-title">
+        <p>Recurring Bills</p>
+        <button class="see" href="#">See Details <img src="../assets/icons/icon-caret-right.svg" alt=""></button>
+      </div>
+      <section class="summary-bills">
+        <div class="bills">
+          <p>Paid Bills</p>
+          <span>$190.00</span>
+        </div>
+        <div class="upcoming">
+          <p>Total Upcoming</p>
+          <span>$194.98</span>
+        </div>
+        <div class="soon">
+          <p>Due Soon</p>
+          <span>$59.98</span>
+        </div>
+        
+      </section>
+      </section>
 
      
     </div>
@@ -755,6 +776,9 @@ flex-grow: 0;
 .total img{
   /* Frame 522 */
   /* ph:tip-jar-light */
+
+  filter: brightness(0) saturate(100%) invert(30%) sepia(79%) saturate(426%) hue-rotate(130deg) brightness(91%) contrast(85%);
+
 
 width: 40px;
 height: 40px;
@@ -1829,6 +1853,353 @@ flex-grow: 0;
   /* $65.00 */
 
 width: 56px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+.recurring-bills{
+  /* Recurring Bills */
+  /* Recurring Bills */
+  /* Frame 501 */
+  /* Frame 501 */
+  /* Frame 501 */
+  /* Frame 502 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px;
+gap: 32px;
+
+width: 428px;
+height: 327px;
+
+background: #FFFFFF;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.recurring-title{
+  /* Recurring Bills */
+  /* Small Content Title */
+  /* Small Content Title */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 24px;
+
+width: 364px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.recurring-title p{
+  /* Recurring Bills */
+ /* Recurring bills */
+
+
+width: 141px;
+height: 24px;
+
+/* text-preset-2 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 120%;
+/* identical to box height, or 24px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.summary-bills{
+  /* Frame 535 */
+  /* List */
+  /* Frame 564 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+width: 364px;
+height: 207px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.bills{
+  /* Frame 535 */
+  /* List */
+  /* Frame 564 */
+  /* Frame 535 */
+  /* Frame 557 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 20px 16px;
+gap: 16px;
+
+width: 364px;
+height: 61px;
+
+background: #F8F4F0;
+border-left: 4px solid #277C78;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.bills p{
+  /* Paid Bills */
+  /* Total recurring bills */
+
+
+width: 60px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+
+.bills span{
+  /* $1,550.00 */
+
+/* $1,230.00 */
+
+
+width: 57px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+}
+.upcoming{
+  /* Upcoming Bills */
+  /* Upcoming Bills */
+  /* Frame 501 */
+  /* Frame 501 */
+  /* Frame 501 */
+  /* Frame 502 */
+  /* Frame 558 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 20px 16px;
+gap: 16px;
+
+width: 364px;
+height: 61px;
+
+background: #F8F4F0;
+border-left: 4px solid #F2CDAC;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.upcoming p{
+  /* Remaining this month */
+
+width: 102px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.upcoming span{
+  /* $1,550.00 */
+  /* $1,230.00 */
+
+
+width: 57px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+.soon{
+  /* Frame 559 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 20px 16px;
+gap: 16px;
+
+width: 364px;
+height: 61px;
+
+background: #F8F4F0;
+border-left: 4px solid #82C9D7;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.soon p{
+  /* Due soon */
+  /* Due soon */
+  /* Due soon */
+  /* Due soon */
+  /* Total bills due soon */
+
+
+width: 62px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.soon span{
+  /* $1,550.00 */
+  /* $1,230.00 */
+  /* $1,230.00 */
+  /* $40.00 */
+
+
+width: 51px;
 height: 21px;
 
 /* text-preset-4-bold */
