@@ -6,177 +6,211 @@ export default {
     DonutChart,
   },
 };
-
-
 </script>
 
-
 <template>
-<div class="over-container">
-  <section class="title"> Overview</section>
-  <section class="summary">
-    <div class="balance">
-      <div class="balance-title">Current Balance</div>
-      <div class="balance-value">$4,836.00</div>
-    </div>
-    <div class="income">
-      <div class="income-title">Income</div>
-      <div class="income-value">$3,814.25</div>
-    </div>
-    <div class="expenses">
-      <div class="expenses-title">Expenses</div>
-      <div class="expences-value">$1,700.50</div>
-    </div>
-  </section>
-  <section class="content">
-    <div class="left-side">
-     <section class="pots">
-      <div class="pots-title">
-        <p>Pots</p>
-       
-        <button class="see" href="#">See Details <img src="../assets/icons/icon-caret-right.svg" alt=""></button>
-        
-      </div>
-      <div class="info">
-        <div class="total">
-          <img src="../assets/icons/icon-nav-pots.svg" alt="">
-          <div class="value">
-            <h5>Total saved</h5>
-            <div class="amount">$850</div>
-          </div>
+  <div class="over-container">
+    <section class="title">
+      Overview
+    </section>
+    <section class="summary">
+      <div class="balance">
+        <div class="balance-title">
+          Current Balance
         </div>
-        <div class="small">
-          <div class="line1">
-            <div class="micro green">
-              <h5>Savings</h5>
-              <span class="micro-value">$159</span>
-            </div>
-            <div class="micro blue">
-              <h5>Gift</h5>
-              <span class="micro-value">$40</span>
-            </div>
-          </div>
-          <div class="line2">
-            <div class="micro black">
-              <h5>Concert Ticket</h5>
-              <span class="micro-value">$110</span>
-            </div>
-            <div class="micro orange">
-              <h5>New Laptop</h5>
-              <span class="micro-value">$10</span>
-            </div>
-          </div>
-          </div>
-
+        <div class="balance-value">
+          $4,836.00
+        </div>
+      </div>
+      <div class="income">
+        <div class="income-title">
+          Income
+        </div>
+        <div class="income-value">
+          $3,814.25
+        </div>
+      </div>
+      <div class="expenses">
+        <div class="expenses-title">
+          Expenses
+        </div>
+        <div class="expences-value">
+          $1,700.50
+        </div>
       </div>
     </section>
-     <section class="transactions">
-      <div class="transactions-title">
-        <p>Transactions</p>
-        <button class="see" href="#">Vew All <img src="../assets/icons/icon-caret-right.svg" alt=""></button>
-      </div>
-      <div class="transaction-info">
-        <div class="profil">
-          <img class="profile-pic" src="../assets/avatars/emma-richardson.jpg" alt="">
-        <p class="transaction-name">Emma Richardson</p>
-        </div>
-        <div class="transaction">
-          <p class="summ-plus">+$575.5</p>
-          <p class="date">19th Aug 2024</p>
-        </div>
-      </div>
-      <div class="transaction-info">
-        <div class="profil">
-          <img class="profile-pic" src="../assets/avatars/savory-bites-bistro.jpg" alt="">
-        <p class="transaction-name">Savory Bites Bistro</p>
-        </div>
-        <div class="transaction">
-          <p class="summ-minus">+$575.5</p>
-          <p class="date">10th Aug 2024</p>
-        </div>
-      </div>
-      <div class="transaction-info">
-        <div class="profil">
-          <img class="profile-pic" src="../assets/avatars/daniel-carter.jpg" alt="">
-        <p class="transaction-name">Daniel Carter</p>
-        </div>
-        <div class="transaction">
-          <p class="summ-minus">-42.30</p>
-          <p class="date">18th Aug 2024</p>
-        </div>
-      </div>
-      <div class="transaction-info">
-        <div class="profil">
-          <img class="profile-pic" src="../assets/avatars/sun-park.jpg" alt="">
-        <p class="transaction-name">Sun Park</p>
-        </div>
-        <div class="transaction">
-          <p class="summ-plus">+$120.00</p>
-          <p class="date">17th Aug 2024</p>
-        </div>
-      </div>
-      <div class="transaction-info">
-        <div class="profil">
-          <img class="profile-pic" src="../assets/avatars/urban-services-hub.jpg" alt="">
-        <p class="transaction-name">Urban Services Hub</p>
-        </div>
-        <div class="transaction">
-          <p class="summ-minus">-65.00</p>
-          <p class="date">17th Aug 2024</p>
-        </div>
-      </div>
-  
-  
-  
-  
-  
-     </section>
-    </div>
-    <div class="right-side">
-      <section class="budgets">
-      <div class="budget-title">
-        <p>Budgets</p>
-        <button class="see" href="#">See Details <img src="../assets/icons/icon-caret-right.svg" alt=""></button>
-      </div>
-      <section class="budget-info">
-        <section class="chart">
-          <div class="budget-chart">
-          <DonutChart />
-         
-        </div>
-        </section>
-        <section class="budget-small">
-          
-          <div class="value-entertaiment green">
-            <p>Entertaiment</p>
-            <span class="entertaiment-value">$50.00</span>
+    <section class="content">
+      <div class="left-side">
+        <section class="pots">
+          <div class="pots-title">
+            <p>Pots</p>
+
+            <button class="see" href="#">
+              See Details <img src="../assets/icons/icon-caret-right.svg" alt="">
+            </button>
           </div>
-          
-          <div class="value-bills blue">
-            <p>Bills</p>
-            <span class="bills-value">$750.00</span>
-        </div>
-        <div class="value-dining orange">
-          <p>Dining Out</p>
-          <span class="dining-value">$250.00</span>
-        </div>
-        <div class="value-care black">
-          <p>Personal Care</p>
-          <span class="care-value">$100.00</span>
-        </div>
+          <div class="info">
+            <div class="total">
+              <img src="../assets/icons/icon-nav-pots.svg" alt="">
+              <div class="value">
+                <h5>Total saved</h5>
+                <div class="amount">
+                  $850
+                </div>
+              </div>
+            </div>
+            <div class="small">
+              <div class="line1">
+                <div class="micro green">
+                  <h5>Savings</h5>
+                  <span class="micro-value">$159</span>
+                </div>
+                <div class="micro blue">
+                  <h5>Gift</h5>
+                  <span class="micro-value">$40</span>
+                </div>
+              </div>
+              <div class="line2">
+                <div class="micro black">
+                  <h5>Concert Ticket</h5>
+                  <span class="micro-value">$110</span>
+                </div>
+                <div class="micro orange">
+                  <h5>New Laptop</h5>
+                  <span class="micro-value">$10</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
-        
-      </section>
-      </section>
+        <section class="transactions">
+          <div class="transactions-title">
+            <p>Transactions</p>
+            <button class="see" href="#">
+              Vew All <img src="../assets/icons/icon-caret-right.svg" alt="">
+            </button>
+          </div>
+          <div class="transaction-info">
+            <div class="profil">
+              <img class="profile-pic" src="../assets/avatars/emma-richardson.jpg" alt="">
+              <p class="transaction-name">
+                Emma Richardson
+              </p>
+            </div>
+            <div class="transaction">
+              <p class="summ-plus">
+                +$575.5
+              </p>
+              <p class="date">
+                19th Aug 2024
+              </p>
+            </div>
+          </div>
+          <div class="transaction-info">
+            <div class="profil">
+              <img class="profile-pic" src="../assets/avatars/savory-bites-bistro.jpg" alt="">
+              <p class="transaction-name">
+                Savory Bites Bistro
+              </p>
+            </div>
+            <div class="transaction">
+              <p class="summ-minus">
+                +$575.5
+              </p>
+              <p class="date">
+                10th Aug 2024
+              </p>
+            </div>
+          </div>
+          <div class="transaction-info">
+            <div class="profil">
+              <img class="profile-pic" src="../assets/avatars/daniel-carter.jpg" alt="">
+              <p class="transaction-name">
+                Daniel Carter
+              </p>
+            </div>
+            <div class="transaction">
+              <p class="summ-minus">
+                -42.30
+              </p>
+              <p class="date">
+                18th Aug 2024
+              </p>
+            </div>
+          </div>
+          <div class="transaction-info">
+            <div class="profil">
+              <img class="profile-pic" src="../assets/avatars/sun-park.jpg" alt="">
+              <p class="transaction-name">
+                Sun Park
+              </p>
+            </div>
+            <div class="transaction">
+              <p class="summ-plus">
+                +$120.00
+              </p>
+              <p class="date">
+                17th Aug 2024
+              </p>
+            </div>
+          </div>
+          <div class="transaction-info">
+            <div class="profil">
+              <img class="profile-pic" src="../assets/avatars/urban-services-hub.jpg" alt="">
+              <p class="transaction-name">
+                Urban Services Hub
+              </p>
+            </div>
+            <div class="transaction">
+              <p class="summ-minus">
+                -65.00
+              </p>
+              <p class="date">
+                17th Aug 2024
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="right-side">
+        <section class="budgets">
+          <div class="budget-title">
+            <p>Budgets</p>
+            <button class="see" href="#">
+              See Details <img src="../assets/icons/icon-caret-right.svg" alt="">
+            </button>
+          </div>
+          <section class="budget-info">
+            <section class="chart">
+              <div class="budget-chart">
+                <DonutChart />
+              </div>
+            </section>
+            <section class="budget-small">
+              <div class="value-entertaiment green">
+                <p>Entertaiment</p>
+                <span class="entertaiment-value">$50.00</span>
+              </div>
 
-     
-    </div>
-  </section>
-</div>
-
+              <div class="value-bills blue">
+                <p>Bills</p>
+                <span class="bills-value">$750.00</span>
+              </div>
+              <div class="value-dining orange">
+                <p>Dining Out</p>
+                <span class="dining-value">$250.00</span>
+              </div>
+              <div class="value-care black">
+                <p>Personal Care</p>
+                <span class="care-value">$100.00</span>
+              </div>
+            </section>
+          </section>
+        </section>
+      </div>
+    </section>
+  </div>
 </template>
-
-
 
 <style scoped>
 h5{
@@ -195,7 +229,6 @@ line-height: 150%;
 /* identical to box height, or 21px */
 
 color: #696868;
-
 
 /* Inside auto layout */
 /* flex: none;
@@ -216,7 +249,6 @@ gap: 32px;
 width: 1140px;
 height: 1064px;
 
-
 /* Inside auto layout */
 /* flex: none;flex: none;
 order: 1;
@@ -225,7 +257,7 @@ z-index: 1; */
 
 }
 .title{
-  /* Title */ 
+  /* Title */
   /* Main Content Title */
 
 /* Auto layout */
@@ -238,7 +270,6 @@ gap: 24px;
 width: 1060px;
 max-width: 1440px;
 height: 56px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -261,7 +292,6 @@ line-height: 120%;
 
 color: #201F24;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -281,7 +311,6 @@ gap: 24px;
 width: 1060px;
 max-width: 1440px;
 height: 119px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -329,7 +358,6 @@ line-height: 150%;
 
 color: #FFFFFF;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -348,7 +376,6 @@ gap: 11px;
 
 width: 289.33px;
 height: 38px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -369,7 +396,6 @@ line-height: 120%;
 /* or 38px */
 
 color: #FFFFFF;
-
 
 /* Inside auto layout */
 flex: none;
@@ -416,7 +442,6 @@ line-height: 150%;
 
 color: #696868;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -436,7 +461,6 @@ gap: 11px;
 
 width: 289.33px;
 height: 38px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -458,7 +482,6 @@ line-height: 120%;
 /* or 38px */
 
 color: #201F24;
-
 
 /* Inside auto layout */
 flex: none;
@@ -507,7 +530,6 @@ line-height: 150%;
 
 color: #696868;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -541,7 +563,6 @@ order: 0;
 align-self: stretch;
 flex-grow: 0;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -563,7 +584,6 @@ width: 1060px;
 max-width: 1440px;
 height: 761px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 2;
@@ -584,7 +604,6 @@ gap: 24px;
 width: 608px;
 height: 761px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -592,7 +611,7 @@ flex-grow: 0;
 
 }
 .pots{
-  
+
   /* Frame 501 */
 
 /* Auto layout */
@@ -630,19 +649,15 @@ gap: 24px;
 width: 544px;
 height: 24px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
 align-self: stretch;
 flex-grow: 0;
 
-
-
 }
 .pots-title p{
   /* Saving Pot */
-
 
 width: 43px;
 height: 24px;
@@ -657,9 +672,7 @@ line-height: 120%;
 
 color: #201F24;
 
-
 /* Inside auto layout */
-
 
   /* Pots */
   /* Pots */
@@ -674,7 +687,6 @@ justify-content: center;
 align-items: center;
 padding: 0px;
 gap: 4px;
-
 
 width: 98px;
 height: 21px;
@@ -694,12 +706,10 @@ line-height: 150%;
 
 color: #696868;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
 flex-grow: 0;
-
 
 /* Inside auto layout */
 flex: none;
@@ -719,7 +729,6 @@ gap: 20px;
 
 width: 544px;
 height: 110px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -759,7 +768,6 @@ flex-grow: 0;
 width: 40px;
 height: 40px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -781,7 +789,6 @@ gap: 8px;
 
 width: 277px;
 height: 102px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -807,7 +814,6 @@ line-height: 120%;
 
 color: #201F24;
 
-
 /* Inside auto layout */
 flex: none;
 order: 1;
@@ -829,7 +835,6 @@ gap: 16px;
 
 width: 277px;
 height: 102px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -853,7 +858,6 @@ gap: 16px;
 width: 277px;
 height: 43px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -870,16 +874,13 @@ flex-grow: 0;
 
 /* Auto layout */
 
-
 display: flex;
 flex-direction: column;
 align-items:flex-start;
 padding-left: 16px;
 
-
 width: 130.5px;
 height: 43px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -891,18 +892,11 @@ flex-grow: 1;
 
  /* Color Tag */
 
-
  border-left: 4px solid #277C78;
 
  /* Color Tag */
 
-
-
-
 /* Inside auto layout */
-
-
-
 
 }
 .blue{
@@ -914,7 +908,6 @@ flex-grow: 1;
   /* Color Tag */
   border-left: 4px solid  #82C9D7;;
 
-
 }
 .black{
   /* Concert Ticket */
@@ -925,9 +918,6 @@ flex-grow: 1;
   /* Color Tag */
   border-left: 4px solid #626070;
   /* Color Tag */
-
-
-
 
 }
 .orange{
@@ -941,8 +931,6 @@ flex-grow: 1;
   /* Color Tag */
 
 }
-
-
 
 .micro-value{
   /* $850 */
@@ -964,7 +952,6 @@ line-height: 150%;
 /* identical to box height, or 21px */
 
 color: #201F24;
-
 
 /* Inside auto layout */
 flex: none;
@@ -988,7 +975,6 @@ gap: 16px;
 
 width: 277px;
 height: 43px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1038,7 +1024,6 @@ gap: 11px;
 width: 544px;
 height: 24px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -1052,7 +1037,6 @@ flex-grow: 0;
   /* Transactions */
   /* Transactions */
 
-
 width: 124px;
 height: 24px;
 
@@ -1065,7 +1049,6 @@ line-height: 120%;
 /* identical to box height, or 24px */
 
 color: #201F24;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1086,7 +1069,6 @@ padding: 0px;
 
 width: 100%;
 height: 47px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1112,7 +1094,6 @@ gap: 16px;
 margin: 0 auto;
 width: 474px;
 height: 40px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1147,9 +1128,7 @@ align-items: flex-start;
 padding: 0px;
 gap: 8px;
 
-
 height: 21px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1169,10 +1148,7 @@ align-items: flex-end;
 padding: 0px;
 gap: 8px;
 
-
-
 height: 47px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1196,7 +1172,6 @@ line-height: 150%;
 text-align: right;
 
 color: #277C78;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1222,7 +1197,6 @@ text-align: right;
 
 color: #201F24;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -1246,7 +1220,6 @@ line-height: 150%;
 
 color: #696868;
 
-
 /* Inside auto layout */
 flex: none;
 order: 1;
@@ -1268,7 +1241,6 @@ gap: 24px;
 
 width: 428px;
 height: 754px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1321,7 +1293,6 @@ gap: 24px;
 width: 364px;
 height: 24px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -1337,7 +1308,6 @@ flex-grow: 0;
   /* Budgets */
   /* My Budgets */
 
-
 width: 80px;
 height: 24px;
 
@@ -1350,7 +1320,6 @@ line-height: 120%;
 /* identical to box height, or 24px */
 display: flex;
 color: #201F24;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1370,7 +1339,6 @@ gap: 16px;
 
 width: 364px;
 height: 295px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1396,7 +1364,6 @@ gap: 8px;
 width: 247px;
 height: 240px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -1408,7 +1375,6 @@ flex-grow: 1;
 
 width: 240px;
 height: 240px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1430,8 +1396,6 @@ top: calc(50% - 187.5px/2 - 0.25px);
 
 background: #FFFFFF;
 
-
-
 }
 .donut-hole{
   /* Donut Hole */
@@ -1449,9 +1413,6 @@ left: calc(50% - 162px/2 + 0px);
 top: calc(50% - 162px/2 + 0px);
 fill:#fff;
 
-
-
-
 }
 .donut-ring{
   /* Donut Ring */
@@ -1468,7 +1429,6 @@ background: #FFFFFF;
 opacity: 0.25;
 stroke: #08eee2;
 stroke-width: 3;
-
 
 }
 .donut-ring-big{
@@ -1506,7 +1466,7 @@ stroke-dasharray:  85 15;
 }
 .chart-text {
   font-family:Public Sans;
-  
+
   -moz-transform: translateY(0.25em);
   -ms-transform: translateY(0.25em);
   -webkit-transform: translateY(0.25em);
@@ -1514,7 +1474,6 @@ stroke-dasharray:  85 15;
 }
 
 .chart-number {
-  
 
   font-size: 0.45em;
   line-height: 1;
@@ -1523,12 +1482,12 @@ stroke-dasharray:  85 15;
   -ms-transform: translateY(-0.25em);
   -webkit-transform: translateY(-0.25em);
   transform: translateY(-0.25em);
-  
+
 }
 
 .chart-label {
   font-size: 0.15em;
- 
+
   text-anchor: middle;
   -moz-transform: translateY(0.7em);
   -ms-transform: translateY(0.7em);
@@ -1552,7 +1511,6 @@ gap: 16px;
 width: 101px;
 height: 220px;
 
-
 /* Inside auto layout */
 flex: none;
 order: 1;
@@ -1569,10 +1527,8 @@ justify-content: center;
 align-items: flex-start;
 padding: 16px;
 
-
 width: 101px;
 height: 43px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1596,7 +1552,6 @@ line-height: 150%;
 
 color: #696868;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -1619,7 +1574,6 @@ line-height: 150%;
 
 color: #201F24;
 
-
 /* Inside auto layout */
 flex: none;
 order: 1;
@@ -1637,10 +1591,8 @@ justify-content: center;
 align-items: flex-start;
 padding: 16px;
 
-
 width: 79px;
 height: 43px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1665,7 +1617,6 @@ line-height: 150%;
 
 color: #696868;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -1689,7 +1640,6 @@ line-height: 150%;
 
 color: #201F24;
 
-
 /* Inside auto layout */
 flex: none;
 order: 1;
@@ -1710,7 +1660,6 @@ padding: 16px;
 
 width: 80px;
 height: 43px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1735,7 +1684,6 @@ line-height: 150%;
 /* identical to box height, or 18px */
 
 color: #696868;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1763,7 +1711,6 @@ line-height: 150%;
 
 color: #201F24;
 
-
 /* Inside auto layout */
 flex: none;
 order: 1;
@@ -1786,7 +1733,6 @@ padding: 16px;
 
 width: 98px;
 height: 43px;
-
 
 /* Inside auto layout */
 flex: none;
@@ -1814,7 +1760,6 @@ line-height: 150%;
 
 color: #696868;
 
-
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -1840,7 +1785,6 @@ line-height: 150%;
 /* identical to box height, or 21px */
 
 color: #201F24;
-
 
 /* Inside auto layout */
 flex: none;

@@ -1,11 +1,10 @@
 <script>
-import SideBar from '../components/SideBar.vue';
-import OverView from '../components/OverView.vue';
-import TransActions from '../components/TransActions.vue';
 import BudGets from '../components/BudGets.vue';
+import OverView from '../components/OverView.vue';
 import PotsCart from '../components/PotsCart.vue';
 import RecurringBills from '../components/RecurringBills.vue';
-
+import SideBar from '../components/SideBar.vue';
+import TransActions from '../components/TransActions.vue';
 
 export default {
   components: {
@@ -22,10 +21,6 @@ export default {
     };
   },
 };
-
-
-
-
 </script>
 
 <template>
