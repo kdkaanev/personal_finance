@@ -418,20 +418,27 @@ export default {
         <select id="" name="" />
       </div>
     <section class="data">
-      <div class="header">
+      s
+      <ul class="list">
+        <li class="header">
           <p>Recipient / Sender</p>
+         <div class="cat">
           <p>Category</p>
           <p>Transaction Date</p>
-          <p>Amount</p>
-        </div>
-      <ul class="list">
-       
+         </div>
+          <span>Amount</span>
+        </li>
       <li v-for="item in transactions" :key="item.id">
-        <img :src="item.avatar" alt="avatar" />
-        <p>{{ item.name }}</p>
-        <p>{{ item.category }}</p>
-        <p>{{ item.date }}</p>
+       <div class="recipient">
+        <img :src="item.avatar" alt="😊" />
+        <i class="name">{{ item.name }}</i>
+       </div>
+        <div class="cat">
+          <p>{{ item.category }}</p>
+          <p>{{ item.date }}</p>
+        </div>
         <p>{{ item.amount }}</p>
+      
       </li>
     </ul>
     </section>
@@ -612,12 +619,12 @@ box-sizing: border-box;
 
 /* Auto layout */
 display: flex;
+justify-content: space-around;
 flex-direction: row;
 align-items: center;
 padding: 12px 16px;
 gap: 32px;
 
-width: 996px;
 height: 42px;
 
 border-bottom: 1px solid #F2F2F2;
@@ -629,7 +636,7 @@ align-self: stretch;
 flex-grow: 0;
 
 }
-.header p{
+.header p {
   /* Header */
   /* Transaction Header */
   /* Table Header */
@@ -656,6 +663,157 @@ color: #696868;
 flex: none;
 order: 0;
 flex-grow: 1;
+
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+ /* List */
+
+/* Auto layout */
+display: flex;
+justify-content: space-between;
+flex-direction: row;
+align-items: center;
+padding: 0px 16px;
+gap: 32px;
+
+width: 996px;
+height: 40px;
+
+border-radius: 8px;
+border-bottom: 1px solid #F2F2F2;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.recipient{
+  /* Recipient */
+  /* Transaction Recipient */
+  /* Table Recipient */
+  /* List */
+  /* Table Item */
+  /* Recipient or Sender */
+
+/* Auto layout */
+display: flex;
+
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+
+height: 40px;
+
+
+/* Inside auto layout */
+
+}
+li p{
+  /* Recipient */
+  /* Transaction Recipient */
+  /* Table Recipient */
+  /* List */
+  /* Table Item */
+  /* Recipient or Sender */
+  /* Personal Care */
+
+width: 45px;
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+hr{
+  /* Line */
+  /* Transaction Line */
+  /* Table Line */
+  /* List */
+  /* Table Item */
+  /* Line */
+  /* Line */
+
+width: 996px;
+height: 1px;
+
+border: 1px solid #F2F2F2;
+
+/* Inside auto layout */
+flex: none;
+order: 7;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.name{
+  /* Name */
+  /* Transaction Name */
+  /* Table Name */
+  /* List */
+  /* Table Item */
+  /* Recipient or Sender */
+  /* Emma Richardson */
+  /* Frame 523 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+
+height: 21px;
+
+
+/* Inside auto layout */
+
+
+}
+.cat{
+  /* Amount */
+
+/* Auto layout */
+/* Recipient or Sender */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+
+height: 40px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
 
 }
 </style>
