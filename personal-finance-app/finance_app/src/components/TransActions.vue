@@ -417,7 +417,24 @@ export default {
         <select id="" name="" />
         <select id="" name="" />
       </div>
-    <section class="data">
+
+    <section >
+      <table class="data-table">
+        <tr class="header">
+          <th>Recipient / Sender</th>
+          <th>Category</th>
+          <th>Transaction Date</th>
+          <th>Amount</th>
+        </tr>
+        <tr v-for="item in transactions" :key="item.id">
+          <td class="td-name"><img :src="item.avatar" alt="avatar" />{{ item.name }}</td>
+          <td class="td-category">{{ item.category }} {{ item.date }}</td>
+         
+          <td class="td-amount">{{ item.amount }}</td>
+        </tr>
+      </table>
+    </section>
+    <!-- <section class="data">
       <div class="header">
           <p>Recipient / Sender</p>
           <p>Category</p>
@@ -434,8 +451,10 @@ export default {
         <p>{{ item.amount }}</p>
       </li>
     </ul>
-    </section>
+    </section> -->
   </section>
+
+
   </section>
 </template>
 
@@ -616,6 +635,7 @@ flex-direction: row;
 align-items: center;
 padding: 12px 16px;
 gap: 32px;
+justify-content: space-evenly;
 
 width: 996px;
 height: 42px;
@@ -658,4 +678,119 @@ order: 0;
 flex-grow: 1;
 
 }
+tr{
+  /* Table Top */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 12px 16px;
+gap: 32px;
+justify-content: space-between;
+
+width: 996px;
+height: 42px;
+
+border-bottom: 1px solid #F2F2F2;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.data-table{
+  /* Data Table */
+  /* Transaction Table */
+  /* Table */
+  /* Table List */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+justify-content: space-between;
+
+width: 996px;
+height: 696px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+  
+  }
+  .header th{
+    /* Recipient / Sender */
+
+
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+  }
+  .td-name
+  {
+    /* Recipient / Sender */
+    /* Recipient or Sender */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+width: 428px;
+height: 40px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+  }
+  td-category{
+    /* Category */
+    /* Transaction Category */
+    /* Recipient or Sender */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+width: 428px;
+height: 40px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+  }
 </style>
