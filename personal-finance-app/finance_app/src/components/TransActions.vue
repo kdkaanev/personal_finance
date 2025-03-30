@@ -407,63 +407,71 @@ export default {
 </script>
 
 <template>
-  <section class="trans-container">
-    <div class="title">
-      <p>Transactions</p>
-    </div>
+  <div class="trans-container">
+    <section class="title">
+     <h2>Transactions</h2>
+    </section>
     <section class="table">
       <div class="fields">
-        <input type="text" placeholder="Search">
-        <select id="" name="" />
-        <select id="" name="" />
+        <label for="search" class="search">
+          <input type="text" placeholder="Search transaction">
+        </label>
+         <div class="checkbox">
+          <label for="sort">Sort by</label>
+          <select id="sort">
+            <option value="latest">Latest</option>
+            <option value="oldest">Oldest</option>
+            <option value="a-z">A to Z</option>
+            <option value="z-a">Z to A</option>
+            <option value="higest">Higest</option>
+            <option value="lowest">Lowest</option>
+          </select>
+          <label for="category">Category</label>
+          <select id="category">
+            <option value="all">All Transactions</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="general">General</option>
+            <option value="bills">Bills</option>
+            <option value="groceries">Groceries</option>
+            <option value="dining-out">Dining Out</option>
+            
+            <option value="transportation">Transportation</option>
+            <option value="personal-care">Personal Care</option>
+            <option value="education">Education</option>
+            <option value="lifestyle">Lifestyle</option>
+            <option value="shopping">Shopping</option>
+            <option value="general">General</option>
+            </select>
+         </div>
       </div>
-
-    <section >
-      <table class="data-table">
-        <tr class="header">
-          <th>Recipient / Sender</th>
-          <th>Category</th>
-          <th>Transaction Date</th>
-          <th>Amount</th>
-        </tr>
-        <tr v-for="item in transactions" :key="item.id">
-          <td class="td-name"><img :src="item.avatar" alt="avatar" />{{ item.name }}</td>
-          <td class="td-category">{{ item.category }} {{ item.date }}</td>
-         
-          <td class="td-amount">{{ item.amount }}</td>
-        </tr>
-      </table>
-    </section>
-    <!-- <section class="data">
-      <div class="header">
+      <div class="body">
+        <section class="header">
           <p>Recipient / Sender</p>
           <p>Category</p>
-          <p>Transaction Date</p>
+          <p>Date</p>
           <p>Amount</p>
-        </div>
-      <ul class="list">
-       
-      <li v-for="item in transactions" :key="item.id">
-        <img :src="item.avatar" alt="avatar" />
-        <p>{{ item.name }}</p>
-        <p>{{ item.category }}</p>
-        <p>{{ item.date }}</p>
-        <p>{{ item.amount }}</p>
-      </li>
-    </ul>
-    </section> -->
-  </section>
-
-
-  </section>
+        </section>
+        <section class="transactions">
+          <div v-for="transaction in transactions" :key="transaction.name" class="transaction">
+            <div class="avatar">
+              <img :src="transaction.avatar" alt="Avatar">
+            </div>
+            <div class="details">
+              <p>{{ transaction.name }}</p>
+              <p>{{ transaction.category }}</p>
+              <p>{{ new Date(transaction.date).toLocaleDateString() }}</p>
+              <p :class="{ 'negative': transaction.amount < 0 }">{{ transaction.amount.toFixed(2) }}</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
 </template>
 
 <style scoped>
 .trans-container{
-  /* Main Content */
-
-/* Auto layout */
-/* Main Content */
+  /* Desktop - Transactions */
 
 /* Auto layout */
 /* Main Content */
@@ -474,12 +482,12 @@ flex-direction: column;
 align-items: center;
 padding: 32px 40px;
 gap: 32px;
-
 width: 1140px;
 height: 1064px;
+
 }
 .title{
-  /* Title */
+  /* Desktop - Transactions / Title */
   /* Main Content Title */
 
 /* Auto layout */
@@ -489,19 +497,21 @@ align-items: center;
 padding: 8px 0px;
 gap: 24px;
 
-width: 1060px;
+width: 1360px;
 max-width: 1440px;
 height: 56px;
+
 
 /* Inside auto layout */
 flex: none;
 order: 0;
 align-self: stretch;
 flex-grow: 0;
+
 }
-.title p{
-  /* Title */
-  /* Main Content Title */
+.title h2{
+  /* Desktop - Transactions / Title / Text */
+  /* Main Content Title Text */
   /* Transactions */
 
 width: 198px;
@@ -517,6 +527,7 @@ line-height: 120%;
 
 color: #201F24;
 
+
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -524,35 +535,36 @@ flex-grow: 0;
 
 }
 .table{
-  /* Table */
+  /* Desktop - Transactions / Table */
+  /* Main Content Table */
   /* Transaction Concent */
 
+/* Auto layout */
 /* Transaction Concent */
 
 /* Auto layout */
+box-sizing: border-box;
 display: flex;
-flex-direction: column;
-align-items: flex-start;
-padding: 32px;
-gap: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+ 
+  gap: 24px;
 
-width: 1060px;
-max-width: 1440px;
-height: 983px;
+  width: 100%; /* Instead of 1296px */
+  max-width: 1296px;
+  min-width: 0;
 
-background: #FFFFFF;
-border-radius: 12px;
+  height: 983px;
+  background: #FFFFFF;
+  border-radius: 12px;
 
-/* Inside auto layout */
-flex: none;
-order: 2;
-align-self: stretch;
-flex-grow: 0;
-
+  flex: 0 1 auto;
+  order: 2;
 }
 .fields{
-  /* Fields */
-  /* Search, Filter, Add */
+  /* Desktop - Transactions / Table / Fields */
+  /* Main Content Table Fields */
+  /* Transaction Concent Fields */
   /* Input Fields Top */
 
 /* Auto layout */
@@ -563,8 +575,9 @@ align-items: center;
 padding: 0px;
 gap: 16px;
 
-width: 996px;
+width: 100%;
 height: 45px;
+
 
 /* Inside auto layout */
 flex: none;
@@ -572,102 +585,153 @@ order: 0;
 align-self: stretch;
 flex-grow: 0;
 }
-.list{
-  /* List */
-  /* Transaction List */
-  /* Table List */
+.search{
+  /* Desktop - Transactions / Table / Fields / Search */
+  /* Main Content Table Fields Search */
+  /* Transaction Concent Fields Search */
+  /* Input Fields Top Search */
+
+/* Input Field/Input Fields */
 
 /* Auto layout */
 display: flex;
 flex-direction: column;
 align-items: flex-start;
 padding: 0px;
-gap: 16px;
+gap: 4px;
 
-width: 996px;
-height: 696px;
+
+width: 320px;
+height: 45px;
 
 
 /* Inside auto layout */
 flex: none;
-order: 2;
-align-self: stretch;
+order: 0;
 flex-grow: 0;
-
 }
-.list li{
-  /* List Item */
-  /* Transaction Item */
-  /* Table Item */
-  /* List */
+.search input{
+  /* Desktop - Transactions / Table / Fields / Search / Input */
+  /* Main Content Table Fields Search Input */
+  /* Transaction Concent Fields Search Input */
+  /* Input Field/Input Fields Search */
+/* Input Field/Field States */
+
+box-sizing: border-box;
 
 /* Auto layout */
 display: flex;
 flex-direction: row;
 align-items: center;
-padding: 0px 16px;
-gap: 32px;
+padding: 12px 20px;
+gap: 16px;
 
-width: 996px;
-height: 40px;
+width: 320px;
+height: 45px;
 
+background: #FFFFFF;
+border: 1px solid #98908B;
 border-radius: 8px;
 
 /* Inside auto layout */
 flex: none;
-order: 0;
+order: 1;
 align-self: stretch;
 flex-grow: 0;
-
 }
-.header{
-  /* Header */
-  /* Transaction Header */
-  /* Table Header */
-  /* List */
-  /* Table Top */
+.search input::placeholder{
+  /* Desktop - Transactions / Table / Fields / Search / Input / Placeholder */
+  /* Main Content Table Fields Search Input Placeholder */
+  /* Transaction Concent Fields Search Input Placeholder */
+  /* Input Field/Input Fields Search/Placeholder */
+  /* Input Field/Field States/Placeholder */
+  /* Search transaction */
 
-box-sizing: border-box;
+width: 248px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #98908B;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 1;
+}
+.checkbox{
+  /* Desktop - Transactions / Table / Fields / Checkbox */
+  /* Main Content Table Fields Checkbox */
+  /* Transaction Concent Fields Checkbox */
+  /* Input Fields Top Checkbox */
+  /* Frame 575 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: center;
+padding: 0px;
+gap: 24px;
+
+margin: 0 auto;
+width: 439px;
+height: 45px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+#sort{
+  /* Desktop - Transactions / Table / Fields / Checkbox / Sort */
+  /* Main Content Table Fields Checkbox Sort */
+  /* Transaction Concent Fields Checkbox Sort */
+  /* Input Fields Top Checkbox Sort */
+  /* Frame 591 */
 
 /* Auto layout */
 display: flex;
 flex-direction: row;
 align-items: center;
-padding: 12px 16px;
-gap: 32px;
-justify-content: space-evenly;
+padding: 0px;
+gap: 8px;
 
-width: 996px;
-height: 42px;
+width: 170px;
+height: 45px;
 
-border-bottom: 1px solid #F2F2F2;
 
 /* Inside auto layout */
 flex: none;
-order: 1;
-align-self: stretch;
+order: 0;
 flex-grow: 0;
 
 }
-.header p{
-  /* Header */
-  /* Transaction Header */
-  /* Table Header */
-  /* List */
-  /* Table Top */
+#sort label{
+  /* Desktop - Transactions / Table / Fields / Checkbox / Sort / Label */
+  /* Main Content Table Fields Checkbox Sort Label */
+  /* Transaction Concent Fields Checkbox Sort Label */
+  /* Input Fields Top Checkbox Sort Label */
+  /* Sort by Latest */
 
-/* Recipient / Sender */
+width: 48px;
+height: 21px;
 
-
-height: 18px;
-
-/* text-preset-5 */
+/* text-preset-4 */
 font-family: 'Public Sans';
 font-style: normal;
 font-weight: 400;
-font-size: 12px;
+font-size: 14px;
 line-height: 150%;
-/* identical to box height, or 18px */
+/* identical to box height, or 21px */
 
 color: #696868;
 
@@ -675,122 +739,85 @@ color: #696868;
 /* Inside auto layout */
 flex: none;
 order: 0;
-flex-grow: 1;
-
-}
-tr{
-  /* Table Top */
-
-box-sizing: border-box;
-
-/* Auto layout */
-display: flex;
-flex-direction: row;
-align-items: center;
-padding: 12px 16px;
-gap: 32px;
-justify-content: space-between;
-
-width: 996px;
-height: 42px;
-
-border-bottom: 1px solid #F2F2F2;
-
-/* Inside auto layout */
-flex: none;
-order: 1;
-align-self: stretch;
 flex-grow: 0;
 
-}
-.data-table{
-  /* Data Table */
-  /* Transaction Table */
-  /* Table */
-  /* Table List */
+  /* Frame 591 Label */}
+#sort select{
+  /* Desktop - Transactions / Table / Fields / Checkbox / Sort / Select */
+  /* Main Content Table Fields Checkbox Sort Select */
+  /* Transaction Concent Fields Checkbox Sort Select */
+  /* Input Fields Top Checkbox Sort Select */
+  /* Frame 591 Select */
+  /* Input Field/Input Fields */
 
 /* Auto layout */
 display: flex;
 flex-direction: column;
 align-items: flex-start;
 padding: 0px;
-gap: 16px;
-justify-content: space-between;
+gap: 4px;
 
-width: 996px;
-height: 696px;
+width: 114px;
+height: 45px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+#sort select option{
+  /* Desktop - Transactions / Table / Fields / Checkbox / Sort / Select/Option */
+  /* Main Content Table Fields Checkbox Sort Select Option */
+  /* Transaction Concent Fields Checkbox Sort Select Option */
+  /* Input Fields Top Checkbox Sort Select Option */
+  /* Frame 591 Select/Option */
+  /* Sort by Latest */
+
+width: 41px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
 
 
 /* Inside auto layout */
 flex: none;
 order: 2;
-align-self: stretch;
 flex-grow: 0;
-  
-  }
-  .header th{
-    /* Recipient / Sender */
-
-
-height: 18px;
-
-/* text-preset-5 */
-font-family: 'Public Sans';
-font-style: normal;
-font-weight: 400;
-font-size: 12px;
-line-height: 150%;
-/* identical to box height, or 18px */
-
-color: #696868;
-
-
-/* Inside auto layout */
-flex: none;
-order: 0;
-flex-grow: 1;
-
-  }
-  .td-name
-  {
-    /* Recipient / Sender */
-    /* Recipient or Sender */
+}
+#category{
+  /* Desktop - Transactions / Table / Fields / Checkbox / Category */
+  /* Main Content Table Fields Checkbox Category */
+  /* Transaction Concent Fields Checkbox Category */
+  /* Input Fields Top Checkbox Category */
+  /* Frame 575 Category */
+  /* Frame 592 */
 
 /* Auto layout */
 display: flex;
 flex-direction: row;
 align-items: center;
 padding: 0px;
-gap: 16px;
+gap: 8px;
 
-width: 428px;
-height: 40px;
-
-
-/* Inside auto layout */
-flex: none;
-order: 0;
-flex-grow: 1;
-  }
-  td-category{
-    /* Category */
-    /* Transaction Category */
-    /* Recipient or Sender */
-
-/* Auto layout */
-display: flex;
-flex-direction: row;
-align-items: center;
-padding: 0px;
-gap: 16px;
-
-width: 428px;
-height: 40px;
+width: 245px;
+height: 45px;
 
 
 /* Inside auto layout */
 flex: none;
-order: 0;
-flex-grow: 1;
-  }
+order: 1;
+flex-grow: 0;
+
+}
+
 </style>
