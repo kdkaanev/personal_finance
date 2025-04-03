@@ -417,7 +417,12 @@ export default {
           <input type="text" placeholder="Search transaction">
         </label>
          <div class="checkbox">
-          <label for="sort">Sort by</label>
+        <div class="checkbox-sort">
+       
+            <label for="sort">Sort by</label>
+         
+          
+         <div class="select-sort">
           <select id="sort">
             <option value="latest">Latest</option>
             <option value="oldest">Oldest</option>
@@ -426,22 +431,32 @@ export default {
             <option value="higest">Higest</option>
             <option value="lowest">Lowest</option>
           </select>
+         </div>
+        </div>
+          
+         <div class="checkbox-category">
           <label for="category">Category</label>
-          <select id="category">
-            <option value="all">All Transactions</option>
-            <option value="entertainment">Entertainment</option>
-            <option value="general">General</option>
-            <option value="bills">Bills</option>
-            <option value="groceries">Groceries</option>
-            <option value="dining-out">Dining Out</option>
-            
-            <option value="transportation">Transportation</option>
-            <option value="personal-care">Personal Care</option>
-            <option value="education">Education</option>
-            <option value="lifestyle">Lifestyle</option>
-            <option value="shopping">Shopping</option>
-            <option value="general">General</option>
-            </select>
+          
+          <div class="select-category">
+           <select id="category">
+             <option value="all">All Transactions</option>
+             <option value="entertainment">Entertainment</option>
+             <option value="general">General</option>
+             <option value="bills">Bills</option>
+             <option value="groceries">Groceries</option>
+             <option value="dining-out">Dining Out</option>
+             
+             <option value="transportation">Transportation</option>
+             <option value="personal-care">Personal Care</option>
+             <option value="education">Education</option>
+             <option value="lifestyle">Lifestyle</option>
+             <option value="shopping">Shopping</option>
+             <option value="general">General</option>
+             </select>
+          </div>
+         </div>
+        
+           
          </div>
       </div>
       <div class="body">
@@ -553,6 +568,8 @@ display: flex;
   width: 100%; /* Instead of 1296px */
   max-width: 1296px;
   min-width: 0;
+  padding: 24px 32px;
+  margin: 0 auto;
 
   height: 983px;
   background: #FFFFFF;
@@ -679,10 +696,10 @@ flex-direction: row;
 justify-content: flex-end;
 align-items: center;
 padding: 0px;
-gap: 24px;
+gap: 32px;
 
-margin: 0 auto;
-width: 439px;
+margin: 0;
+
 height: 45px;
 
 
@@ -691,12 +708,8 @@ flex: none;
 order: 1;
 flex-grow: 0;
 }
-#sort{
-  /* Desktop - Transactions / Table / Fields / Checkbox / Sort */
-  /* Main Content Table Fields Checkbox Sort */
-  /* Transaction Concent Fields Checkbox Sort */
-  /* Input Fields Top Checkbox Sort */
-  /* Frame 591 */
+.checkbox-sort{
+/* Frame 591 */
 
 /* Auto layout */
 display: flex;
@@ -705,7 +718,7 @@ align-items: center;
 padding: 0px;
 gap: 8px;
 
-width: 170px;
+width: 169px;
 height: 45px;
 
 
@@ -713,41 +726,11 @@ height: 45px;
 flex: none;
 order: 0;
 flex-grow: 0;
-
 }
-#sort label{
-  /* Desktop - Transactions / Table / Fields / Checkbox / Sort / Label */
-  /* Main Content Table Fields Checkbox Sort Label */
-  /* Transaction Concent Fields Checkbox Sort Label */
-  /* Input Fields Top Checkbox Sort Label */
-  /* Sort by Latest */
-
-width: 48px;
-height: 21px;
-
-/* text-preset-4 */
-font-family: 'Public Sans';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
-line-height: 150%;
-/* identical to box height, or 21px */
-
-color: #696868;
-
-
-/* Inside auto layout */
-flex: none;
-order: 0;
-flex-grow: 0;
-
-  /* Frame 591 Label */}
-#sort select{
-  /* Desktop - Transactions / Table / Fields / Checkbox / Sort / Select */
-  /* Main Content Table Fields Checkbox Sort Select */
-  /* Transaction Concent Fields Checkbox Sort Select */
-  /* Input Fields Top Checkbox Sort Select */
-  /* Frame 591 Select */
+.select-sort{
+  /* Sort by Latest / Sort by Latest */
+  /* Sort by Latest / Option */
+  /* Input Field/Input Fields */
   /* Input Field/Input Fields */
 
 /* Auto layout */
@@ -757,7 +740,7 @@ align-items: flex-start;
 padding: 0px;
 gap: 4px;
 
-width: 114px;
+width: 113px;
 height: 45px;
 
 
@@ -767,39 +750,44 @@ order: 1;
 flex-grow: 0;
 
 }
-#sort select option{
-  /* Desktop - Transactions / Table / Fields / Checkbox / Sort / Select/Option */
-  /* Main Content Table Fields Checkbox Sort Select Option */
-  /* Transaction Concent Fields Checkbox Sort Select Option */
-  /* Input Fields Top Checkbox Sort Select Option */
-  /* Frame 591 Select/Option */
-  /* Sort by Latest */
+#sort {
+  /* Sort by Latest / Sort by Latest */
+  /* Sort by Latest / Option */
+  /* Input Field/Input Fields */
 
-width: 41px;
-height: 21px;
+/* Auto layout */
+/* Input Field/Field States */
 
-/* text-preset-4 */
-font-family: 'Public Sans';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
-line-height: 150%;
-/* identical to box height, or 21px */
+box-sizing: border-box;
 
-color: #201F24;
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 12px 20px;
+gap: 16px;
 
+width: 113px;
+height: 45px;
+
+background: #FFFFFF;
+border: 1px solid #98908B;
+border-radius: 8px;
 
 /* Inside auto layout */
 flex: none;
-order: 2;
+order: 1;
+align-self: stretch;
 flex-grow: 0;
+
+
 }
-#category{
-  /* Desktop - Transactions / Table / Fields / Checkbox / Category */
-  /* Main Content Table Fields Checkbox Category */
-  /* Transaction Concent Fields Checkbox Category */
-  /* Input Fields Top Checkbox Category */
-  /* Frame 575 Category */
+.checkbox-category{
+  /* Desktop - Transactions / Table / Fields / Checkbox */
+  /* Main Content Table Fields Checkbox */
+  /* Transaction Concent Fields Checkbox */
+  /* Input Fields Top Checkbox */
+  /* Frame 575 */
   /* Frame 592 */
 
 /* Auto layout */
@@ -819,5 +807,194 @@ order: 1;
 flex-grow: 0;
 
 }
+.select-category{
+  /* Sort by Latest / Sort by Latest */
+  /* Sort by Latest / Option */
+  /* Input Field/Input Fields */
+  /* Input Field/Input Fields */
+  /* Input Field/Input Fields */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4px;
+
+width: 177px;
+height: 45px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+#category {
+  /* Sort by Latest / Sort by Latest */
+  /* Sort by Latest / Option */
+  /* Input Field/Input Fields */
+  /* Input Field/Field States */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 12px 20px;
+gap: 16px;
+
+width: 177px;
+height: 45px;
+
+background: #FFFFFF;
+border: 1px solid #98908B;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+}
+label {
+  /* Desktop - Transactions / Table / Fields / Checkbox */
+  /* Main Content Table Fields Checkbox */
+  /* Transaction Concent Fields Checkbox */
+  /* Input Fields Top Checkbox */
+/* Sort by Latest */
+
+width: 60px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+.body{
+  /* Desktop - Transactions / Table / Body */
+  /* Main Content Table Body */
+  /* Transaction Concent Body */
+  /* Table List */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 1296px;
+height: 696px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.header{
+  /* Desktop - Transactions / Table / Body / Header */
+  /* Main Content Table Body Header */
+  /* Transaction Concent Body Header */
+  /* Table List Header */
+  /* Table Top */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 12px 16px;
+gap: 32px;
+
+width: 1296px;
+height: 42px;
+
+border-bottom: 1px solid #F2F2F2;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.transactions{
+  /* Desktop - Transactions / Table / Body / Transactions */
+  /* Main Content Table Body Transactions */
+  /* Transaction Concent Body Transactions */
+  /* Table List Items */
+  /* Table List */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 1296px;
+height: 696px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+}
+.transaction{
+  /* Desktop - Transactions / Table / Body / Transactions / Transaction */
+  /* Main Content Table Body Transactions Transaction */
+  /* Transaction Concent Body Transactions Transaction */
+  /* Table List Items List Item */
+  /* List */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 16px;
+gap: 32px;
+
+
+height: 40px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+}
+  
+
+
+
+
+
+
 
 </style>
