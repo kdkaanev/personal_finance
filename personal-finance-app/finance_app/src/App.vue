@@ -16,6 +16,7 @@ export default {
   font-family:Public Sans, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
  
 }
 

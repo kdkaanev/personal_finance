@@ -4,9 +4,9 @@ export default {
   name: 'Transactions',
   data() {
     return {
-      "transactions": [
+      transactions: [
     {
-      "avatar": "../assets/avatars/emma-richardson.jpg",
+      "avatar": "./assets/avatars/emma-richardson.jpg",
       "name": "Emma Richardson",
       "category": "General",
       "date": "2024-08-19T14:23:11Z",
@@ -398,11 +398,24 @@ export default {
       "recurring": false
     }
   ],
+  currentPage: 1,
+  itemsPerPage: 10,
       
     };
+  },
+  computed: {
+  paginatedTransactions() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.transactions.slice(start, end);
+  },
+  totalPages() {
+    return Math.ceil(this.transactions.length / this.itemsPerPage);
   }
-    };
+}
 
+    };
+    
 
 </script>
 
@@ -413,9 +426,12 @@ export default {
     </section>
     <section class="table">
       <div class="fields">
-        <label for="search" class="search">
-          <input type="text" placeholder="Search transaction">
-        </label>
+        <div class="search-container">
+          <div class="search">
+            <input type="text" placeholder="Search transaction">
+            <img src="../assets/icons/icon-search.svg" alt="lupa" class="search-icon">
+          </div>
+        </div>
          <div class="checkbox">
         <div class="checkbox-sort">
        
@@ -460,28 +476,59 @@ export default {
          </div>
       </div>
       <div class="body">
-        <section class="header">
-          <p>Recipient / Sender</p>
-          <p>Category</p>
-          <p>Date</p>
-          <p>Amount</p>
+        <section class="transaction">
+          <p class="avatar type">Recipient / Sender</p>
+         <div class="details">
+          <span class="transaction-details">
+            <p>Category</p>
+          <p>Transaction Date</p>
+          </span>
+          <p class="amount-p">Amount</p>
+         </div>
         </section>
         <section class="transactions">
-          <div v-for="transaction in transactions" :key="transaction.name" class="transaction">
+          <div v-for="transaction in paginatedTransactions" :key="transaction.name" class="transaction">
             <div class="avatar">
               <img :src="transaction.avatar" alt="Avatar">
+              <p>{{ transaction.name }}</p>
             </div>
             <div class="details">
-              <p>{{ transaction.name }}</p>
+              
+             <span class="transaction-details">
               <p>{{ transaction.category }}</p>
               <p>{{ new Date(transaction.date).toLocaleDateString() }}</p>
-              <p :class="{ 'negative': transaction.amount < 0 }">{{ transaction.amount.toFixed(2) }}</p>
+             </span>
+              <span class="amount" :class="{ 'negative': transaction.amount < 0 }">
+                {{ transaction.amount < 0 ? '-' : '+' }}${{ Math.abs(transaction.amount).toFixed(2) }}
+
+              </span>
             </div>
+            
           </div>
         </section>
       </div>
+      <div class="pagination">
+  <button class="pagination-btn btn" @click="currentPage--" :disabled="currentPage === 1"><span><img src="../assets/icons/icon-caret-left.svg" alt=""></span> Prev</button>
+  <span><div>
+  <span class="page-numbers">
+    <button class="number-btn btn"
+    v-for="page in totalPages"
+    :key="page"
+    @click="currentPage = page"
+    :class="{ 'active': page === currentPage }"
+  >
+    {{ page }}
+  </button>
+  </span>
+</div>
+</span>
+  <button class="pagination-btn btn" @click="currentPage++" :disabled="currentPage === totalPages"> Next <span><img src="../assets/icons/icon-caret-right.svg" alt=""></span></button>
+</div>
+
     </section>
+    
   </div>
+  
 </template>
 
 <style scoped>
@@ -511,9 +558,7 @@ flex-direction: row;
 align-items: center;
 padding: 8px 0px;
 gap: 24px;
-
-width: 1360px;
-max-width: 1440px;
+width: 100%;
 height: 56px;
 
 
@@ -566,12 +611,12 @@ display: flex;
   gap: 24px;
 
   width: 100%; /* Instead of 1296px */
-  max-width: 1296px;
+ 
   min-width: 0;
   padding: 24px 32px;
   margin: 0 auto;
 
-  height: 983px;
+  height:100vh;
   background: #FFFFFF;
   border-radius: 12px;
 
@@ -618,7 +663,7 @@ padding: 0px;
 gap: 4px;
 
 
-width: 320px;
+
 height: 45px;
 
 
@@ -627,6 +672,26 @@ flex: none;
 order: 0;
 flex-grow: 0;
 }
+
+  .search-container {
+            position: relative;
+            display: inline-block;
+        }
+        .search-icon {
+          position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+          
+            cursor: pointer;
+            /* Icons/Icons Collection (Phosphor Icons) */
+
+width: 16px;
+height: 16px;
+
+
+
+        }
 .search input{
   /* Desktop - Transactions / Table / Fields / Search / Input */
   /* Main Content Table Fields Search Input */
@@ -899,13 +964,13 @@ align-items: flex-start;
 padding: 0px;
 gap: 16px;
 
-width: 1296px;
+
 height: 696px;
 
 
 /* Inside auto layout */
 flex: none;
-order: 2;
+
 align-self: stretch;
 flex-grow: 0;
 
@@ -926,7 +991,7 @@ align-items: center;
 padding: 12px 16px;
 gap: 32px;
 
-width: 1296px;
+width: 100%;
 height: 42px;
 
 border-bottom: 1px solid #F2F2F2;
@@ -951,9 +1016,8 @@ flex-direction: column;
 align-items: flex-start;
 padding: 0px;
 gap: 16px;
+width: 100%;
 
-width: 1296px;
-height: 696px;
 
 
 /* Inside auto layout */
@@ -971,25 +1035,421 @@ flex-grow: 0;
   /* List */
 
 /* Auto layout */
+/* Table Top */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 12px 16px;
+gap: 32px;
+width: 100%;
+height: 42px;
+
+border-bottom: 1px solid #F2F2F2;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+}
+.avatar{
+  /* Desktop - Transactions / Table / Body / Transactions / Transaction / Avatar */
+  /* Main Content Table Body Transactions Transaction Avatar */
+  /* Transaction Concent Body Transactions Transaction Avatar */
+  /* Table List Items List Item Avatar */
+  /* List Item Avatar */
+  /* Avatar */
+  /* Recipient or Sender */
+
+/* Auto layout */
 display: flex;
 flex-direction: row;
 align-items: center;
-padding: 0px 16px;
-gap: 32px;
+padding: 0px;
+gap: 16px;
 
-
+width: 50%;
 height: 40px;
 
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+}
+.avatar img{
+  /* Desktop - Transactions / Table / Body / Transactions / Transaction / Avatar / Image */
+  /* Main Content Table Body Transactions Transaction Avatar Image */
+  /* Transaction Concent Body Transactions Transaction Avatar Image */
+  /* Table List Items List Item Avatar Image */
+  /* List Item Avatar Image */
+  /* Ellipse 13 */
+
+width: 40px;
+height: 40px;
+
+background: url(emma-richardson.jpg), #F8F4F0;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.avatar p{
+  /* Desktop - Transactions / Table / Body / Transactions / Transaction / Avatar / Text */
+  /* Main Content Table Body Transactions Transaction Avatar Text */
+  /* Transaction Concent Body Transactions Transaction Avatar Text */
+  /* Table List Items List Item Avatar Text */
+  /* List Item Avatar Text */
+  /* Recipient or Sender */
+  /* Bravo Zen Spa */
+
+width: 121px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+.details{
+  /* Desktop - Transactions / Table / Body / Transactions / Transaction / Details */
+  /* Main Content Table Body Transactions Transaction Details */
+  /* Transaction Concent Body Transactions Transaction Details */
+  /* Table List Items List Item Details */
+  /* List Item Details */
+  /* Recipient or Sender */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 240px;
+width: 50%;
+height: 40px;
+justify-content: space-between;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+}
+.transaction-details{
+  /* Desktop - Transactions / Table / Body / Transactions / Transaction / Details / Text */
+  /* Main Content Table Body Transactions Transaction Details Text */
+  /* Transaction Concent Body Transactions Transaction Details Text */
+  /* Table List Items List Item Details Text */
+  /* List Item Details Text */
+  /* Category and Date */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 16px;
+  justify-content: space-between;
+  width: 100%;
+}
+.transaction-details p{
+  /* Desktop - Transactions / Table / Body / Transactions / Transaction / Details / Text */
+  /* Main Content Table Body Transactions Transaction Details Text */
+  /* Transaction Concent Body Transactions Transaction Details Text */
+  /* Table List Items List Item Details Text */
+  /* List Item Details Text */
+  /* Category and Date */
+
+  /* Personal Care */
+
+
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+  
+}
+.amount{
+  /* Desktop - Transactions / Table / Body / Transactions / Transaction / Details / Amount */
+  /* Main Content Table Body Transactions Transaction Details Amount */
+  /* Transaction Concent Body Transactions Transaction Details Amount */
+  /* Table List Items List Item Details Amount */
+  /* List Item Details Amount */
+  /* Recipient or Sender */
+/* Amount */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-end;
+padding: 0px;
+gap: 8px;
+
+width: 30%;
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* -$25.00 */
+
+width: 59px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+text-align: right;
+
+color: #277C78;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+  
+}
+
+.negative{
+  /* Desktop - Transactions / Table / Body / Transactions / Transaction / Details / Amount */
+  /* Main Content Table Body Transactions Transaction Details Amount */
+  /* Transaction Concent Body Transactions Transaction Details Amount */
+  /* Table List Items List Item Details Amount */
+  /* List Item Details Amount */
+  /* Recipient or Sender */
+  /* +$450.00 */
+
+width: 57px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+text-align: right;
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+}
+.amount-p{
+  /* Desktop - Transactions / Table / Body / Transactions / Transaction / Details / Amount */
+  /* Main Content Table Body Transactions Transaction Details Amount */
+  /* Transaction Concent Body Transactions Transaction Details Amount */
+  /* Table List Items List Item Details Amount */
+  /* List Item Details Amount */
+  /* Recipient or Sender */
+  /* +$450.00 */
+  /* Amount */
+
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+text-align: right;
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+}
+  .type{
+
+/* Recipient / Sender */
+
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+
+
+  }
+.pagination{
+  /* Desktop - Transactions / Table / Body / Pagination */
+  /* Main Content Table Body Pagination */
+  /* Transaction Concent Body Pagination */
+  /* Table List Pagination */
+  /* Pagination/Pagination */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 24px 0px 0px;
+gap: 16px;
+
+width: 100%;
+height: 64px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+}
+.pagination-btn{
+  /* Desktop - Transactions / Table / Body / Pagination / Previous */
+  /* Main Content Table Body Pagination Previous */
+  /* Transaction Concent Body Pagination Previous */
+  /* Table List Pagination Previous */
+  /* Pagination/Pagination Previous */
+  /* Pagination/Pagination Button - Next */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px;
+gap: 16px;
+
+width: 94px;
+height: 40px;
+
+background: #FFFFFF;
+border: 1px solid #98908B;
 border-radius: 8px;
 
 /* Inside auto layout */
 flex: none;
 order: 0;
-align-self: stretch;
+flex-grow: 0;
+cursor: pointer;
+}
+.page-numbers{
+  /* Desktop - Transactions / Table / Body / Pagination / Page Numbers */
+  /* Main Content Table Body Pagination Page Numbers */
+  /* Transaction Concent Body Pagination Page Numbers */
+  /* Table List Pagination Page Numbers */
+  /* Pagination/Pagination Page Numbers */
+  /* Frame 566 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+margin: 0 auto;
+
+height: 40px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
 flex-grow: 0;
 
 }
-  
+.number-btn{
+  /* Pagination/Pagination Number */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px;
+gap: 16px;
+
+width: 40px;
+height: 40px;
+
+background: #FFFFFF;
+border: 1px solid #98908B;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+cursor: pointer;
+
+}
+.btn:hover{
+  background: #98908B;
+}
+.active {
+  background: #201F24;
+  color: #FFFFFF;
+}
 
 
 
