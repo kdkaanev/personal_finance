@@ -616,7 +616,7 @@ display: flex;
   padding: 24px 32px;
   margin: 0 auto;
 
-  height:100vh;
+
   background: #FFFFFF;
   border-radius: 12px;
 
@@ -1446,7 +1446,7 @@ cursor: pointer;
 .btn:hover{
   background: #98908B;
   transition: background-color 1s ease;
-}т
+}
 .active {
   background: #201F24;
   color: #FFFFFF;
