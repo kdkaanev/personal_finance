@@ -1445,7 +1445,8 @@ cursor: pointer;
 }
 .btn:hover{
   background: #98908B;
-}
+  transition: background-color 1s ease;
+}т
 .active {
   background: #201F24;
   color: #FFFFFF;

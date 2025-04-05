@@ -224,6 +224,7 @@ flex-grow: 0;
 .btn-nav:hover {
   color: #fff;
   opacity: 1;
+  transition: background-color 1s ease;
 }
 .btn-nav.active {
   background: #fff;
