@@ -55,9 +55,6 @@ export default {
       </button>
     
     </div>
-    <!-- <button class="btn-min">
-        <img class="icon-nav" src="../assets/icons/icon-minimize-menu.svg" alt="house">Minimize Menue
-      </button> -->
       <button v-if="!isMinimized" class="btn-min" @click="toggleMenu">
         <img class="icon-nav" src="../assets/icons/icon-minimize-menu.svg" alt="house">Minimize Menue
     </button>
@@ -70,39 +67,7 @@ export default {
   </nav>
      
 
-<!--   <nav>
-    <img class="logo" src="../assets/picture/logo-large.svg" alt="logo">
-    <ul class="nav-links">
-      <li>
-        <button class=" btn-nav">
-          <img class="icon-nav" src="../assets/picture/icon-nav-overview.svg" alt="house"> Overview
-        </button>
-      </li>
-      <li>
-        <button class="btn-nav">
-          <img class="icon-nav" src="../assets/picture/icon-nav-transactions.svg" alt="house"> Transactions
-        </button>
-      </li>
-      <li>
-        <button class="btn-nav">
-          <img class="icon-nav" src="../assets/picture/icon-nav-budgets.svg" alt="house"> Budgets
-        </button>
-      </li>
-      <li>
-        <button class="btn-nav">
-          <img class="icon-nav" src="../assets/picture/icon-nav-pots.svg" alt="house"> Pots
-        </button>
-      </li>
-      <li>
-        <button class="btn-nav">
-          <img class="icon-nav" src="../assets/picture/icon-nav-recurring-bills.svg" alt="house"> Recurring Bills
-        </button>
-      </li>
-    </ul>
-    <button class="btn-min">
-      <img class="icon-nav" src="../assets/picture/icon-minimize-menu.svg" alt="house">Minimize Menue
-    </button>
-  </nav> -->
+
 </template>
 
 <style scoped>
