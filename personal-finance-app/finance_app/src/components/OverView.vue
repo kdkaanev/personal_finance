@@ -5,6 +5,11 @@ export default {
   components: {
     DonutChart,
   },
+  methods: {
+    goToTransactions() {
+      this.$router.push("/transactions");
+    },
+  },
 };
 </script>
 
@@ -45,7 +50,8 @@ export default {
           <div class="pots-title">
             <p>Pots</p>
 
-            <button class="see" href="#">
+ 
+            <button class="see" @click="goToTransactions">
               See Details <img src="../assets/icons/icon-caret-right.svg" alt="">
             </button>
           </div>
@@ -86,7 +92,7 @@ export default {
         <section class="transactions">
           <div class="transactions-title">
             <p>Transactions</p>
-            <button class="see" href="#">
+            <button class="see" @click="goToTransactions">
               Vew All <img src="../assets/icons/icon-caret-right.svg" alt="">
             </button>
           </div>
