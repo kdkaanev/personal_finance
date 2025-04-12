@@ -5,7 +5,16 @@ export default {
     transactions: {
       type: Array,
       required: true
+    },
+    budgets: {
+      type: Object,
+      required: true
+    },
+    pots: {
+      type: Array,
+      required: true
     }
+
   },
  
   methods: {
