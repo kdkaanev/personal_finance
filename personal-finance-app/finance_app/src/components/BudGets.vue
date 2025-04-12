@@ -1,17 +1,41 @@
 <script>
 
 import DounutChart from './sub-component/DounutChart.vue';
+import data from '../data/data.json';
+import BudgetInfo from './sub-component/BudgetInfo.vue';
+
 
 export default {
   name: 'BudGets',
   components: {
-    DounutChart
+    DounutChart,
+    BudgetInfo
  
   },
   data() {
     return {
-      // Add any data properties you need here
+      allTransactons: data.transactions,
+    
     };
+  },
+
+  mounted() {
+    console.log(this.allTransactons);
+  },
+  computed: {
+   groupedTransactions() {
+     const grouped = {};
+     this.allTransactons.forEach(transaction => {
+       const category = transaction.category;
+       if (!grouped[category]) {
+         grouped[category] = [];
+       }
+       grouped[category].push(transaction);
+     });
+     return grouped;
+    },
+    
+    
   },
   methods: {
     // Add any methods you need here
@@ -33,29 +57,54 @@ export default {
 
           </section>
           
-            <section class="budget-small">
-              <div class="value-entertaiment green">
-                <p>Entertaiment</p>
-                <span class="entertaiment-value"><b>$15</b> <p>of $50</p></span>
-              </div>
-
-              <div class="value-bills blue">
-                <p>Bills</p>
-                <span class="bills-value">$750.00</span>
-              </div>
-              <div class="value-dining orange">
-                <p>Dining Out</p>
-                <span class="dining-value">$250.00</span>
-              </div>
-              <div class="value-care black">
-                <p>Personal Care</p>
-                <span class="care-value">$100.00</span>
-              </div>
-            </section>
+           
           
         </div>
       </section>
-      <section class="main-right"></section>
+
+      <section class="main-right">
+
+        
+    
+          <div class="value-entertaiment green">
+            <section class="enter-header">  
+              <span class="dot"></span>
+              <h3>Entertaiment</h3>
+              <span><img src="../assets/icons/icon-ellipsis.svg" alt=""></span>
+            </section>
+            <section class="value">
+              <span class="entertaiment-value"><p>maximum of $50</p></span>
+              <progress id="file" value="32" max="100"> 32% </progress>
+              <div class="info">
+                <span class="spent">
+                  <p>Spent</p>
+                  <span class="spent-value">$15</span>
+                </span>
+                <span class="remaining">
+                  <p>Remaining</p>
+                  <span class="remaining-value">$35</span>
+                </span>
+
+              </div>
+            </section>
+            <section class="latest">
+              <BudgetInfo :transactions="groupedTransactions['Entertainment'] || []" />
+            </section>
+              
+              
+               
+              </div>
+
+           
+    
+     
+
+
+    
+      
+
+
+      </section>
         
     </div>
   </div>
