@@ -84,7 +84,7 @@ padding: 0px 0px 24px;
 gap: 24px;
 
 width: 300px;
-height: 1064px;
+
 
 background: #201F24;
 border-radius: 0px 16px 16px 0px;

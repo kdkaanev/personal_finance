@@ -22,9 +22,10 @@ export default {
   },
 
   mounted() {
-    console.log(this.allTransactons);
-    console.log(this.budgets);
-    console.log(this.pots);
+  
+   
+    console.log(this.getSpent('Dining Out'));
+    console.log(this.getUsagePercentage('Dining Out'));
   },
   computed: {
    groupedTransactions() {
@@ -38,13 +39,36 @@ export default {
      });
      return grouped;
     },
+  
     
     
   },
   methods: {
-    // Add any methods you need here
+    getSpent(category) {
+      const transactions = this.groupedTransactions[category] || [];
+      const result = transactions.reduce((total, transaction) => total + transaction.amount, 0);
+      return result < 0 ? `-$${Math.abs(result)}` : `$${result}`
+    },
+    getUsagePercentage(category) {
+  const budget = this.budgets.find(b => b.category === category)
+  const spent = this.getSpent(category) 
+  const result = Math.abs(spent.replace(/[^0-9.-]+/g,"") / budget.maximum * 100);
+  if (result < 0) {
+    return 0;
+  } else if (result > 100) {
+    return 100;
+  } else {
+    return result;
+  }
+ 
+}
   }
 };
+ 
+
+
+
+  
  
 </script>
 
@@ -72,7 +96,7 @@ export default {
         
     
           <div v-for="budget in budgets" :key="budget" class="budgets">
-            <section class="enter-header">  
+            <section class="header">  
              <div class="name">
               <span class="dot" :style="{ backgroundColor: budget.theme }"></span>
               <h3>{{ budget.category }}</h3>
@@ -80,13 +104,23 @@ export default {
               <span><img src="../assets/icons/icon-ellipsis.svg" alt=""></span>
             </section>
             <section class="value">
-              <span class="entertaiment-value"><p>Maximum of {{ budget.maximum }}</p></span>
-              <progress id="file" value="32" max="100"> 32% </progress>
+              <span class="max-value"><p>Maximum of ${{ budget.maximum }}</p></span>
+              <div class="progress-bar-container">
+  <div
+    class="progress-bar-fill"
+    :style="{
+      width: getUsagePercentage(budget.category) + '%',
+      backgroundColor: budget.theme
+    }"
+  ></div>
+</div>
               <div class="info">
+                <span class="line" :style="{ backgroundColor: budget.theme }"></span>
                 <span class="spent">
                   <p>Spent</p>
-                  <span class="spent-value">$15</span>
+                  <span class="spent-value">{{ getSpent(budget.category) }}</span>
                 </span>
+                <span class="line" </span>
                 <span class="remaining">
                   <p>Remaining</p>
                   <span class="remaining-value">$35</span>
@@ -129,7 +163,7 @@ padding: 32px 40px;
 gap: 32px;
 
 
-height: 2264px;
+
 
 
 /* Inside auto layout */
@@ -251,7 +285,7 @@ gap: 24px;
 
 
 max-width: 1440px;
-height: 2132px;
+
 
 
 /* Inside auto layout */
@@ -352,7 +386,6 @@ padding: 0px;
 gap: 24px;
 
 width: 608px;
-height: 2132px;
 
 
 /* Inside auto layout */
@@ -387,7 +420,7 @@ order: 0;
 align-self: stretch;
 flex-grow: 0;
 }
-.enter-header {
+.header {
   /* Entertainments Header */
   /* Budget Card */
   /* Frame 503 */
@@ -493,13 +526,16 @@ flex-grow: 0;
   /* Amount Bar */
 
 /* Auto layout */
+/* Amount Bar */
+
+/* Auto layout */
 display: flex;
 flex-direction: column;
 align-items: flex-start;
 padding: 0px;
 gap: 16px;
 
-width: 544px;
+
 height: 128px;
 
 
@@ -508,5 +544,275 @@ flex: none;
 order: 1;
 align-self: stretch;
 flex-grow: 0;
+
 }
+.max-value {
+  /* Entertainments Value Max */
+  /* Budget Card */
+  /* Frame 506 */
+  /* Entertainments Value */
+  /* Value */
+  /* Amount Bar */
+  /* Maximum of $1000 */
+  /* Maximum of $50.00 */
+
+width: 131px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+.info {
+  /* Spent and Free */
+
+/* Auto layout */
+/* Spent and Free */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 544px;
+height: 43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+}
+.line {
+  /* Line */
+  /* Spent and Free */
+  /* Spent and Free */
+  /* Line */
+  /* Line 1 */
+  /* Shape */
+
+width: 4px;
+height: 43px;
+
+background-color: #f8f4f0;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+}
+.spent {
+  /* Spent */
+  /* Spent and Free */
+  /* Spent */
+  /* Spent */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+
+padding: 0px;
+gap: 8px;
+
+
+height: 43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+}
+.info p {
+  /* Spent Text */
+  /* Spent and Free */
+  /* Spent */
+  /* Spent Text */
+  /* Spent */
+  /* Spent */
+
+width: 34px;
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+.spent-value {
+  /* Spent Value */
+  /* Spent and Free */
+  /* Spent */
+  /* Spent Text */
+  /* Spent Value */
+  /* $100.00 */
+  /* $25.00 */
+
+width: 47px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.remaining {
+  /* Free */
+  /* Spent and Free */
+  /* Free */
+  /* Free */
+  /* Free */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+
+
+padding: 0px;
+gap: 8px;
+
+
+height: 43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 1;
+}
+.remaining-value {
+
+  
+  /* Spent and Free */
+  /* Free */
+  /* Free Text */
+  /* $50.00 */
+
+width: 51px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.latest {
+  /* Latest Spending */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 20px;
+gap: 20px;
+
+width: 544px;
+height: 254px;
+
+background: #F8F4F0;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+}
+.progress-bar-container {
+/* Bar */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 4px;
+
+width: 100%;
+height: 32px;
+
+background: #F8F4F0;
+border-radius: 4px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+}
+
+.progress-bar-fill {
+/* Shape */
+
+width: 108px;
+height: 24px;
+
+background: #82C9D7;
+border-radius: 4px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+}
+
+
+  /* Free */
+  /* Free */
 </style>
