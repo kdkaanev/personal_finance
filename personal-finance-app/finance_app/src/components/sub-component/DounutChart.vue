@@ -1,3 +1,35 @@
+<script>
+export default {
+  props: {
+    size: { type: Number, default: 300 },
+    segments: { type: Array, required: true }, // Example: [{ value: 40, color: '#FF5733' }, { value: 60, color: '#4CAF50' }]
+    transactions: {
+      type: Array,
+      required: true
+    },
+    budgets: {
+      type: Object,
+      required: true
+    },
+  },
+  methods: {
+    getStrokeDashArray(value) {
+      const circumference = 2 * Math.PI * 40;
+      return `${(value / 100) * circumference} ${circumference}`;
+    },
+    getStrokeDashOffset(index) {
+      const circumference = 2 * Math.PI * 40;
+      const previousValues = this.segments.slice(0, index).reduce((acc, seg) => acc + seg.value, 0);
+      return (previousValues / 100) * circumference;
+    },
+  },
+};
+</script>
+
+
+
+
+
 <template>
     <div class="donut-chart-container">
       <svg :width="size" :height="size" viewBox="0 0 100 100">
@@ -23,25 +55,7 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    props: {
-      size: { type: Number, default: 200 },
-      segments: { type: Array, required: true }, // Example: [{ value: 40, color: '#FF5733' }, { value: 60, color: '#4CAF50' }]
-    },
-    methods: {
-      getStrokeDashArray(value) {
-        const circumference = 2 * Math.PI * 40;
-        return `${(value / 100) * circumference} ${circumference}`;
-      },
-      getStrokeDashOffset(index) {
-        const circumference = 2 * Math.PI * 40;
-        const previousValues = this.segments.slice(0, index).reduce((acc, seg) => acc + seg.value, 0);
-        return (previousValues / 100) * circumference;
-      },
-    },
-  };
-  </script>
+
   
   <style scoped>
   .donut-chart-container {

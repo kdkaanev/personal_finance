@@ -39,6 +39,21 @@ export default {
      });
      return grouped;
     },
+    segments() {
+    return this.budgets.map(budget => {
+      const spent = this.allTransactons
+        .filter(tx => tx.category === budget.category)
+        .reduce((sum, tx) => sum + Math.abs(tx.amount), 0)
+
+      const percent = Math.min((spent / budget.maximum) * 100, 100)
+
+      return {
+        value: Math.round(percent), // закръглено
+        color: budget.theme
+      }
+    })
+  },
+
   
     
     
@@ -84,11 +99,37 @@ export default {
     <div class="main">
       <section class="main-left">
         <section class="chart">
-            <DounutChart />
+            <DounutChart  :size="250"
+  :segments="segments"
+  :transactions="allTransactons"
+  :budgets="budgets"
+            />
+         
 
           </section>
-        <div class="summary">
-        </div>
+          <div class="spending-summary">
+              <h3>Spending Summary</h3>
+              <section class="spending-info">
+              <div v-for="budget in budgets" :key="budget" class="spending">
+                <div class="spending-category">
+                  <div class="line" :style="{ backgroundColor: budget.theme }"></div>
+                  <h4>{{ budget.category }}</h4>
+                </div>
+             
+                <div class="spending-value">
+                  
+                  
+                    <b>{{ getSpent(budget.category) }}</b>
+                    <p>of {{ budget.maximum }}</p>
+                  
+                </div>
+               
+
+              </div>
+              </section>
+            </div>
+
+        
       </section>
 
       <section class="main-right">
@@ -310,7 +351,7 @@ padding: 0px;
 gap: 24px;
 
 width: 428px;
-height: 599px;
+
 
 
 background: #FFFFFF;
@@ -335,7 +376,7 @@ align-items: center;
 padding: 0px;
 gap: 8px;
 
-width: 364px;
+
 height: 280px;
 
 
@@ -345,10 +386,11 @@ order: 0;
 align-self: stretch;
 flex-grow: 0;
 }
-.summary {
-  /* Summary */
-  /* Main Content Body Left */
+.spending-summary {
+  /* Spending Summary */
+  /* Chart */
   /* Frame 501 */
+  /* Spending Summary */
   /* Spending Summary */
 
 /* Auto layout */
@@ -357,8 +399,8 @@ flex-direction: column;
 align-items: flex-start;
 padding: 0px;
 gap: 24px;
+margin: 1rem;
 
-width: 364px;
 height: 223px;
 
 
@@ -368,7 +410,201 @@ order: 1;
 align-self: stretch;
 flex-grow: 0;
 }
+.spending-summary h3 {
+  /* Spending Summary Text */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Summary Text */
+  /* Spending Summary */
+  /* Spending Summary */
 
+width: 189px;
+height: 24px;
+
+/* text-preset-2 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 120%;
+/* identical to box height, or 24px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+.spending-info {
+  /* Spending Info */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+
+height: 183px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+}
+.spending {
+  /* Spending */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+  /* List */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 24px;
+
+
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+}
+.spending-category {
+  /* Spending Category */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+  /* List Text */
+  /* Title */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+
+
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 1;
+}
+.spending-category h4 {
+  /* Spending Text */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+  /* List Text */
+
+/* Entertainment */
+
+width: 93px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.spending-value {
+  /* Spending Value */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+  /* /* Amount */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content:flex-end;
+
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+
+
+height: 19px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.spending-value p {
+  /* Spending Value Text */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+  /* Amount Text */
+/* of $50.00 */
+
+width: 55px;
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
 .main-right {
   /* Main Content Body Right */
   /* Main Content Body */
@@ -610,7 +846,7 @@ flex-grow: 0;
   /* Shape */
 
 width: 4px;
-height: 43px;
+height: 100%;
 
 background-color: #f8f4f0;
 border-radius: 8px;
