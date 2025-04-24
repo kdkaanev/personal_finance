@@ -17,15 +17,9 @@ export default {
       allTransactons: data.transactions,
       budgets: data.budgets,
       pots: data.pots,
+      
     
     };
-  },
-
-  mounted() {
-  
-   
-    console.log(this.getSpent('Dining Out'));
-    console.log(this.getUsagePercentage('Dining Out'));
   },
   computed: {
    groupedTransactions() {
@@ -45,11 +39,14 @@ export default {
         .filter(tx => tx.category === budget.category)
         .reduce((sum, tx) => sum + Math.abs(tx.amount), 0)
 
-      const percent = Math.min((spent / budget.maximum) * 100, 100)
+      const percent = Math.min((spent / this.getTotalLImits()) * 100, 100)
 
       return {
         value: Math.round(percent), // закръглено
-        color: budget.theme
+        color: budget.theme,
+        name: budget.category,
+        spent: spent,
+        budget: budget.maximum
       }
     })
   },
@@ -58,26 +55,34 @@ export default {
     
     
   },
-  methods: {
-    getSpent(category) {
-      const transactions = this.groupedTransactions[category] || [];
-      const result = transactions.reduce((total, transaction) => total + transaction.amount, 0);
-      return result < 0 ? `-$${Math.abs(result)}` : `$${result}`
-    },
-    getUsagePercentage(category) {
-  const budget = this.budgets.find(b => b.category === category)
-  const spent = this.getSpent(category) 
-  const result = Math.abs(spent.replace(/[^0-9.-]+/g,"") / budget.maximum * 100);
-  if (result < 0) {
-    return 0;
-  } else if (result > 100) {
-    return 100;
-  } else {
-    return result;
+methods: {
+  getSpent(category) {
+    const transactions = this.groupedTransactions[category] || [];
+    const spent = transactions.reduce((total, transaction) => total + transaction.amount, 0);
+    return spent;
+  },
+  getUsagePercentage(category) {
+    const budget = this.budgets.find(b => b.category === category);
+    if (!budget) return 0;
+    const spent = this.getSpent(category);
+    const result = (spent / budget.maximum) * 100;
+    return Math.min(Math.max(result, 0), 100);
+  },
+  getTotalLImits() {
+    return this.budgets.reduce((total, budget) => total + budget.maximum, 0);
+  },
+  getTotalSpent() {
+    return this.allTransactons.reduce((total, transaction) => total + transaction.amount, 0);
   }
- 
-}
-  }
+},
+mounted() {
+  // Example usage
+
+  console.log(this.segments);
+  console.log(this.getTotalLImits());
+  console.log(this.getTotalSpent())
+},
+
 };
  
 
@@ -95,14 +100,15 @@ export default {
       <button class="add-budget">
         <span>+ Add New Budget</span>
       </button>
-    </section>
+    </section>outerData:Array
     <div class="main">
       <section class="main-left">
         <section class="chart">
-            <DounutChart  :size="250"
+            <DounutChart  
   :segments="segments"
   :transactions="allTransactons"
   :budgets="budgets"
+
             />
          
 

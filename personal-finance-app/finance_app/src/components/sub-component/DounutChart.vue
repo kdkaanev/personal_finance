@@ -11,6 +11,11 @@ export default {
       type: Object,
       required: true
     },
+    limits: {
+      type: Object,
+      required: true
+    },
+    
   },
   methods: {
     getStrokeDashArray(value) {
@@ -22,7 +27,19 @@ export default {
       const previousValues = this.segments.slice(0, index).reduce((acc, seg) => acc + seg.value, 0);
       return (previousValues / 100) * circumference;
     },
+    getTotalLImits() {
+      if (!this.budgets) {
+        return 0;
+      }
+    const limit = this.budgets.reduce((total, budget) => total + budget.maximum, 0);
+    return limit
   },
+    
+ 
+ 
+  },
+  
+  
 };
 </script>
 
@@ -32,12 +49,22 @@ export default {
 
 <template>
     <div class="donut-chart-container">
-      <svg :width="size" :height="size" viewBox="0 0 100 100">
+      <svg :width="size" :height="size" viewBox="0 0 100 100" >
         <!-- Inner Circle (background) -->
-        <circle cx="50" cy="50" r="30" fill="none" stroke="#ddd" stroke-width="20" opacity="0.25" />
-        
-        <!-- Outer Circle (dynamic data) -->
+       
         <circle
+        
+          cx="50"
+          cy="50"
+          r="30"
+          fill="white"
+          stroke="none"
+          stroke-width="15"
+          opacity="0.3"
+          
+        />
+        <!-- Outer Circle (dynamic data) -->
+        <circle 
           v-for="(segment, index) in segments"
           :key="index"
           :cx="50"
@@ -45,23 +72,73 @@ export default {
           :r="40"
           fill="none"
           :stroke="segment.color"
-          stroke-width="10"
+          stroke-width="15"
           :stroke-dasharray="getStrokeDashArray(segment.value)"
           :stroke-dashoffset="getStrokeDashOffset(index)"
-          stroke-linecap="round"
-          transform="rotate(-90 50 50)"
+          :style="{ transition: 'stroke-dashoffset 0.5s ease-in-out' }"
         />
+        <text 
+    x="50"
+    y="50"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    class="donut-chart-text"
+    font-size="12"
+    fill="#111"
+    transform="rotate(270 50 50)"
+    
+    
+  >
+   
+   
+    123
+   
+    
+  </text>
       </svg>
     </div>
   </template>
-  
+  <style scoped>
+    .donut-chart-container {
+     /* Chart */
+
+width: 240px;
+height: 240px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+    }
+    .donut-chart-text {
+     /* Texts */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+position: absolute;
+width: 86px;
+height: 64px;
+left: calc(50% - 86px/2 + 0.5px);
+top: calc(50% - 64px/2 + 0px);
+
+
+    }
+
+    
+    svg {
+      transform: rotate(90deg);
+    }
+   
+  </style>
 
   
-  <style scoped>
-  .donut-chart-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  </style>
+
+ 
   
