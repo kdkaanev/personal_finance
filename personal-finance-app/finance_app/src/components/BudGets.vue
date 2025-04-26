@@ -72,7 +72,8 @@ methods: {
     return this.budgets.reduce((total, budget) => total + budget.maximum, 0);
   },
   getTotalSpent() {
-    return this.allTransactons.reduce((total, transaction) => total + transaction.amount, 0);
+    return this.segments.reduce((total, segment) => total + segment.spent, 0);
+
   }
 },
 mounted() {

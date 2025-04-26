@@ -79,11 +79,11 @@ export default {
         />
         <text 
     x="50"
-    y="50"
+    y="45"
     text-anchor="middle"
     dominant-baseline="middle"
     class="donut-chart-text"
-    font-size="12"
+    font-size="18"
     fill="#111"
     transform="rotate(270 50 50)"
     
@@ -91,10 +91,21 @@ export default {
   >
    
    
-    123
-   
+  <tspan x="50" dy="0">
+    $333
+  </tspan>
     
   </text>
+  
+  
+<text x="50" y="55" text-anchor="middle" font-size="14" fill="#555" transform="rotate(270 50 50)">
+    <tspan x="50" dy="1.2em" font-size="6" fill="#999">
+      of ${{ getTotalLImits() }} limit
+    </tspan>
+
+</text>
+
+  
       </svg>
     </div>
   </template>
