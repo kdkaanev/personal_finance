@@ -42,11 +42,13 @@ export default {
       const percent = Math.min((spent / this.getTotalLImits()) * 100, 100)
 
       return {
-        value: Math.round(percent), // закръглено
+        value: Math.round(percent),
         color: budget.theme,
         name: budget.category,
         spent: spent,
-        budget: budget.maximum
+        budget: budget.maximum,
+     
+
       }
     })
   },
@@ -82,6 +84,7 @@ mounted() {
   console.log(this.segments);
   console.log(this.getTotalLImits());
   console.log(this.getTotalSpent())
+  
 },
 
 };
@@ -101,7 +104,7 @@ mounted() {
       <button class="add-budget">
         <span>+ Add New Budget</span>
       </button>
-    </section>outerData:Array
+    </section>
     <div class="main">
       <section class="main-left">
         <section class="chart">

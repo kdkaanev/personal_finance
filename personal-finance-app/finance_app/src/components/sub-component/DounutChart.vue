@@ -2,7 +2,7 @@
 export default {
   props: {
     size: { type: Number, default: 300 },
-    segments: { type: Array, required: true }, // Example: [{ value: 40, color: '#FF5733' }, { value: 60, color: '#4CAF50' }]
+    segments: { type: Array, required: true }, 
     transactions: {
       type: Array,
       required: true
@@ -17,14 +17,20 @@ export default {
     },
     
   },
+  mounted() {
+   console.log('segments',this.segments);
+   
+  },
   methods: {
     getStrokeDashArray(value) {
       const circumference = 2 * Math.PI * 40;
       return `${(value / 100) * circumference} ${circumference}`;
     },
     getStrokeDashOffset(index) {
+      // Calculate the stroke dash offset based on the index of the segment
       const circumference = 2 * Math.PI * 40;
-      const previousValues = this.segments.slice(0, index).reduce((acc, seg) => acc + seg.value, 0);
+      const previousValues = this.segments.reduce((acc, seg) => acc + seg.value, 0);
+      
       return (previousValues / 100) * circumference;
     },
     getTotalLImits() {
