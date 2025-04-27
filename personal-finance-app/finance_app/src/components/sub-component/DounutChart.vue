@@ -2,125 +2,102 @@
 export default {
   props: {
     size: { type: Number, default: 300 },
-    segments: { type: Array, required: true }, 
-    transactions: {
-      type: Array,
-      required: true
+    segments: { type: Array, required: true },
+    transactions: { type: Array, required: true },
+    budgets: { type: Array, required: true },
+    totalSpent: { type: Number, default: 0 },
+  },
+  computed: {
+    totalLimit() {
+      if (!this.budgets) return 0;
+      return this.budgets.reduce((total, budget) => total + budget.maximum, 0);
     },
-    budgets: {
-      type: Object,
-      required: true
-    },
-    limits: {
-      type: Object,
-      required: true
+    totalValue() {
+      if(!this.segments)return 0;
+      return this.segments.reduce((acc, seg) => acc + seg.value, 0);
     },
     
   },
-  mounted() {
-   console.log('segments',this.segments);
-   
-  },
+
   methods: {
-    getStrokeDashArray(value) {
-      const circumference = 2 * Math.PI * 40;
-      return `${(value / 100) * circumference} ${circumference}`;
+    getSegmentsData(radius) {
+      const circumference = 2 * Math.PI * radius;
+      let offset = 0;
+      if(!this.segments)return 0;
+      return this.segments.map(seg => {
+        const length = (seg.value / this.totalValue) * circumference;
+        const segmentData = {
+          color: seg.color,
+          dasharray: `${length} ${circumference - length}`,
+          dashoffset: offset,
+        };
+        offset -= length;
+        return segmentData;
+      });
     },
-    getStrokeDashOffset(index) {
-      // Calculate the stroke dash offset based on the index of the segment
-      const circumference = 2 * Math.PI * 40;
-      const previousValues = this.segments.reduce((acc, seg) => acc + seg.value, 0);
-      
-      return (previousValues / 100) * circumference;
+    getTotalSpent() {
+      if(!this.segments)return 0;
+      let result = this.segments.reduce((total, segment) => total + segment.spent, 0)
+    return Math.round(result);
     },
-    getTotalLImits() {
-      if (!this.budgets) {
-        return 0;
-      }
-    const limit = this.budgets.reduce((total, budget) => total + budget.maximum, 0);
-    return limit
-  },
+
+  
     
- 
- 
   },
-  
-  
 };
 </script>
 
-
-
-
-
 <template>
-    <div class="donut-chart-container">
-      <svg :width="size" :height="size" viewBox="0 0 100 100" >
-        <!-- Inner Circle (background) -->
-       
+  <div class="donut-chart-container">
+    <svg :width="size" :height="size" viewBox="0 0 100 100">
+      <!-- Вътрешен пръстен -->
+      <g v-for="(segment, index) in getSegmentsData(30)" :key="'inner-' + index">
         <circle
-        
           cx="50"
           cy="50"
           r="30"
-          fill="white"
-          stroke="none"
-          stroke-width="15"
-          opacity="0.3"
-          
-        />
-        <!-- Outer Circle (dynamic data) -->
-        <circle 
-          v-for="(segment, index) in segments"
-          :key="index"
-          :cx="50"
-          :cy="50"
-          :r="40"
           fill="none"
           :stroke="segment.color"
-          stroke-width="15"
-          :stroke-dasharray="getStrokeDashArray(segment.value)"
-          :stroke-dashoffset="getStrokeDashOffset(index)"
-          :style="{ transition: 'stroke-dashoffset 0.5s ease-in-out' }"
+          stroke-width="12"
+          :stroke-dasharray="segment.dasharray"
+          :stroke-dashoffset="segment.dashoffset"
+          stroke-linecap="butt"
+          opacity="0.3"
         />
-        <text 
-    x="50"
-    y="45"
-    text-anchor="middle"
-    dominant-baseline="middle"
-    class="donut-chart-text"
-    font-size="18"
-    fill="#111"
-    transform="rotate(270 50 50)"
-    
-    
-  >
-   
-   
-  <tspan x="50" dy="0">
-    $333
-  </tspan>
-    
-  </text>
-  
-  
-<text x="50" y="55" text-anchor="middle" font-size="14" fill="#555" transform="rotate(270 50 50)">
-    <tspan x="50" dy="1.2em" font-size="6" fill="#999">
-      of ${{ getTotalLImits() }} limit
-    </tspan>
+      </g>
 
-</text>
+      <!-- Външен пръстен -->
+      <g v-for="(segment, index) in getSegmentsData(40)" :key="'outer-' + index">
+        <circle
+          cx="50"
+          cy="50"
+          r="40"
+          fill="none"
+          :stroke="segment.color"
+          stroke-width="12"
+          :stroke-dasharray="segment.dasharray"
+          :stroke-dashoffset="segment.dashoffset"
+          stroke-linecap="butt"
+        />
+      </g>
 
-  
-      </svg>
-    </div>
-  </template>
-  <style scoped>
-    .donut-chart-container {
-     /* Chart */
+      <!-- Текст в центъра -->
+      <text x="50" y="45" text-anchor="middle" dominant-baseline="middle" class="donut-chart-text" font-size="12" fill="#111" transform="rotate(90 50 50)">
+        ${{ getTotalSpent() }}
+      </text>
+      <text x="50" y="55" text-anchor="middle" font-size="4" fill="#555" transform="rotate(90 50 50)">
+        of ${{ totalLimit }} limit
+      </text>
+    </svg>
+  </div>
+</template>
 
-width: 240px;
-height: 240px;
+<style scoped>
+.donut-chart-container {
+/* Chart */
+
+margin-top: 3rem;
+
 
 
 /* Inside auto layout */
@@ -128,34 +105,16 @@ flex: none;
 order: 0;
 flex-grow: 0;
 
-    }
-    .donut-chart-text {
-     /* Texts */
 
-/* Auto layout */
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 0px;
-gap: 8px;
-
-position: absolute;
-width: 86px;
-height: 64px;
-left: calc(50% - 86px/2 + 0.5px);
-top: calc(50% - 64px/2 + 0px);
-
-
-    }
-
-    
-    svg {
-      transform: rotate(90deg);
-    }
-   
-  </style>
-
+}
+.donut-chart-text {
+  font-weight: bold;
+  transform: rotate(270 50 50);
   
+}
+svg {
+  transform: rotate(-90deg); /* За да почва отгоре */
+}
 
- 
-  
+</style>
+

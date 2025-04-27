@@ -18,7 +18,9 @@ export default {
   },
  
   methods: {
-    // Add any methods you need here
+    transactionsValue(transaction) {
+      return Math.abs(transaction.value);
+    },
   }
 };
 
@@ -44,7 +46,7 @@ export default {
               <p>{{ t.name }}</p>
             </span>
             <span class="small-value">
-              <b>${{ t.amount }}</b>
+              <b>-${{Math.abs(t.amount)}}</b>
               <p>{{ new Date(t.date).toLocaleDateString() }}</p>
 
             </span>
@@ -200,11 +202,13 @@ display: flex;
 flex-direction: row;
 align-items: flex-start;
 justify-content: space-between;
-padding: 0px;
+padding-bottom: 2rem;
 gap: 16px;
 
 
 height: 40px;
+border-bottom: 1px solid #e3dfdc;
+
 
 
 /* Inside auto layout */

@@ -60,7 +60,7 @@ export default {
 methods: {
   getSpent(category) {
     const transactions = this.groupedTransactions[category] || [];
-    const spent = transactions.reduce((total, transaction) => total + transaction.amount, 0);
+    const spent = transactions.reduce((total, transaction) => total - transaction.amount, 0);
     return spent;
   },
   getUsagePercentage(category) {
@@ -84,6 +84,10 @@ mounted() {
   console.log(this.segments);
   console.log(this.getTotalLImits());
   console.log(this.getTotalSpent())
+  console.log(this.groupedTransactions);  
+  console.log('spent entertimed', this.getSpent('Entertainment'));
+  
+ 
   
 },
 
@@ -129,7 +133,7 @@ mounted() {
                 <div class="spending-value">
                   
                   
-                    <b>{{ getSpent(budget.category) }}</b>
+                    <b>${{ getSpent(budget.category) }}</b>
                     <p>of {{ budget.maximum }}</p>
                   
                 </div>
@@ -169,7 +173,7 @@ mounted() {
                 <span class="line" :style="{ backgroundColor: budget.theme }"></span>
                 <span class="spent">
                   <p>Spent</p>
-                  <span class="spent-value">{{ getSpent(budget.category) }}</span>
+                  <span class="spent-value">${{ getSpent(budget.category) }}</span>
                 </span>
                 <span class="line" </span>
                 <span class="remaining">
@@ -357,11 +361,11 @@ flex-grow: 0;
 display: flex;
 flex-direction: column;
 align-items: flex-start;
-padding: 0px;
+padding-bottom: 1rem;
 gap: 24px;
 
 width: 428px;
-
+height: fit-content;
 
 
 background: #FFFFFF;
@@ -487,11 +491,12 @@ display: flex;
 flex-direction: row;
 justify-content: space-between;
 align-items: center;
-padding: 0px;
+
 gap: 24px;
 
+border-bottom: 1px solid #e3dfdc;
+padding-bottom: 1rem;
 
-height: 21px;
 
 
 /* Inside auto layout */
@@ -1011,6 +1016,7 @@ height: 254px;
 
 background: #F8F4F0;
 border-radius: 12px;
+
 
 /* Inside auto layout */
 flex: none;
