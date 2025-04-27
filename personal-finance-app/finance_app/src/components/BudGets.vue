@@ -17,14 +17,9 @@ export default {
       allTransactons: data.transactions,
       budgets: data.budgets,
       pots: data.pots,
+      
     
     };
-  },
-
-  mounted() {
-    console.log(this.allTransactons);
-    console.log(this.budgets);
-    console.log(this.pots);
   },
   computed: {
    groupedTransactions() {
@@ -38,13 +33,70 @@ export default {
      });
      return grouped;
     },
+    segments() {
+    return this.budgets.map(budget => {
+      const spent = this.allTransactons
+        .filter(tx => tx.category === budget.category)
+        .reduce((sum, tx) => sum + Math.abs(tx.amount), 0)
+
+      const percent = Math.min((spent / this.getTotalLImits()) * 100, 100)
+
+      return {
+        value: Math.round(percent),
+        color: budget.theme,
+        name: budget.category,
+        spent: spent,
+        budget: budget.maximum,
+     
+
+      }
+    })
+  },
+
+  
     
     
   },
-  methods: {
-    // Add any methods you need here
+methods: {
+  getSpent(category) {
+    const transactions = this.groupedTransactions[category] || [];
+    const spent = transactions.reduce((total, transaction) => total - transaction.amount, 0);
+    return spent;
+  },
+  getUsagePercentage(category) {
+    const budget = this.budgets.find(b => b.category === category);
+    if (!budget) return 0;
+    const spent = this.getSpent(category);
+    const result = (spent / budget.maximum) * 100;
+    return Math.min(Math.max(result, 0), 100);
+  },
+  getTotalLImits() {
+    return this.budgets.reduce((total, budget) => total + budget.maximum, 0);
+  },
+  getTotalSpent() {
+    return this.segments.reduce((total, segment) => total + segment.spent, 0);
+
   }
+},
+mounted() {
+  // Example usage
+
+  console.log(this.segments);
+  console.log(this.getTotalLImits());
+  console.log(this.getTotalSpent())
+  console.log(this.groupedTransactions);  
+  console.log('spent entertimed', this.getSpent('Entertainment'));
+  
+ 
+  
+},
+
 };
+ 
+
+
+
+  
  
 </script>
 
@@ -60,11 +112,38 @@ export default {
     <div class="main">
       <section class="main-left">
         <section class="chart">
-            <DounutChart />
+            <DounutChart  
+  :segments="segments"
+  :transactions="allTransactons"
+  :budgets="budgets"
+
+            />
+         
 
           </section>
-        <div class="summary">
-        </div>
+          <div class="spending-summary">
+              <h3>Spending Summary</h3>
+              <section class="spending-info">
+              <div v-for="budget in budgets" :key="budget" class="spending">
+                <div class="spending-category">
+                  <div class="line" :style="{ backgroundColor: budget.theme }"></div>
+                  <h4>{{ budget.category }}</h4>
+                </div>
+             
+                <div class="spending-value">
+                  
+                  
+                    <b>${{ getSpent(budget.category) }}</b>
+                    <p>of {{ budget.maximum }}</p>
+                  
+                </div>
+               
+
+              </div>
+              </section>
+            </div>
+
+        
       </section>
 
       <section class="main-right">
@@ -72,7 +151,7 @@ export default {
         
     
           <div v-for="budget in budgets" :key="budget" class="budgets">
-            <section class="enter-header">  
+            <section class="header">  
              <div class="name">
               <span class="dot" :style="{ backgroundColor: budget.theme }"></span>
               <h3>{{ budget.category }}</h3>
@@ -80,13 +159,23 @@ export default {
               <span><img src="../assets/icons/icon-ellipsis.svg" alt=""></span>
             </section>
             <section class="value">
-              <span class="entertaiment-value"><p>Maximum of {{ budget.maximum }}</p></span>
-              <progress id="file" value="32" max="100"> 32% </progress>
+              <span class="max-value"><p>Maximum of ${{ budget.maximum }}</p></span>
+              <div class="progress-bar-container">
+  <div
+    class="progress-bar-fill"
+    :style="{
+      width: getUsagePercentage(budget.category) + '%',
+      backgroundColor: budget.theme
+    }"
+  ></div>
+</div>
               <div class="info">
+                <span class="line" :style="{ backgroundColor: budget.theme }"></span>
                 <span class="spent">
                   <p>Spent</p>
-                  <span class="spent-value">$15</span>
+                  <span class="spent-value">${{ getSpent(budget.category) }}</span>
                 </span>
+                <span class="line" </span>
                 <span class="remaining">
                   <p>Remaining</p>
                   <span class="remaining-value">$35</span>
@@ -129,7 +218,7 @@ padding: 32px 40px;
 gap: 32px;
 
 
-height: 2264px;
+
 
 
 /* Inside auto layout */
@@ -251,7 +340,7 @@ gap: 24px;
 
 
 max-width: 1440px;
-height: 2132px;
+
 
 
 /* Inside auto layout */
@@ -272,11 +361,11 @@ flex-grow: 0;
 display: flex;
 flex-direction: column;
 align-items: flex-start;
-padding: 0px;
+padding-bottom: 1rem;
 gap: 24px;
 
 width: 428px;
-height: 599px;
+height: fit-content;
 
 
 background: #FFFFFF;
@@ -301,7 +390,7 @@ align-items: center;
 padding: 0px;
 gap: 8px;
 
-width: 364px;
+
 height: 280px;
 
 
@@ -311,10 +400,11 @@ order: 0;
 align-self: stretch;
 flex-grow: 0;
 }
-.summary {
-  /* Summary */
-  /* Main Content Body Left */
+.spending-summary {
+  /* Spending Summary */
+  /* Chart */
   /* Frame 501 */
+  /* Spending Summary */
   /* Spending Summary */
 
 /* Auto layout */
@@ -323,8 +413,8 @@ flex-direction: column;
 align-items: flex-start;
 padding: 0px;
 gap: 24px;
+margin: 1rem;
 
-width: 364px;
 height: 223px;
 
 
@@ -334,7 +424,202 @@ order: 1;
 align-self: stretch;
 flex-grow: 0;
 }
+.spending-summary h3 {
+  /* Spending Summary Text */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Summary Text */
+  /* Spending Summary */
+  /* Spending Summary */
 
+width: 189px;
+height: 24px;
+
+/* text-preset-2 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 120%;
+/* identical to box height, or 24px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+.spending-info {
+  /* Spending Info */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+
+height: 183px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+}
+.spending {
+  /* Spending */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+  /* List */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+
+gap: 24px;
+
+border-bottom: 1px solid #e3dfdc;
+padding-bottom: 1rem;
+
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+}
+.spending-category {
+  /* Spending Category */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+  /* List Text */
+  /* Title */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+
+
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 1;
+}
+.spending-category h4 {
+  /* Spending Text */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+  /* List Text */
+
+/* Entertainment */
+
+width: 93px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.spending-value {
+  /* Spending Value */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+  /* /* Amount */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content:flex-end;
+
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+
+
+height: 19px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.spending-value p {
+  /* Spending Value Text */
+  /* Chart */
+  /* Frame 501 */
+  /* Spending Summary */
+  /* Spending Info */
+  /* Details */
+  /* Amount Text */
+/* of $50.00 */
+
+width: 55px;
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
 .main-right {
   /* Main Content Body Right */
   /* Main Content Body */
@@ -352,7 +637,6 @@ padding: 0px;
 gap: 24px;
 
 width: 608px;
-height: 2132px;
 
 
 /* Inside auto layout */
@@ -387,7 +671,7 @@ order: 0;
 align-self: stretch;
 flex-grow: 0;
 }
-.enter-header {
+.header {
   /* Entertainments Header */
   /* Budget Card */
   /* Frame 503 */
@@ -493,13 +777,16 @@ flex-grow: 0;
   /* Amount Bar */
 
 /* Auto layout */
+/* Amount Bar */
+
+/* Auto layout */
 display: flex;
 flex-direction: column;
 align-items: flex-start;
 padding: 0px;
 gap: 16px;
 
-width: 544px;
+
 height: 128px;
 
 
@@ -508,5 +795,276 @@ flex: none;
 order: 1;
 align-self: stretch;
 flex-grow: 0;
+
 }
+.max-value {
+  /* Entertainments Value Max */
+  /* Budget Card */
+  /* Frame 506 */
+  /* Entertainments Value */
+  /* Value */
+  /* Amount Bar */
+  /* Maximum of $1000 */
+  /* Maximum of $50.00 */
+
+width: 131px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+.info {
+  /* Spent and Free */
+
+/* Auto layout */
+/* Spent and Free */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 544px;
+height: 43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+}
+.line {
+  /* Line */
+  /* Spent and Free */
+  /* Spent and Free */
+  /* Line */
+  /* Line 1 */
+  /* Shape */
+
+width: 4px;
+height: 100%;
+
+background-color: #f8f4f0;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+}
+.spent {
+  /* Spent */
+  /* Spent and Free */
+  /* Spent */
+  /* Spent */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+
+padding: 0px;
+gap: 8px;
+
+
+height: 43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+}
+.info p {
+  /* Spent Text */
+  /* Spent and Free */
+  /* Spent */
+  /* Spent Text */
+  /* Spent */
+  /* Spent */
+
+width: 34px;
+height: 18px;
+
+/* text-preset-5 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 150%;
+/* identical to box height, or 18px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+.spent-value {
+  /* Spent Value */
+  /* Spent and Free */
+  /* Spent */
+  /* Spent Text */
+  /* Spent Value */
+  /* $100.00 */
+  /* $25.00 */
+
+width: 47px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.remaining {
+  /* Free */
+  /* Spent and Free */
+  /* Free */
+  /* Free */
+  /* Free */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+
+
+padding: 0px;
+gap: 8px;
+
+
+height: 43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 1;
+}
+.remaining-value {
+
+  
+  /* Spent and Free */
+  /* Free */
+  /* Free Text */
+  /* $50.00 */
+
+width: 51px;
+height: 21px;
+
+/* text-preset-4-bold */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.latest {
+  /* Latest Spending */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 20px;
+gap: 20px;
+
+width: 544px;
+height: 254px;
+
+background: #F8F4F0;
+border-radius: 12px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+}
+.progress-bar-container {
+/* Bar */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 4px;
+
+width: 100%;
+height: 32px;
+
+background: #F8F4F0;
+border-radius: 4px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+}
+
+.progress-bar-fill {
+/* Shape */
+
+width: 108px;
+height: 24px;
+
+background: #82C9D7;
+border-radius: 4px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+}
+
+
+  /* Free */
+  /* Free */
 </style>

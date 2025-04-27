@@ -54,7 +54,6 @@ isolation: isolate;
 
 position: relative;
 width: 1440px;
-height: 1064px;
 
 background: #F8F4F0;
 
