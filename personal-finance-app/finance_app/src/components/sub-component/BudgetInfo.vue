@@ -18,9 +18,8 @@ export default {
   },
  
   methods: {
-    transactionsValue(transaction) {
-      return Math.abs(transaction.value);
-    },
+   
+  
   }
 };
 

@@ -4,12 +4,17 @@ import DounutChart from './sub-component/DounutChart.vue';
 import data from '../data/data.json';
 import BudgetInfo from './sub-component/BudgetInfo.vue';
 
+import ModalPop from './sub-component/ModalPop.vue';
+
+
 
 export default {
   name: 'BudGets',
   components: {
     DounutChart,
-    BudgetInfo
+    BudgetInfo,
+    ModalPop,
+
  
   },
   data() {
@@ -17,6 +22,10 @@ export default {
       allTransactons: data.transactions,
       budgets: data.budgets,
       pots: data.pots,
+      showModal: false,
+      modalType: '',
+      currentModal: null,
+     
       
     
     };
@@ -52,12 +61,31 @@ export default {
       }
     })
   },
+  currentComponent() {
+    return this.modalType === 'add' ? 'AddBudget' : 'EditBudget';
+  },
 
   
     
     
   },
 methods: {
+  openModal(type,) {
+    console.log('huj')
+    this.modalType = type;
+    this.showModal = true;
+
+  
+  },
+  closeModal() {
+    this.showModal = false;
+  
+  },
+  handleSuccess(data) {
+    console.log('Budget saved:', data);
+    this.closeModal();
+    // Тук можеш да добавиш логика за обновяване на данните
+  },
   getSpent(category) {
     const transactions = this.groupedTransactions[category] || [];
     const spent = transactions.reduce((total, transaction) => total - transaction.amount, 0);
@@ -102,10 +130,25 @@ mounted() {
 
 
 <template>
+  
+  
+  <ModalPop v-if="showModal" @close="closeModal">
+      <component
+        :is="currentComponent"
+        :initial-data="selectedBudget"
+        @success="handleSuccess"
+        @cancel="closeModal"
+      />
+    </ModalPop>
+
+
+
+
   <div class="budget-container">
+   
     <section class="title">
      <h2>Budget</h2>
-      <button class="add-budget">
+      <button @click="openModal('add')" class="add-budget">
         <span>+ Add New Budget</span>
       </button>
     </section>
@@ -198,12 +241,14 @@ mounted() {
 
     
       
-
+             
 
       </section>
         
     </div>
   </div>
+
+  
 </template>
 
 <style scoped>
