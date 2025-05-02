@@ -1,43 +1,79 @@
 <!-- src/components/BudgetModal.vue -->
+<script>
+
+import data from '../../data/data.json '
+export default {
+  name: 'BudgetModal',
+  data() {
+    return {
+      budgets: data.budgets,
+      selectedCategory: '',
+      selectedTheme: '',
+      categories: [
+          'Entertainment' ,
+          'Bills',
+          'Groceries',
+          'Dining Out',
+          'Transportation',
+          'Personal Care',
+          'Education',
+          'Livestyle',
+          'Shopping',
+
+      
+       
+       
+      ],
+     
+    }
+  },
+  methods: {
+    submitBudget() {
+      this.$emit('add', {
+        name: this.name,
+        amount: parseFloat(this.amount),
+        category: this.category
+      })
+      this.$emit('close')
+    }
+  }
+}
+</script>
+
+
 <template>
     <div class="modal-backdrop" @click.self="$emit('close')">
       <div class="modal-content">
-        <h2 class="text-xl font-bold mb-4">Add Budget</h2>
+        <h2 class="text-xl font-bold mb-4">Add New Budget</h2>
+        <p class="text-sm text-gray-500 mb-4">Choose a category to set a spending budget. These categories can help you monitor spending.</p>
         <form @submit.prevent="submitBudget" class="space-y-3">
-          <input v-model="name" type="text" placeholder="Budget Name" class="input" />
-          <input v-model="amount" type="number" placeholder="Amount" class="input" />
-          <input v-model="category" type="text" placeholder="Category" class="input" />
-          <div class="flex justify-end gap-2">
-            <button type="button" @click="$emit('close')" class="btn-secondary">Cancel</button>
-            <button type="submit" class="btn-primary">Add</button>
+          <div class="category">
+            <label for="category"  >Budget Category</label>
+          <select name="category" id="category" v-model="selectedCategory">
+
+            <option v-for="category in  categories " :key="category" :value="category" >
+            {{ category }}
+          </option>
+          </select>
           </div>
+          <div class="maximum">
+            <label for="maximum" >Maximum Spend</label>
+            <input type="number" id="maximum" v-model="amount" class="input" placeholder="$ e.g.2000" required>
+          </div>
+          <div class="theme">
+            <label for="theme">Theme</label>
+            <select name="theme" id="theme" v-model="selectedTheme">
+              
+            </select>
+          </div>
+         
+         
         </form>
       </div>
     </div>
   </template>
   
-  <script>
-  export default {
-    name: 'BudgetModal',
-    data() {
-      return {
-        name: '',
-        amount: '',
-        category: ''
-      }
-    },
-    methods: {
-      submitBudget() {
-        this.$emit('add', {
-          name: this.name,
-          amount: parseFloat(this.amount),
-          category: this.category
-        })
-        this.$emit('close')
-      }
-    }
-  }
-  </script>
+
   
   <style scoped>
   .modal-backdrop {

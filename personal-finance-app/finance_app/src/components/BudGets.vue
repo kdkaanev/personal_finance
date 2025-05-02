@@ -132,7 +132,13 @@ mounted() {
 <template>
   
   
-  <ModalPop v-if="showModal" @close="closeModal">
+ 
+
+
+
+
+  <div class="budget-container">
+    <ModalPop v-if="showModal" @close="closeModal">
       <component
         :is="currentComponent"
         :initial-data="selectedBudget"
@@ -140,11 +146,6 @@ mounted() {
         @cancel="closeModal"
       />
     </ModalPop>
-
-
-
-
-  <div class="budget-container">
    
     <section class="title">
      <h2>Budget</h2>
