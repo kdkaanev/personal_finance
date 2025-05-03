@@ -5,6 +5,7 @@ import TransActions from '../components/TransActions.vue';
 import BudGets from '../components/BudGets.vue';
 import PotsCart from '../components/PotsCart.vue';
 import RecurringBills from '../components/RecurringBills.vue';
+import ModalPop from '../components/sub-component/ModalPop.vue';
 
 
 export default {
@@ -15,6 +16,7 @@ export default {
     BudGets,
     PotsCart,
     RecurringBills,
+    ModalPop
   },
   data() {
     return {
@@ -31,6 +33,7 @@ export default {
 <template>
   <article class="container">
     <SideBar @change-component="currentComponent = $event" />
+   
     <transition name="fade" mode="out-in">
       <component :is="currentComponent" />
     </transition>

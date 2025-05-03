@@ -2,9 +2,9 @@
 export default {
   props: {
     size: { type: Number, default: 300 },
-    segments: { type: Array, required: true },
-    transactions: { type: Array, required: true },
-    budgets: { type: Array, required: true },
+    segments: { type: Array, },
+    transactions: { type: Array,  },
+    budgets: { type: Array, },
     totalSpent: { type: Number, default: 0 },
   },
   computed: {

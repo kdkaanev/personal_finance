@@ -4,23 +4,22 @@ export default {
   props: {
     transactions: {
       type: Array,
-      required: true
+      
     },
     budgets: {
       type: Object,
-      required: true
+   
     },
     pots: {
       type: Array,
-      required: true
+     
     }
 
   },
  
   methods: {
-    transactionsValue(transaction) {
-      return Math.abs(transaction.value);
-    },
+   
+  
   }
 };
 
