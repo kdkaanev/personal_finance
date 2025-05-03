@@ -5,6 +5,7 @@ import data from '../data/data.json';
 import BudgetInfo from './sub-component/BudgetInfo.vue';
 
 import ModalPop from './sub-component/ModalPop.vue';
+import EditBudget from './sub-component/AddBudget.vue';
 
 
 
@@ -16,6 +17,7 @@ export default {
     DounutChart,
     BudgetInfo,
     ModalPop,
+    EditBudget
 
  
   },
@@ -25,8 +27,9 @@ export default {
       budgets: data.budgets,
       pots: data.pots,
       showModal: false,
-      modalType: '',
+      modalType: 'add',
       currentModal: null,
+      selectedBudget: 'EditBudget',
      
       
     
@@ -64,7 +67,7 @@ export default {
     })
   },
   currentComponent() {
-    return this.modalType === 'add' ? 'AddBudget' : 'EditBudget';
+    return this.modalType === 'add' ? EditBudget : null;
   },
 
   
@@ -146,6 +149,7 @@ mounted() {
         :initial-data="selectedBudget"
         @success="handleSuccess"
         @cancel="closeModal"
+        @close="closeModal"
       />
     </ModalPop>
    
