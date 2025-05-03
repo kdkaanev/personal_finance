@@ -5,7 +5,8 @@ export default {
   data() {
     return {
       budgets: data.budgets,
-      selectedBudget: data.budgets[0],
+      selectedBudget: null,
+      selectedCategory: 'Entertainment',
       isOpen: false
     };
   },

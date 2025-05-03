@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       budgets: data.budgets,
-      selectedCategory: 'Entertainment',
+      selectedCategory: '',
       selectedTheme: '',
       categories: [
           'Entertainment' ,
