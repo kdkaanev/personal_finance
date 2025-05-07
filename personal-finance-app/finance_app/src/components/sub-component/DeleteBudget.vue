@@ -8,25 +8,18 @@ export default {
     CustomSelect
     
   },
-  props: {
-  budgetToEdit: {
-    type: Object,
-    default: null
-  }
-},
-
   name: 'BudgetModal',
   data() {
     return {
       budgets: data.budgets,
       selectedCategory: '',
       selectedTheme: '',
-      amount:  '',
       categories: [
           'Entertainment' ,
           'Bills',
           'Groceries',
-,          'Transportation',
+          'Dining Out',
+          'Transportation',
           'Personal Care',
           'Education',
           'Livestyle',
@@ -41,21 +34,13 @@ export default {
   },
   methods: {
     submitBudget() {
-  const payload = {
-    name: this.budgetToEdit ? this.budgetToEdit.name : this.name,
-    amount: parseFloat(this.amount),
-    category: this.selectedCategory,
-    theme: this.selectedTheme
-  };
-
-  if (this.budgetToEdit) {
-    this.$emit('update', payload);
-  } else {
-    this.$emit('add', payload);
-  }
-
-  this.$emit('close');
-}
+      this.$emit('add', {
+        name: this.name,
+        amount: parseFloat(this.amount),
+        category: this.category
+      })
+      this.$emit('close')
+    }
   }
 }
 </script>
@@ -68,33 +53,16 @@ export default {
 
 
   <section class="action">
-    <h1>Edit Budget</h1>
+    <h1>Delete ‘Entertainment’?</h1>
     <button class="btn-secondary" @click="$emit('close')">
       <img src="../../assets/icons/icon-close-modal.svg" alt="close">
     </button>
   </section>
-  <p class="text-sm">As your budgets change, feel free to update your spending limits.</p>
-  <form @submit.prevent="submitBudget" class="space">
-    <div class="category">
-      <label for="category"  >Budget Category</label>
-    <select name="category" id="category" v-model="selectedCategory">
-  
-      <option v-for="budget in  budgets " :key="budget" :value="budget" >
-        {{ budget.category }}
-    </option>
-    </select>
+  <p class="text-sm">Are you sure you want to delete this budget? This action cannot be reversed, and all the data inside it will be removed forever.</p>
+    <div class="space">
+        <button class="btn-primary red" @click="$emit('delete')">Delete</button>
+        <button class="close" @click="$emit('close')"><span>No, Go Back</span></button>
     </div>
-    <div class="maximum">
-      <label for="maximum" >Maximum Spend</label>
-      <input type="number" id="maximum" v-model="amount" class="input" placeholder="$ e.g.2000" required>
-    </div>
-    <div class="theme">
-      <CustomSelect :budgets="budgets" v-model="selectedTheme" />
-    </div>
-    <button type="submit" class="btn-primary">Save Changes</button>
-   
-   
-  </form>
   </div> 
 </div>
 
@@ -219,7 +187,7 @@ padding: 0px;
 gap: 16px;
 
 width: 496px;
-height: 233px;
+
 
 
 /* Inside auto layout */
@@ -318,7 +286,8 @@ gap: 20px;
     padding: 2rem;
     width: 560px;
     max-width: 560px;
-    height: 490px;
+    
+   
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 
 
@@ -383,10 +352,63 @@ flex-grow: 0;
 
 
   }
+  .red {
+    background: #C94736;
+    border-radius: 8px;
+    color: #FFFFFF;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+  }
   .btn-secondary {
     
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
     cursor: pointer;
   }
-  </style>
+    .close {
+     /* Button/Tertiary */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 496px;
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+        cursor: pointer;
+    }
+.close span {
+    /* See Details */
+
+width: 80px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #696868;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+    }
+  </style>/

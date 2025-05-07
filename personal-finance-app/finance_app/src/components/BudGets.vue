@@ -5,19 +5,24 @@ import data from '../data/data.json';
 import BudgetInfo from './sub-component/BudgetInfo.vue';
 
 import ModalPop from './sub-component/ModalPop.vue';
-import EditBudget from './sub-component/AddBudget.vue';
+import AddBudget from './sub-component/AddBudget.vue';
+import EditBudget from './sub-component/EditBudget.vue';
+import DeleteBudget from './sub-component/DeleteBudget.vue';
 
 
 
 
 
 export default {
+  name: "DropdownMenu",
   name: 'BudGets',
   components: {
     DounutChart,
     BudgetInfo,
     ModalPop,
-    EditBudget
+    EditBudget,
+    AddBudget,
+    DeleteBudget
 
  
   },
@@ -29,7 +34,9 @@ export default {
       showModal: false,
       modalType: 'add',
       currentModal: null,
-      selectedBudget: 'EditBudget',
+      activeCardId: null,
+      menuVisible: false,
+
      
       
     
@@ -67,7 +74,16 @@ export default {
     })
   },
   currentComponent() {
-    return this.modalType === 'add' ? EditBudget : null;
+    let component;
+    if (this.modalType === 'add') {
+      component = AddBudget;
+    } else if (this.modalType === 'edit') {
+      component = EditBudget;
+    }else if (this.modalType === 'delete') {
+      component = DeleteBudget;
+    }
+    return component;
+    
   },
 
   
@@ -109,17 +125,18 @@ methods: {
   getTotalSpent() {
     return this.segments.reduce((total, segment) => total + segment.spent, 0);
 
-  }
+  },
+  toggleMenu(category) {
+      this.activeCardId = this.activeCardId === category ? null : category;
+      this.menuVisible = !this.menuVisible;
+    },
+    
+
 },
 mounted() {
   // Example usage
 
-  console.log(this.segments);
-  console.log(this.getTotalLImits());
-  console.log(this.getTotalSpent())
-  console.log(this.groupedTransactions);  
-  console.log('spent entertimed', this.getSpent('Entertainment'));
-  
+
  
   
 },
@@ -200,13 +217,23 @@ mounted() {
 
         
     
-          <div v-for="budget in budgets" :key="budget" class="budgets">
+          <div v-for="budget in budgets" :key="budget.category" class="budgets">
             <section class="header">  
              <div class="name">
               <span class="dot" :style="{ backgroundColor: budget.theme }"></span>
               <h3>{{ budget.category }}</h3>
              </div>
-              <span><img src="../assets/icons/icon-ellipsis.svg" alt=""></span>
+              <div class="edit-budget relative" @click="toggleMenu(budget.category)"><img src="../assets/icons/icon-ellipsis.svg" alt="">
+                <div v-if="activeCardId === budget.category">
+      <ul class="absolute">
+        <li @click="openModal('edit')" class="px-edit px-p">Edit Budget</li>
+        
+        <li @click="openModal('delete')" class="px-delete">Delete Budget</li>
+        
+      </ul>
+    </div>
+              
+              </div>
             </section>
             <section class="value">
               <span class="max-value"><p>Maximum of ${{ budget.maximum }}</p></span>
@@ -342,6 +369,7 @@ justify-content: center;
 align-items: center;
 padding: 16px;
 gap: 16px;
+cursor: pointer;
 
 width: 155px;
 height: 53px;
@@ -377,6 +405,109 @@ color: #FFFFFF;
 flex: none;
 order: 0;
 flex-grow: 0;
+}
+.edit-budget{
+  cursor: pointer;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.absolute {
+
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 16px;
+gap: 16px;
+
+position: relative;
+
+height: 91px;
+max-height: 300px;
+
+background: #FFFFFF;
+/* drop-shadow */
+box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+border-radius: 8px;
+
+}
+.px-edit {
+  /* Edit Budget */
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+  /* Edit Budget Text */
+  /* Green */
+
+width: 77px;
+height: 21px;
+
+padding-bottom: 2rem;
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.px-p {
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+  /* Divider Line */
+  border-bottom: 1px solid grey;
+  /* Line 1 */}
+.px-delete {
+  /* Delete Budget */
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+  /* Delete Budget Text */
+  /* Red */
+  /* Frame 591 */
+
+/* Auto layout */
+/* Green */
+
+width: 94px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #C94736;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+li
+
+{
+  cursor: pointer;
+  list-style: none;
+}
+li:hover {
+  background-color: #f0f0f0;
+}
+li:active {
+  background-color: #e0e0e0;
 }
 .main {
   /* Main Content Body */
