@@ -128,7 +128,7 @@ methods: {
   },
   toggleMenu(category) {
       this.activeCardId = this.activeCardId === category ? null : category;
-      this.menuVisible = !this.menuVisible;
+      
     },
     
 
