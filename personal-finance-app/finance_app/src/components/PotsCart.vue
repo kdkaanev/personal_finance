@@ -41,6 +41,7 @@ export default {
         <span>+ Add New Pot</span>
       </button>
     </section>
+     <div class="main">
       <div v-for="pot in pots" :key="pot.name" class="pots">
        <section class="header">
         <div class="name">
@@ -92,6 +93,7 @@ export default {
         </div>
       </section>
       </div>
+     </div>
     
     
   </div>
@@ -217,6 +219,13 @@ flex: none;
 order: 0;
 flex-grow: 0;
 }
+.main {
+  /* Main */
+display: grid;
+grid-template-columns: repeat(2, 1fr);;
+gap: 24px;
+
+}
 .pots{
 
   /* Pots */
@@ -224,11 +233,11 @@ flex-grow: 0;
   display: flex;
 flex-direction: column;
 align-items: flex-start;
-padding: 32px;
-gap: 20px;
+padding: 24px;
+gap: 32px;
 
-width: 608px;
-height: 510px;
+width: 518px;
+height: 303px;
 
 background: #FFFFFF;
 border-radius: 12px;
@@ -249,7 +258,7 @@ align-items: center;
 padding: 0px;
 gap: 20px;
 
-width: 544px;
+
 height: 24px;
 
 
@@ -439,7 +448,7 @@ display: flex;
 flex-direction: column;
 align-items: center;
 padding: 0px;
-gap: 16px;
+gap: 32px;
 
 width: 470px;
 height: 114px;
