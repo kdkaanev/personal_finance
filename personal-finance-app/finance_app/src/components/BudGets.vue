@@ -92,7 +92,7 @@ export default {
   },
 methods: {
   openModal(type,) {
-    console.log('huj')
+
     this.modalType = type;
     this.showModal = true;
 

@@ -1,6 +1,10 @@
 <script>
 import data from '../data/data.json';
+import ModalPop from './sub-component/ModalPop.vue';
 export default {
+  components: {
+    ModalPop
+  },
   name: 'PotsCart',
   data() {
     return {
