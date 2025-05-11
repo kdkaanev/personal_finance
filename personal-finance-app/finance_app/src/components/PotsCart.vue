@@ -1,9 +1,19 @@
 <script>
 import data from '../data/data.json';
+import AddPot from './sub-component-pots/AddPot.vue';
+import DeletePot from './sub-component-pots/DeletePot.vue';
+import EditPot from './sub-component-pots/EditPot.vue';
+import AddBudget from './sub-component/AddBudget.vue';
+import DeleteBudget from './sub-component/DeleteBudget.vue';
+import EditBudget from './sub-component/EditBudget.vue';
 import ModalPop from './sub-component/ModalPop.vue';
 export default {
   components: {
-    ModalPop
+    ModalPop,
+    AddBudget,
+    EditBudget,
+    DeleteBudget,
+    AddPot,
   },
   name: 'PotsCart',
   data() {
@@ -16,12 +26,50 @@ export default {
       potsCartCount: data.potsCartCount,
       activeCardId: null,
       menuVisible: false,
+      showModal: false,
+      modalType: 'add',
+      currentModal: null,
+      currentComponent: null,
+      
     };
   },
+  computed: {
+    currentComponent() {
+      let component;
+      if (this.modalType === 'add') {
+        component = AddPot;
+      } else if (this.modalType === 'edit') {
+        component = EditPot;
+      } else if (this.modalType === 'delete') {
+        component = DeletePot;
+      }
+      console.log(component);
+      return component;
+    }
+  },
   methods: {
-    openModal(action) {
-      this.$emit('open-modal', action);
-    },
+  openModal(type,) {
+      console.log('huj')
+    console.log('openModal called with type:', type);
+    this.modalType = type;
+    this.showModal = true;
+    
+
+  
+  },
+  closeModal() {
+    this.showModal = false;
+  
+  },
+      handleSuccess(data) {
+    console.log('Budget saved:', data);
+    this.closeModal();
+    // Тук можеш да добавиш логика за обновяване на данните
+  },
+   
+   
+   
+   
     toggleMenu(potName) {
       this.activeCardId = this.activeCardId === potName ? null : potName;
       
@@ -38,7 +86,16 @@ export default {
 
 
 <template>
+
   <div class="pots-container">
+      <ModalPop v-if="showModal" @close="closeModal">
+        <component
+        :is= "currentComponent"
+        @success="handleSuccess"
+        @cancel="closeModal"
+        @close="closeModal"
+      />
+    </ModalPop>
     <section class="title">
      <h2>Pots</h2>
       <button @click="openModal('add')" class="add-pot">
@@ -84,7 +141,7 @@ export default {
   <p>Target of ${{ pot.target }}</p>
 </div>
 <section class="buttons">
-  <button @click="openModal('add')" class="add-pot-btn">
+  <button @click="openModal('')" class="add-pot-btn">
     <span>+ Add Money</span>
   </button>
   <button @click="openModal('withdraw')" class="withdraw-pot">

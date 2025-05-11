@@ -36,6 +36,7 @@ export default {
       currentModal: null,
       activeCardId: null,
       menuVisible: false,
+      currentComponent: null,
 
      
       
@@ -82,6 +83,7 @@ export default {
     }else if (this.modalType === 'delete') {
       component = DeleteBudget;
     }
+    console.log(component)
     return component;
     
   },
@@ -92,7 +94,7 @@ export default {
   },
 methods: {
   openModal(type,) {
-
+    console.log(type)
     this.modalType = type;
     this.showModal = true;
 
@@ -163,7 +165,6 @@ mounted() {
     <ModalPop v-if="showModal" @close="closeModal">
       <component
         :is="currentComponent"
-        :initial-data="selectedBudget"
         @success="handleSuccess"
         @cancel="closeModal"
         @close="closeModal"
