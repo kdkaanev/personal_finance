@@ -5,6 +5,12 @@ import data from'../../data/data.json'
 
 export default {
     name: 'DeletePot',
+  props: {
+    potName: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       pots: data.pots,
@@ -12,16 +18,7 @@ export default {
      
     }
   },
-  methods: {
-    submitBudget() {
-      this.$emit('add', {
-        name: this.name,
-        amount: parseFloat(this.amount),
-        category: this.category
-      })
-      this.$emit('close')
-    }
-  }
+
 }
 </script>
 
@@ -33,7 +30,7 @@ export default {
 
 
   <section class="action">
-    <h1>Delete ‘Savings’?</h1>
+    <h1>Delete '{{potName}}'?</h1>
     <button class="btn-secondary" @click="$emit('close')">
       <img src="../../assets/icons/icon-close-modal.svg" alt="close">
     </button>

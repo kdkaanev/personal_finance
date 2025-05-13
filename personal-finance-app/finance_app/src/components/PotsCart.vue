@@ -2,34 +2,29 @@
 import data from '../data/data.json';
 import AddPot from './sub-component-pots/AddPot.vue';
 import DeletePot from './sub-component-pots/DeletePot.vue';
+
 import EditPot from './sub-component-pots/EditPot.vue';
-import AddBudget from './sub-component/AddBudget.vue';
-import DeleteBudget from './sub-component/DeleteBudget.vue';
-import EditBudget from './sub-component/EditBudget.vue';
+
 import ModalPop from './sub-component/ModalPop.vue';
 export default {
   components: {
     ModalPop,
-    AddBudget,
-    EditBudget,
-    DeleteBudget,
+    DeletePot,
     AddPot,
+    EditPot,
   },
   name: 'PotsCart',
   data() {
     return {
       pots: data.pots,
-      potsTotal: data.potsTotal,
-      potsCount: data.potsCount,
-      potsCart: data.potsCart,
-      potsCartTotal: data.potsCartTotal,
-      potsCartCount: data.potsCartCount,
       activeCardId: null,
       menuVisible: false,
       showModal: false,
       modalType: 'add',
       currentModal: null,
       currentComponent: null,
+      selectedPotName : null,
+     
       
     };
   },
@@ -48,9 +43,8 @@ export default {
     }
   },
   methods: {
-  openModal(type,) {
-      console.log('huj')
-    console.log('openModal called with type:', type);
+  openModal(type,potName) {
+    this.selectedPotName = potName;
     this.modalType = type;
     this.showModal = true;
     
@@ -91,6 +85,7 @@ export default {
       <ModalPop v-if="showModal" @close="closeModal">
         <component
         :is= "currentComponent"
+        :potName="selectedPotName"
         @success="handleSuccess"
         @cancel="closeModal"
         @close="closeModal"
@@ -112,9 +107,9 @@ export default {
         <div class="edit-pot relative" @click="toggleMenu(pot.name)"><img src="../assets/icons/icon-ellipsis.svg" alt="">
                 <div v-if="activeCardId === pot.name" >
       <ul class="absolute">
-        <li @click="openModal('edit')" class="px-edit px-p">Edit Pot</li>
+        <li @click="openModal('edit', pot.name)" class="px-edit px-p">Edit Pot</li>
         
-        <li @click="openModal('delete')" class="px-delete">Delete Pot</li>
+        <li @click="openModal('delete', pot.name)" class="px-delete">Delete Pot</li>
         
       </ul>
     </div>

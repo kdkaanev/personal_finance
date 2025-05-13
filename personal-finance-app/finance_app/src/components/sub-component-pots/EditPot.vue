@@ -8,6 +8,12 @@ export default {
     CustomSelect
     
   },
+  props: {
+    potName: {
+      type: String,
+      required: true
+    }
+  },
   name: 'BudgetModal',
   data() {
     return {
@@ -30,7 +36,7 @@ export default {
 
 
   <section class="action">
-    <h1>Edit Pot</h1>
+    <h1>Edit Pot {{ potName }}</h1>
     <button class="btn-secondary" @click="$emit('close')">
       <img src="../../assets/icons/icon-close-modal.svg" alt="close">
     </button>
@@ -39,7 +45,7 @@ export default {
   <form @submit.prevent="submitBudget" class="space">
     <div class="category">
       <label for="name"  >Pot Name</label>
-      <input type="text" id="name" v-model="potName" class="input" >
+      <input type="text" id="name" v-model="potName" class="input" :input="potName">
       <p>30 characters left</p>
     </div>
     <div class="maximum">
