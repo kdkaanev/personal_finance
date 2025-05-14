@@ -86,21 +86,22 @@
               <img  alt="Avatar">
               <p>Spark Electric Solutions</p>
             </div>
-          <div class="transaction-details">
-            
-              <p class="date">Monthly - 2nd </p>
+       
+            <div class="bill-info">
+
+              <p class="date">Monthly - 2nd <span>✅</span></p>
               
-              <span>✅</span>
-          </div>
+
               
             
       
 
-              <span class="amount" :class="{ 'negative': 1 < 0 }">
+              <div class="amount" :class="{ 'negative': 1 < 0 }">
                 {{ 1 < 0 ? '-' : '+' }}${{ Math.abs(1).toFixed(2) }}
 
-              </span>
+              </div>
           
+            </div>
             
             
           </div>
@@ -966,7 +967,7 @@ align-items: center;
 padding: 0px;
 gap: 16px;
 
-width: 319px;
+
 height: 32px;
 
 
@@ -1044,5 +1045,18 @@ flex: none;
 order: 1;
 flex-grow: 0;
 }
+.bill-info {
+  /* Bill Info */
+  /* Bill Content Line */
+  /* Bill Content Line */
+  /* Title */
+  /* Transaction Details */
+  /* Due Date */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 6rem;
+}
+
 </style>
 
