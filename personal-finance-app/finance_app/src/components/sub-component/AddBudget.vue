@@ -64,8 +64,8 @@ export default {
       <label for="category"  >Budget Category</label>
     <select name="category" id="category" v-model="selectedCategory">
   
-      <option v-for="budget in  budgets " :key="budget" :value="budget" >
-        {{ budget.category }}
+      <option v-for="category in  categories " :key="category" :value="category" >
+        {{ category }}
     </option>
     </select>
     </div>
