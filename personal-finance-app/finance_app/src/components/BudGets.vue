@@ -83,7 +83,7 @@ export default {
     }else if (this.modalType === 'delete') {
       component = DeleteBudget;
     }
-    console.log(component)
+    
     return component;
     
   },

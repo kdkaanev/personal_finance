@@ -17,6 +17,7 @@ export default {
     PotsCart,
     RecurringBills,
     ModalPop
+    
   },
   data() {
     return {

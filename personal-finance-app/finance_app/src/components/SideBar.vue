@@ -41,7 +41,7 @@ export default {
 
 <template>
   <nav :class="['show-bar', { 'hide-bar': isMinimized }]">
-    <img class="logo" src="../assets/icons/logo-large.svg" alt="logo">
+   <a href="/"> <img class="logo" src="../assets/icons/logo-large.svg" alt="logo"></a>
     <div class="nav-links">
       <button
         v-for="(button, index) in buttons" :key="index"
