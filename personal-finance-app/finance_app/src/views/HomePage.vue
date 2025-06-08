@@ -6,6 +6,8 @@ import BudGets from '../components/BudGets.vue';
 import PotsCart from '../components/PotsCart.vue';
 import RecurringBills from '../components/RecurringBills.vue';
 import ModalPop from '../components/sub-component/ModalPop.vue';
+import { useUserStore } from '../stores/useUserStore';
+import ProfilePage from '../components/auth-componenet/ProfilePage.vue';
 
 
 export default {
@@ -16,14 +18,25 @@ export default {
     BudGets,
     PotsCart,
     RecurringBills,
-    ModalPop
+    ModalPop,
+    ProfilePage
     
   },
   data() {
     return {
       currentComponent: 'OverView',
+       userStore: useUserStore(),
     };
   },
+    async mounted() {
+    await this.userStore.reAuthUser()
+  },
+  computed: {
+    userEmail() {
+      return 'huj'// Fallback if email is not available
+    }
+  },
+  
 };
 
 

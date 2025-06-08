@@ -1,16 +1,34 @@
 <script>
-import DonutChart from './sub-component/DounutChart.vue';
+import { useUserStore } from '../stores/useUserStore'
+import DonutChart from '../components/sub-component/DounutChart.vue'
 
 export default {
+  name: 'OverviewPage',
+
   components: {
     DonutChart,
   },
-  methods: {
-    goToTransactions() {
-      this.$router.push("/transactions");
+
+  data() {
+    return {
+      userStore: useUserStore(),
+    }
+  },
+
+
+
+  computed: {
+    userEmail() {
+      return this.userStore.user?.email || ''
     },
   },
-};
+
+  methods: {
+    goToTransactions() {
+      this.$router.push('/transactions')
+    },
+  },
+}
 </script>
 
 <template>

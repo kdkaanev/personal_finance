@@ -1,3 +1,73 @@
+<script>
+import useVuelidate from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
+
+import { useUserStore } from '../../stores/useUserStore';
+import { useRouter, useRoute } from 'vue-router';
+import { ErrorCodes, onMounted } from 'vue';
+
+export default {
+  name: "LogIn",
+  setup() {
+    const userStore = useUserStore();
+    const router = useRouter();
+    const route = useRoute();
+
+    const v$ = useVuelidate({
+      email: { required },
+      password: { required }
+    });
+
+    return {
+      v$,
+      userStore,
+      router,
+      route
+    };
+  },
+  data() {
+    return {
+      forms: {
+        email: "",
+        password: ""
+      }
+    };
+  },
+  validations() {
+    return {
+      forms: {
+        email: { required },
+        password: { required }
+      },
+     
+    };
+  },
+  methods: {
+    onLogIn() {
+      this.v$.$touch();
+      if (this.v$.$invalid) return;
+
+      this.userStore.login(this.forms)
+        .then(() => {
+          this.$emit('close');
+          this.router.push('/home');
+        })
+        .catch(error => {
+          console.error("Login failed:", error);
+          // Handle login error (e.g., show a notification)
+        });
+    },
+    goToSignUp() {
+      this.$emit('switch-modal', 'signup'); // Close the modal
+    },  
+  },
+  mounted() {
+    this.userStore.reAuthUser();
+  },
+};
+</script>
+
+
 <template>
    <div class="modal-backdrop" @click.self="$emit('close')">
     <div class="modal-content">
@@ -10,16 +80,16 @@
    
   </section>
 
-  <form @submit.prevent="LogIn" class="space">
-    <div >
-      <label for="email"  >Email</label>
-    <input name="email" id="email" v-model="email" type="email" required>
+  <form @submit.prevent="onLogIn" class="space">
+    <div :errors="v$.forms.email.$errors">
+      <label for="email" :errors="v$.forms.email.$errors" >Email</label>
+    <input name="email" id="email" v-model="v$.forms.email.$model" type="email" required>
   
   
     </div>
-    <div >
+    <div :errors="v$.forms.password.$errors">
       <label for="password" >Password</label>
-      <input type="password" id="password" v-model="password"   required>
+      <input type="password" id="password" v-model="v$.forms.password.$model"   required>
     </div>
    
     <button type="submit" class="btn-primary">Login</button>
@@ -36,28 +106,6 @@
 
 </template>
 
-<script>
-export default {
-  name: "LogIn",
-  data() {
-    return {
-      email: "",
-      password: ""
-    };
-  },
-  methods: {
-    LogIn() {
-      // Implement your login logic here
-      // For now, just log the email and password
-      console.log("Logging in with", this.email, this.password);
-      this.$router.push('/home'); // Redirect to home page after login
-    },
-    goToSignUp() {
-      this.$emit('switch-modal', 'signup'); // Close the modal
-    }
-  }
-};
-</script>
 
 <style scoped>
   .maximum input {

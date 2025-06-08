@@ -1,14 +1,43 @@
 <script>
+
+import { useUserStore } from '../stores/useUserStore';
 export default {
   emits: ['change-component'],
+  props: {
+    userEmail: {
+      type: String,
+      default: ''
+    }
+  },
+  setup() {
+    return {
+      userStore: useUserStore(),
+      
+    };
+  },
+ 
+
+  computed: {
+    isMinimized() {
+      return this.isMinimized;
+    },
+    
+  },
+  
+
   data() {
+    const email = this.userEmail || 'huj'; // Fallback if email is not provided
     return {
       buttons: [
+
+        { label: email, icon: 'icon-user.svg', component: 'ProfilePage' },
         { label: 'Overview', icon: 'icon-nav-overview.svg', component: 'OverView' },
         { label: 'Transactions', icon: 'icon-nav-transactions.svg', component: 'TransActions' },
         { label: 'Budgets', icon: 'icon-nav-budgets.svg', component: 'BudGets' },
         { label: 'Pots', icon: 'icon-nav-pots.svg', component: 'PotsCart' },
         { label: 'Recurring Bills', icon: 'icon-nav-recurring-bills.svg', component: 'RecurringBills' },
+        
+       
        
 
       ],
@@ -28,20 +57,26 @@ export default {
     },
     toggleMenu() {
       this.isMinimized = !this.isMinimized;
-    }
+    },
+  
   
   },
-  computed: {
-    isMinimized() {
-      return this.isMinimized;
-    }
-  }
+  
+  
+
+    
 };
+
 </script>
 
 <template>
   <nav :class="['show-bar', { 'hide-bar': isMinimized }]">
    <a href="/"> <img class="logo" src="../assets/icons/logo-large.svg" alt="logo"></a>
+   <!-- <div class="btn-nav">
+   <img  src="../assets/icons/icon-user.svg" alt="">
+    <span class="btn-label">{{ userEmail }}</span>
+   
+   </div> -->
     <div class="nav-links">
       <button
         v-for="(button, index) in buttons" :key="index"
@@ -56,7 +91,7 @@ export default {
     
     </div>
       <button v-if="!isMinimized" class="btn-min" @click="toggleMenu">
-        <img class="icon-nav" src="../assets/icons/icon-minimize-menu.svg" alt="house">Minimize Menue
+        <img src="../assets/icons/icon-minimize-menu.svg" alt="house">Minimize Menue
     </button>
     <button v-else class="btn-min"
     @click="toggleMenu">
