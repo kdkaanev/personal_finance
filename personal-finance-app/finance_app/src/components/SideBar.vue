@@ -6,7 +6,7 @@ export default {
   props: {
     userEmail: {
       type: String,
-      default: ''
+      required: true,
     }
   },
   setup() {
@@ -26,7 +26,7 @@ export default {
   
 
   data() {
-    const email = this.userEmail || 'huj'; // Fallback if email is not provided
+    const email = this.userEmail ; // Fallback if email is not provided
     return {
       buttons: [
 
@@ -61,6 +61,18 @@ export default {
   
   
   },
+  async mounted() {
+    await this.userStore.reAuthUser(); // Ensure user data is loaded
+    this.userEmail = this.userStore.user?.email || 'No email provided'; // Set initial email
+    this.buttons[1].label = this.userEmail; // Update the first button's label
+   
+  },
+  watch: {
+    userEmail(newEmail) {
+      // Update the first button's label when userEmail changes
+      this.buttons[0].label = newEmail || 'No email provided';
+    }
+  }
   
   
 

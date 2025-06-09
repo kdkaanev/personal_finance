@@ -22,31 +22,41 @@ export default {
     ProfilePage
     
   },
-  data() {
+    data() {
     return {
       currentComponent: 'OverView',
-       userStore: useUserStore(),
+      loading: true,
+      userStore: useUserStore(),
     };
   },
-    async mounted() {
-    await this.userStore.reAuthUser()
-  },
-  computed: {
+    computed: {
     userEmail() {
-      return 'huj'// Fallback if email is not available
-    }
+      return this.userStore.user?.email || 'No email provided';
+    },
+  
+    
+  },
+
+
+  
+   async mounted() {
+    await this.userStore.reAuthUser(); // Make sure email is loaded
+    this.loading = false;
+
+
   },
   
 };
-
-
 
 
 </script>
 
 <template>
   <article class="container">
-    <SideBar @change-component="currentComponent = $event" />
+    <div v-if="loading">Loading...</div>
+    <div v-else>
+      <SideBar :userEmail="userEmail" @change-component="currentComponent = $event" />
+    </div>
    
     <transition name="fade" mode="out-in">
       <component :is="currentComponent" />

@@ -17,11 +17,7 @@ export default {
 
 
 
-  computed: {
-    userEmail() {
-      return this.userStore.user?.email || ''
-    },
-  },
+  
 
   methods: {
     goToTransactions() {

@@ -109,13 +109,15 @@ export async function logoutUser() {
   await fetchCSRFToken();
   try {
     
-    const response = await axiosFA.post(`${ENDPOINT}logout/`, {}, {
+    const response = await axiosFA.post(`${ENDPOINT}signout/`, {}, {
 
       withCredentials: true,
       headers: {
         'X-CSRFToken': getCookie('csrftoken'),
       },
     });
+    alert('Logout successful!'); // Show success message
+    // Optionally clear the CSRF token cookie
     
     console.log("Logout successful:", response.data);
     return true;

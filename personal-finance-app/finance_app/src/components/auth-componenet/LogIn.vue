@@ -51,6 +51,7 @@ export default {
         .then(() => {
           this.$emit('close');
           this.router.push('/home');
+          this,this.userStore.reAuthUser();
         })
         .catch(error => {
           console.error("Login failed:", error);
