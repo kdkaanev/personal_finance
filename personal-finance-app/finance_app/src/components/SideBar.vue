@@ -4,7 +4,7 @@ import { useUserStore } from '../stores/useUserStore';
 export default {
   emits: ['change-component'],
   props: {
-    userEmail: {
+    userName: {
       type: String,
       required: true,
     }
@@ -18,6 +18,16 @@ export default {
  
 
   computed: {
+     buttons() {
+    return [
+      { label: this.userName, icon: 'icon-user.svg', component: 'ProfilePage' },
+      { label: 'Overview', icon: 'icon-nav-overview.svg', component: 'OverView' },
+      { label: 'Transactions', icon: 'icon-nav-transactions.svg', component: 'TransActions' },
+      { label: 'Budgets', icon: 'icon-nav-budgets.svg', component: 'BudGets' },
+      { label: 'Pots', icon: 'icon-nav-pots.svg', component: 'PotsCart' },
+      { label: 'Recurring Bills', icon: 'icon-nav-recurring-bills.svg', component: 'RecurringBills' },
+    ];
+  },
     isMinimized() {
       return this.isMinimized;
     },
@@ -26,21 +36,9 @@ export default {
   
 
   data() {
-    const email = this.userEmail ; // Fallback if email is not provided
-    return {
-      buttons: [
-
-        { label: email, icon: 'icon-user.svg', component: 'ProfilePage' },
-        { label: 'Overview', icon: 'icon-nav-overview.svg', component: 'OverView' },
-        { label: 'Transactions', icon: 'icon-nav-transactions.svg', component: 'TransActions' },
-        { label: 'Budgets', icon: 'icon-nav-budgets.svg', component: 'BudGets' },
-        { label: 'Pots', icon: 'icon-nav-pots.svg', component: 'PotsCart' },
-        { label: 'Recurring Bills', icon: 'icon-nav-recurring-bills.svg', component: 'RecurringBills' },
         
        
-       
-
-      ],
+    return {
       activeIndex: null,
       hoverIndex: null,
       isMinimized: false,
@@ -61,18 +59,7 @@ export default {
   
   
   },
-  async mounted() {
-    await this.userStore.reAuthUser(); // Ensure user data is loaded
-    this.userEmail = this.userStore.user?.email || 'No email provided'; // Set initial email
-    this.buttons[1].label = this.userEmail; // Update the first button's label
-   
-  },
-  watch: {
-    userEmail(newEmail) {
-      // Update the first button's label when userEmail changes
-      this.buttons[0].label = newEmail || 'No email provided';
-    }
-  }
+  
   
   
 

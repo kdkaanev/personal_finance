@@ -30,20 +30,17 @@ export default {
     };
   },
     computed: {
-    userEmail() {
-      return this.userStore.user?.email || 'No email provided';
-    },
-  
-    
+        userName() {
+        if (this.userStore.user.profile && this.userStore.user.profile.first_name) {
+            return this.userStore.user.profile.first_name || this.userStore.user.email;
+        }
+        return this.userStore.user.email || 'User';
+    }
   },
 
-
-  
-   async mounted() {
+  async mounted() {
     await this.userStore.reAuthUser(); // Make sure email is loaded
     this.loading = false;
-
-
   },
   
 };
@@ -55,7 +52,7 @@ export default {
   <article class="container">
     <div v-if="loading">Loading...</div>
     <div v-else>
-      <SideBar :userEmail="userEmail" @change-component="currentComponent = $event" />
+      <SideBar :user-name="userName" @change-component="currentComponent = $event" />
     </div>
    
     <transition name="fade" mode="out-in">
