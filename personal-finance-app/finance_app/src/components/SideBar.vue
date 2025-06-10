@@ -70,9 +70,11 @@ export default {
 
 <template>
   <nav :class="['show-bar', { 'hide-bar': isMinimized }]">
-   <a href="/"> <img class="logo" src="../assets/icons/logo-large.svg" alt="logo"></a>
+  
+    <img class="logo" src="../assets/icons/logo-large.svg" alt="logo">
+  
    <!-- <div class="btn-nav">
-   <img  src="../assets/icons/icon-user.svg" alt="">
+   <img  src="../asset s/icons/icon-user.svg" alt="">
     <span class="btn-label">{{ userEmail }}</span>
    
    </div> -->
