@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { loginUser, logoutUser,getCurrentUser, saveUserProfile } from '../services/authServices';
+import { loginUser, logoutUser,getCurrentUser, saveUserProfile, registerUser} from '../services/authServices';
 
 function getCookie(name) {
   const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -32,7 +32,22 @@ export const useUserStore = defineStore('user', {
       }
         return false;
     },
+     async signup(data) {
+      try {
+        const response = await registerUser(data);
+        if (response) {
+          this.user = response; // Store user data on successful signup
+          this.isAuthenticated = true; // Update authentication state
+          return true;
+        }
+      } catch (error) {
+        console.error('Signup failed:', error);
+      }
+      return false; // Return false if signup failed
+    },
     
+    // Option 2: If not logged in, redirect to login page instead
+
     async logout() {
       const success = await logoutUser();
       if (success) {
