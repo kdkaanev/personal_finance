@@ -130,14 +130,6 @@ flex-grow: 0;
     /* Budget Name */
 
 width: 496px;
-height: 18px;
-
-/* text-preset-5-bold */
-font-family: 'Public Sans';
-font-style: normal;
-font-weight: 700;
-font-size: 12px;
-line-height: 150%;
 /* identical to box height, or 18px */
 
 color: #696868;
@@ -383,4 +375,4 @@ flex-grow: 0;
     border-radius: 0.375rem;
     cursor: pointer;
   }
-  </style>
+</style>

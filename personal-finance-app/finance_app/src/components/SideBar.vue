@@ -1,17 +1,44 @@
 <script>
+
+import { useUserStore } from '../stores/useUserStore';
 export default {
   emits: ['change-component'],
-  data() {
+  props: {
+    userName: {
+      type: String,
+      required: true,
+    }
+  },
+  setup() {
     return {
-      buttons: [
-        { label: 'Overview', icon: 'icon-nav-overview.svg', component: 'OverView' },
-        { label: 'Transactions', icon: 'icon-nav-transactions.svg', component: 'TransActions' },
-        { label: 'Budgets', icon: 'icon-nav-budgets.svg', component: 'BudGets' },
-        { label: 'Pots', icon: 'icon-nav-pots.svg', component: 'PotsCart' },
-        { label: 'Recurring Bills', icon: 'icon-nav-recurring-bills.svg', component: 'RecurringBills' },
-       
+      userStore: useUserStore(),
+      
+    };
+  },
+ 
 
-      ],
+  computed: {
+     buttons() {
+    return [
+      { label: this.userName, icon: 'icon-user.svg', component: 'ProfilePage' },
+      { label: 'Overview', icon: 'icon-nav-overview.svg', component: 'OverView' },
+      { label: 'Transactions', icon: 'icon-nav-transactions.svg', component: 'TransActions' },
+      { label: 'Budgets', icon: 'icon-nav-budgets.svg', component: 'BudGets' },
+      { label: 'Pots', icon: 'icon-nav-pots.svg', component: 'PotsCart' },
+      { label: 'Recurring Bills', icon: 'icon-nav-recurring-bills.svg', component: 'RecurringBills' },
+    ];
+  },
+    isMinimized() {
+      return this.isMinimized;
+    },
+    
+  },
+  
+
+  data() {
+        
+       
+    return {
       activeIndex: null,
       hoverIndex: null,
       isMinimized: false,
@@ -28,20 +55,29 @@ export default {
     },
     toggleMenu() {
       this.isMinimized = !this.isMinimized;
-    }
+    },
+  
   
   },
-  computed: {
-    isMinimized() {
-      return this.isMinimized;
-    }
-  }
+  
+  
+  
+
+    
 };
+
 </script>
 
 <template>
   <nav :class="['show-bar', { 'hide-bar': isMinimized }]">
-   <a href="/"> <img class="logo" src="../assets/icons/logo-large.svg" alt="logo"></a>
+  
+    <img class="logo" src="../assets/icons/logo-large.svg" alt="logo">
+  
+   <!-- <div class="btn-nav">
+   <img  src="../asset s/icons/icon-user.svg" alt="">
+    <span class="btn-label">{{ userEmail }}</span>
+   
+   </div> -->
     <div class="nav-links">
       <button
         v-for="(button, index) in buttons" :key="index"
@@ -56,7 +92,7 @@ export default {
     
     </div>
       <button v-if="!isMinimized" class="btn-min" @click="toggleMenu">
-        <img class="icon-nav" src="../assets/icons/icon-minimize-menu.svg" alt="house">Minimize Menue
+        <img src="../assets/icons/icon-minimize-menu.svg" alt="house">Minimize Menue
     </button>
     <button v-else class="btn-min"
     @click="toggleMenu">

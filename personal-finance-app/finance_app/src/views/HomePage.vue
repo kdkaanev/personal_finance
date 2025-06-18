@@ -6,6 +6,8 @@ import BudGets from '../components/BudGets.vue';
 import PotsCart from '../components/PotsCart.vue';
 import RecurringBills from '../components/RecurringBills.vue';
 import ModalPop from '../components/sub-component/ModalPop.vue';
+import { useUserStore } from '../stores/useUserStore';
+import ProfilePage from '../components/auth-componenet/ProfilePage.vue';
 
 
 export default {
@@ -16,24 +18,42 @@ export default {
     BudGets,
     PotsCart,
     RecurringBills,
-    ModalPop
+    ModalPop,
+    ProfilePage
     
   },
-  data() {
+    data() {
     return {
       currentComponent: 'OverView',
+      loading: true,
+      userStore: useUserStore(),
     };
   },
+    computed: {
+        userName() {
+        if (this.userStore.user.profile && this.userStore.user.profile.first_name) {
+            return this.userStore.user.profile.first_name || this.userStore.user.email;
+        }
+        return this.userStore.user.email || 'User';
+    }
+  },
+
+  async mounted() {
+    await this.userStore.reAuthUser(); // Make sure email is loaded
+    this.loading = false;
+  },
+  
 };
-
-
 
 
 </script>
 
 <template>
   <article class="container">
-    <SideBar @change-component="currentComponent = $event" />
+    <div v-if="loading">Loading...</div>
+    <div v-else>
+      <SideBar :user-name="userName" @change-component="currentComponent = $event" />
+    </div>
    
     <transition name="fade" mode="out-in">
       <component :is="currentComponent" />
