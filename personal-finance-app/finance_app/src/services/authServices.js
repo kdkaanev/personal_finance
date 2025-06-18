@@ -37,9 +37,19 @@ export async function registerUser(user) {
         alert('Registration successful!'); // Show success message
         
       } catch (error) {
-        console.error('Registration error:', error.response?.data || error.message);
-        alert('Registration failed: ' + (error.response?.data?.detail || 'Try again.'));
-    }
+         if (error.response && error.response.status === 400) {
+          const data = error.response.data;
+          for (const key in data) {
+            // Optionally handle/display errors per field
+            console.error(`Registration error [${key}]:`, data[key][0]);
+          }
+          alert('Registration failed: ' + (error.response?.data?.email || error.message));
+        } else {
+          console.error('Registration error:', error.response?.data || error.message);
+          alert('Registration failed: ' + (error.response?.data || 'Try again.'));
+        }
+        throw error; // Re-throw the error for further handling if needed
+      }
 }
 
 export async function loginUser({email, password}, expires=30) {

@@ -1,3 +1,120 @@
+<script>
+
+import { useUserStore } from '../../stores/useUserStore';
+import useVuelidate from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
+import { useRouter, useRoute } from 'vue-router';
+
+
+export default {
+  name: "SignUp",
+  emits: ['switch-modal'],
+ 
+  props: {
+    userName: {
+      type: String,
+      required: true,
+    }
+  },
+  computed: {
+    isMinimized() {
+      return this.isMinimized;
+    },
+  },
+  mounted() {
+    // You can add any initialization logic here if needed
+  },
+  watch: {
+    userName(newValue) {
+      // React to changes in userName if needed
+    }
+  },
+  // Define the reactive properties for the form
+  name: 'SignUp',
+  components: {},
+  setup() {
+    const userStore = useUserStore();
+    const router = useRouter();
+    const route = useRoute();
+
+    const v$ = useVuelidate({
+      forms: {
+        email: { required},
+        password: { required},
+        repearPassword: { required,}
+      }
+    });
+    return {
+      v$,
+      userStore,
+      router,
+      route
+    };
+  },
+  
+  data() {
+    return {
+      forms: {
+        email: '',
+        password: '',
+        repearPassword: ''
+      },
+      errors: {}
+    }
+  },
+  validations() {
+    return {
+      forms: {
+        email: { required},
+        password: { required},
+        repearPassword: { required,}
+      }
+    };
+  },
+  methods: {
+    signUp() {
+      this.v$.$touch();
+      if (this.v$.$invalid) return;
+      if (this.forms.password !== this.forms.repearPassword) {
+        alert("Passwords do not match");
+        return;
+      }
+      this.errors = {}; // Reset errors before submission
+      // Call the signup method from the user store
+      this.userStore.signup(this.forms)
+        .then(() => {
+          this.$emit('close'); // Close the modal
+          this.router.push('/home');
+          this.userStore.reAuthUser(); // Re-authenticate the user
+        })
+      .catch(err => {
+      
+        if (err.response && err.response.status === 400) {
+          
+          const data = err.response.data;
+          for (const key in data) {
+            this.errors[key] = data[key][0]; // get first error for each field
+
+          }
+         // Mark all fields as touched to show validation errors
+
+        }
+        if (data.email && data.email[0] === "Email is already in use.") {
+          alert("Email is already in use. Please log in.");
+          return;
+        }
+      });
+    },
+    goToLogin() {
+      this.$emit('switch-modal', 'login'); // Close the modal
+    }
+  }
+}
+</script>
+
+
+
+
 <template>
    <div class="modal-backdrop" @click.self="$emit('close')">
     <div class="modal-content">
@@ -10,20 +127,22 @@
    
   </section>
 
-  <form @submit.prevent="Signup" class="space">
-    <div >
+  <form @submit.prevent="signUp" class="space">
+    <div  :errors="v$.forms.email.$errors" >
       <label for="email"  >Email</label>
-    <input name="email" id="email" v-model="email" type="email" required>
+    <input name="email" id="email" v-model="v$.forms.email.$model" type="email" required>
+    <div v-if="errors.email" class="text-red-500">{{ errors.email }}</div>
+ 
   
   
     </div>
-    <div >
+    <div :errors="v$.forms.password.$errors" >
       <label for="password" >Create Password</label>
-      <input type="password" id="password" v-model="password"   required>
+      <input type="password" id="password" v-model="v$.forms.password.$model"   required>
     </div>
-     <div >
+     <div :errors="v$.forms.repearPassword.$errors">
       <label for="password" >Repear Password</label>
-      <input type="password" id="repear-password" v-model="repearPassword"   required>
+      <input type="password" id="repear-password" v-model="v$.forms.repearPassword.$model"   required>
     </div>
     <button type="submit" class="btn-primary">Sign Up</button>
     
@@ -37,32 +156,13 @@
 
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      email: '',
-      password: '',
-      repearPassword: '',
-    }
-  },
-  methods: {
-    Signup() {
-      // Implement your signup logic here
-      // For now, just log the form data
-      console.log('Signup:', this.email, this.password, this.repearPassword);
-      this.$router.push('/home'); // Redirect to home page after signup
-    },
-    goToLogin() {
-      this.$emit('switch-modal', 'login'); // Close the modal
-     
-    }
-  }
-}
-</script>
+
 
 <style scoped>
+
+
   .maximum input {
+
     /* Maximum Spend */
     /* Content */
     /* Input Field/Input Fields */
