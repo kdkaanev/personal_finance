@@ -1,3 +1,62 @@
+<script>
+import { ref } from 'vue';
+import { useUserStore } from '../../stores/useUserStore';
+export default {
+  name: 'EditProfileForm',
+  props: {
+    userProfile: {
+      type: Object,
+      required: true
+    }
+  },
+  emits: ['close','update'],
+  setup() {
+    const userStore = useUserStore();
+    const firstName = userStore.user.profile.first_name || '';
+    const lastName = userStore.user.profile.last_name || '';
+    const email = userStore.user.email || '';
+
+  
+    return {
+      firstName,
+      lastName,
+      email,
+      userStore
+   
+    };
+  },
+  mounted() {
+    // Re-authenticate user when component is mounted
+    const user = this.userStore.reAuthUser()
+   
+  },
+  methods: {
+  async submitProfile() {
+      const updatedProfile = {
+        first_name: this.firstName,
+        last_name: this.lastName,
+        email: this.email
+      }
+      try {
+        await this.userStore.saveProfile(updatedProfile);
+       
+        this.$emit('close');
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        // Handle error, e.g., show a notification
+      }
+      
+      this.$emit('close');
+      
+    }
+  },
+  
+  
+};
+
+</script>
+
+
 <template>
    <div class="modal-backdrop" @click.self="$emit('close')">
     <div class="modal-content">
@@ -12,7 +71,7 @@
     </button>
   </section>
   <p class="text-sm">If your saving targets change, feel free to update your profile</p>
-  <form @submit.prevent="submitprofile" class="space">
+  <form @submit.prevent="submitProfile" class="space">
     <div class="category">
       <label for="name"  >First Name</label>
       <input type="text" id="name" v-model="firstName" class="input" :input="firstName">

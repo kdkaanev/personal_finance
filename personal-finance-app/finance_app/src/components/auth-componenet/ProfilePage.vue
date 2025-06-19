@@ -11,12 +11,18 @@ export default {
             modalType: 'edit',
         };
     },
-    emits: ['logout'],
+    emits: ['logout', 'next', 'cancel', 'close'],
     props: {
         userName: {
             type: String,
             required: true,
-        }
+        }, 
+        userEmail: {
+            type: String,
+            required: true,
+        },
+        
+
     },
     components: {
         ModalPop,
@@ -31,6 +37,9 @@ export default {
             userStore,
             router
         };
+    },
+    mounted() {
+        this.userStore.reAuthUser();
     },
     computed: {
         userEmail() {
@@ -70,6 +79,7 @@ export default {
         },
        
     },
+  
   
 }
    
