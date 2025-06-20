@@ -11,7 +11,7 @@ export default {
             modalType: 'edit',
         };
     },
-    emits: ['logout', 'next', 'cancel', 'close'],
+    emits: ['logout', 'next', 'cancel', 'close', 'update'],
     props: {
         userName: {
             type: String,
@@ -51,6 +51,12 @@ export default {
     },
     
     methods: {
+        onProfileUpdate(data) {
+        
+          this.userProfile.first_name = data.first_name;
+          this.userProfile.last_name = data.last_name;
+         
+        },
         toggleModal() {
             this.showModal = !this.showModal;
         },
@@ -113,6 +119,7 @@ export default {
           @success="handleSuccess"
           @cancel="closeModal"
           @close="closeModal"
+          @update="onProfileUpdate"
         />
       </ModalPop>
     </div>

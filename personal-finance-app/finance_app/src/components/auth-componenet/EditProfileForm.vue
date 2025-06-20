@@ -3,12 +3,7 @@ import { ref } from 'vue';
 import { useUserStore } from '../../stores/useUserStore';
 export default {
   name: 'EditProfileForm',
-  props: {
-    userProfile: {
-      type: Object,
-      required: true
-    }
-  },
+  
   emits: ['close','update'],
   setup() {
     const userStore = useUserStore();
@@ -35,19 +30,18 @@ export default {
       const updatedProfile = {
         first_name: this.firstName,
         last_name: this.lastName,
-        email: this.email
+       
       }
       try {
         await this.userStore.saveProfile(updatedProfile);
-       
-        this.$emit('close');
+            this.$emit('update',updatedProfile);
+            this.$emit('close');
+      
       } catch (error) {
         console.error('Error updating profile:', error);
         // Handle error, e.g., show a notification
       }
-      
-      this.$emit('close');
-      
+  
     }
   },
   
@@ -82,10 +76,7 @@ export default {
       <input type="text" id="name" v-model="lastName" class="input" :input="lastName">
       
     </div>
-    <div class="maximum">
-      <label for="email" >Email</label>
-      <input type="email" id="email" v-model="email" class="input" >
-    </div>
+    
     
    
     <button type="submit" class="btn-primary">Save Changes</button>
