@@ -11,12 +11,18 @@ export default {
             modalType: 'edit',
         };
     },
-    emits: ['logout'],
+    emits: ['logout', 'next', 'cancel', 'close', 'update'],
     props: {
         userName: {
             type: String,
             required: true,
-        }
+        }, 
+        userEmail: {
+            type: String,
+            required: true,
+        },
+        
+
     },
     components: {
         ModalPop,
@@ -32,6 +38,9 @@ export default {
             router
         };
     },
+    mounted() {
+        this.userStore.reAuthUser();
+    },
     computed: {
         userEmail() {
             return this.userStore.user.email || 'User';
@@ -42,6 +51,12 @@ export default {
     },
     
     methods: {
+        onProfileUpdate(data) {
+        
+          this.userProfile.first_name = data.first_name;
+          this.userProfile.last_name = data.last_name;
+         
+        },
         toggleModal() {
             this.showModal = !this.showModal;
         },
@@ -70,6 +85,7 @@ export default {
         },
        
     },
+  
   
 }
    
@@ -103,6 +119,7 @@ export default {
           @success="handleSuccess"
           @cancel="closeModal"
           @close="closeModal"
+          @update="onProfileUpdate"
         />
       </ModalPop>
     </div>

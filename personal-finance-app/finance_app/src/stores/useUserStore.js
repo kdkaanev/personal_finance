@@ -70,6 +70,7 @@ export const useUserStore = defineStore('user', {
     async saveProfile(profileData) {
       try {
         await saveUserProfile(profileData);
+        console.log(profileData);
       } catch (error) {
         console.error('Save profile failed:', error);
         throw error;
