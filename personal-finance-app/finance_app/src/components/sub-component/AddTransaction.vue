@@ -3,21 +3,18 @@ import { ref } from 'vue';
 import { useUserStore } from '../../stores/useUserStore';
 import useVuelidate from '@vuelidate/core';
 import { useTransactionStore } from '../../stores/useTransactionStore';
+import { required } from '@vuelidate/validators';
 export default {
   name: 'EditProfileForm',
   
   emits: ['close','update'],
-setup() {
-  return {
-      v$: useVuelidate(),
-      userStore: useUserStore(),
-      transactionStore: useTransactionStore(),
-      
-  };
-},
+
 
 data() {
   return {
+    userStore: useUserStore(),
+      transactionStore: useTransactionStore(),
+      v$: useVuelidate(),
      categories: [
           'Entertainment' ,
           'Bills',
@@ -34,20 +31,31 @@ data() {
        
        
       ],
-
-     formAddTransaction: {
-      avatar: '',
-      name: '',
+       formAddTransaction: {
+        avatar: '',
+        name: '',
         selectedCategory: '',
         typeCategory: '',
         amount: '',
-        selectedRecurring: false,   
-     
+        selectedRecurring: false
+      }
 
-     },
+   
     
   };
 },
+validations() {
+    return {
+      formAddTransaction: {
+        avatar: {},
+        name: { required },
+        selectedCategory: { required },
+        typeCategory: { required },
+        amount: { required },
+        selectedRecurring: { required }
+      }
+    };
+  },
   mounted() {
     // Re-authenticate user when component is mounted
     //const user = this.userStore.reAuthUser()
@@ -64,8 +72,10 @@ data() {
         };
         try {
             await this.transactionStore.addTransaction(newTransaction);
-            this.$emit('add', newTransaction);
+            
+           
             this.$emit('close');
+            
         } catch (error) {
             console.error('Error adding transaction:', error);
             // Handle error, e.g., show a notification
@@ -95,19 +105,19 @@ data() {
   </section>
   <p class="text-sm">Add info for new transaction</p>
   <form @submit.prevent="submitTransaction" class="space">
-    <div class="category">
-      <label for="name"  >Avatar</label>
-      <input type="url" id="name" v-model="avatar" class="input" :input="avatar">
+    <div class="category" :errors="v$.formAddTransaction.avatar.$errors">
+      <label for="avatar"  >Avatar</label>
+      <input type="url" id="avatar" v-model="v$.formAddTransaction.avatar.$model" class="input" placeholder="https://example.com/avatar.jpg" >
       
     </div>
-    <div class="category">
+    <div class="category" :errors="v$.formAddTransaction.name.$errors">
       <label for="name"  >Recipient / Sender</label>
-      <input type="text" id="name" v-model="name" class="input" :input="name">
+      <input type="text" id="name" v-model="v$.formAddTransaction.name.$model" class="input" >
       
     </div>
-    <div class="category">
+    <div class="category" :errors="v$.formAddTransaction.selectedCategory.$errors">
       <label for="category"  >Transaction Category</label>
-    <select name="category" id="category" v-model="selectedCategory">
+    <select name="category" id="category" v-model="v$.formAddTransaction.selectedCategory.$model" class="input">
   
       <option v-for="category in  categories " :key="category" :value="category" >
         {{ category }}
@@ -116,20 +126,20 @@ data() {
     </div>
     <div >
        <label for="typeCategory"  >Transaction Type</label>
-      <div class="radio-buttons">
-        <input type="radio" id="typeCategory" v-model="typeCategory" value="income" > Income
-        <input type="radio" id="typeCategory" v-model="typeCategory" value="expense"> Expense
+      <div class="radio-buttons" :errors="v$.formAddTransaction.typeCategory.$errors">
+        <input type="radio" id="typeCategory" v-model="v$.formAddTransaction.typeCategory.$model" value="income" > Income
+        <input type="radio" id="typeCategory" v-model="v$.formAddTransaction.typeCategory.$model" value="expense"> Expense
       </div>
     </div>
-    <div class="category">
+    <div class="category" :errors="v$.formAddTransaction.amount.$errors">
       <label for="amount"  >Amount</label>
-      <input type="number" id="amount" v-model="amount" class="input" placeholder="$ e.g.2000" required>
+      <input type="number" id="amount" v-model="v$.formAddTransaction.amount.$model"  class="input" placeholder="$ e.g.2000" required>
     </div>
     <label for="theme"  >Recurring</label>
-    <div class="radio-buttons">
+    <div class="radio-buttons" :errors="v$.formAddTransaction.selectedRecurring.$errors">
         
-        <input type="checkbox" id="recurring" v-model="selectedRecurring" value="light"> yes
-        <input type="checkbox" id="recurring" v-model="selectedRecurring" value="dark"> no
+        <input type="checkbox" id="recurring" v-model="v$.formAddTransaction.selectedRecurring.$model" value="light"> yes
+      
     </div>
     
     
