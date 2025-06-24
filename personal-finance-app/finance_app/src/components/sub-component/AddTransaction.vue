@@ -44,6 +44,18 @@ data() {
     
   };
 },
+created() {
+    // Initialize Vuelidate validation
+    this.v$ = useVuelidate();
+  },
+  emits: ['close'],
+  components: {},
+  setup() {
+    const userStore = useUserStore();
+    const transactionStore = useTransactionStore();
+    return { userStore, transactionStore };
+  },
+  // Define validations for the form
 validations() {
     return {
       formAddTransaction: {
@@ -63,6 +75,11 @@ validations() {
   },
   methods: {
   async submitTransaction() {
+    this.v$.$touch();
+    if (this.v$.$invalid) {
+        console.error('Form is invalid');
+        return;
+    }
         const newTransaction = {
             avatar: this.formAddTransaction.avatar,
             name: this.formAddTransaction.name,
@@ -78,7 +95,7 @@ validations() {
             
         } catch (error) {
             console.error('Error adding transaction:', error);
-            // Handle error, e.g., show a notification
+            
         }
   
     }
@@ -112,12 +129,12 @@ validations() {
     </div>
     <div class="category" :errors="v$.formAddTransaction.name.$errors">
       <label for="name"  >Recipient / Sender</label>
-      <input type="text" id="name" v-model="v$.formAddTransaction.name.$model" class="input" >
+      <input type="text" id="name" v-model="v$.formAddTransaction.name.$model" class="input" required placeholder="e.g. John Doe" >
       
     </div>
     <div class="category" :errors="v$.formAddTransaction.selectedCategory.$errors">
       <label for="category"  >Transaction Category</label>
-    <select name="category" id="category" v-model="v$.formAddTransaction.selectedCategory.$model" class="input">
+    <select name="category" id="category" v-model="v$.formAddTransaction.selectedCategory.$model" class="input" required>
   
       <option v-for="category in  categories " :key="category" :value="category" >
         {{ category }}
@@ -127,18 +144,18 @@ validations() {
     <div >
        <label for="typeCategory"  >Transaction Type</label>
       <div class="radio-buttons" :errors="v$.formAddTransaction.typeCategory.$errors">
-        <input type="radio" id="typeCategory" v-model="v$.formAddTransaction.typeCategory.$model" value="income" > Income
-        <input type="radio" id="typeCategory" v-model="v$.formAddTransaction.typeCategory.$model" value="expense"> Expense
+        <input type="radio" id="typeCategory" v-model="v$.formAddTransaction.typeCategory.$model" value="income" required> Income
+        <input type="radio" id="typeCategory" v-model="v$.formAddTransaction.typeCategory.$model" value="expense"required> Expense
       </div>
     </div>
     <div class="category" :errors="v$.formAddTransaction.amount.$errors">
       <label for="amount"  >Amount</label>
       <input type="number" id="amount" v-model="v$.formAddTransaction.amount.$model"  class="input" placeholder="$ e.g.2000" required>
     </div>
-    <label for="theme"  >Recurring</label>
+  
     <div class="radio-buttons" :errors="v$.formAddTransaction.selectedRecurring.$errors">
-        
-        <input type="checkbox" id="recurring" v-model="v$.formAddTransaction.selectedRecurring.$model" value="light"> yes
+          <label for="theme"  >Recurring</label>
+        <input type="checkbox" id="recurring" v-model="v$.formAddTransaction.selectedRecurring.$model" value="light" required> 
       
     </div>
     
