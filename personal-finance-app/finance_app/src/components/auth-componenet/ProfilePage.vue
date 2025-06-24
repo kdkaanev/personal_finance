@@ -3,11 +3,12 @@ import { useUserStore } from '../../stores/useUserStore';
 import { useRouter } from 'vue-router';
 import ModalPop from '../sub-component/ModalPop.vue';
 import EditProfileForm from './EditProfileForm.vue';
+import AddTransaction from '../sub-component/AddTransaction.vue';
 export default {
     data() {
         return {
             showModal: false,
-            currentComponent: 'EditProfileForm',
+            currentComponent: null,
             modalType: 'edit',
         };
     },
@@ -26,7 +27,8 @@ export default {
     },
     components: {
         ModalPop,
-        EditProfileForm
+        EditProfileForm,
+        AddTransaction
     },
     name: "ProfilePage",
     setup() {
@@ -47,6 +49,13 @@ export default {
         },
         userProfile() {
             return this.userStore.user.profile || {};
+        },
+         currentComponent() {
+            if (this.modalType === 'edit') {
+                return 'EditProfileForm';
+            } else {
+                return 'AddTransaction';
+            }
         }
     },
     
@@ -105,7 +114,8 @@ export default {
           <h3>Welcome, {{ userEmail }}</h3>
           <div class="info"><h3>First Name:</h3><p>{{ userProfile.first_name }}</p></div>
           <div class="info"><h3>Last Name:</h3><p>{{ userProfile.last_name }}</p></div>
-          <button @click="toggleModal()" class="edit"><span>Edit Profile</span></button>
+          <button class="btn" @click="modalType='edit'; toggleModal()" ><span>Edit Profile</span></button>
+          <button class="btn" @click="modalType='add-transaction' ;toggleModal()"><span>Add Transaction</span></button>
         </div>
       </div>
     </div>
@@ -354,7 +364,7 @@ width: 200px;
 height: 21px;
 /* text-preset-4 */   
 }          
-.edit {
+.btn {
   /* Edit Profile Button */
   /* Main Content Body Left Edit Profile Button */
   display: flex;
@@ -376,7 +386,7 @@ flex: none;
 order: 0;
 flex-grow: 0;
 }
-.edit span {
+.btn span {
   /* Edit Profile Button Text */
   /* Main Content Body Left Edit Profile Button Text */
   width: 123px;
