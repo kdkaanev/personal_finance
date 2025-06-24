@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useUserStore } from '../../stores/useUserStore';
 import useVuelidate from '@vuelidate/core';
+import { useTransactionStore } from '../../stores/useTransactionStore';
 export default {
   name: 'EditProfileForm',
   
@@ -10,6 +11,7 @@ setup() {
   return {
       v$: useVuelidate(),
       userStore: useUserStore(),
+      transactionStore: useTransactionStore(),
       
   };
 },
@@ -48,7 +50,7 @@ data() {
 },
   mounted() {
     // Re-authenticate user when component is mounted
-    const user = this.userStore.reAuthUser()
+    //const user = this.userStore.reAuthUser()
    
   },
   methods: {
@@ -61,7 +63,7 @@ data() {
             amount: parseFloat(this.formAddTransaction.amount),
         };
         try {
-            await this.userStore.addTransaction(newTransaction);
+            await this.transactionStore.addTransaction(newTransaction);
             this.$emit('add', newTransaction);
             this.$emit('close');
         } catch (error) {

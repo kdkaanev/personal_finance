@@ -25,34 +25,43 @@ function getCookie(name) {
 const ENDPOINT = "transactions/";
 
 export async function fetchTransactions() {
-  try {
-    await fetchCSRFToken(); // Ensure CSRF token is fetched before making requests
-    const csrfToken = getCookie("csrftoken");
-    if (!csrfToken) {
-      throw new Error("CSRF token not found. Please ensure you are authenticated.");
-    }
-    const response = await axiosFA.get(ENDPOINT);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching transactions:", error);
-    throw error; // Re-throw the error for further handling if needed
+  await fetchCSRFToken(); // Ensure CSRF token is fetched before making requests
+  const csrfToken = getCookie("csrftoken");
+  if (!csrfToken) {
+    throw new Error("CSRF token not found. Please ensure you are authenticated.");
   }
+  try {
+    const response = await axiosFA.get(ENDPOINT);
+    return response.data; // Return the fetched transactions
+  }
+  catch (error) {
+    console.error("Error fetching transactions:", error);
+    throw error; // Re-throw the error for further handling if needed 
 }
+  }
+
 
 
 export async function addTransaction(data) {
+ await fetchCSRFToken(); // Ensure CSRF token is fetched before making requests
+  const csrfToken = getCookie("csrftoken");
+  if (!csrfToken) {
+    throw new Error("CSRF token not found. Please ensure you are authenticated.");
+  }
   try {
-    await fetchCSRFToken(); // Ensure CSRF token is fetched before making requests
-    const csrfToken = getCookie("csrftoken");
-    if (!csrfToken) {
-      throw new Error("CSRF token not found. Please ensure you are authenticated.");
-    }
-    const response = await axiosFA.post(ENDPOINT, data);
-    return response.data;
-  } catch (error) {
+    const response = await axiosFA.post(ENDPOINT, 
+      data,
+      {
+        headers: {
+          "X-CSRFToken": csrfToken, // Include CSRF token in the request headers
+        },
+      });
+    return response.data; // Return the added transaction
+  }
+  catch (error) {
     console.error("Error adding transaction:", error);
     throw error; // Re-throw the error for further handling if needed
-  }
+  } 
 }
 export async function deleteTransaction(id) {
   try {
