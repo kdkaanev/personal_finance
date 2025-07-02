@@ -64,7 +64,7 @@ validations() {
         selectedCategory: { required },
         typeCategory: { required },
         amount: { required },
-        selectedRecurring: { required }
+        selectedRecurring: {}
       }
     };
   },
@@ -86,6 +86,7 @@ validations() {
             category: this.formAddTransaction.selectedCategory,
             type: this.formAddTransaction.typeCategory,
             amount: parseFloat(this.formAddTransaction.amount),
+            is_recurring: this.formAddTransaction.selectedRecurring,
         };
         try {
             await this.transactionStore.addTransaction(newTransaction);
@@ -155,13 +156,13 @@ validations() {
   
     <div class="radio-buttons" :errors="v$.formAddTransaction.selectedRecurring.$errors">
           <label for="theme"  >Recurring</label>
-        <input type="checkbox" id="recurring" v-model="v$.formAddTransaction.selectedRecurring.$model" value="light" required> 
+        <input type="checkbox" id="recurring" v-model="v$.formAddTransaction.selectedRecurring.$model" value="true"> 
       
     </div>
     
     
    
-    <button type="submit" class="btn-primary">Save Changes</button>
+    <button type="submit" class="btn-primary">Add Transaction</button>
    
    
   </form>

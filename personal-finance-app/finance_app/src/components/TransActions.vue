@@ -1,30 +1,89 @@
 <script>
 import { useTransactionStore } from '../stores/useTransactionStore';
+import { mapState, mapActions } from 'pinia';
+import AddTransaction from './sub-component/AddTransaction.vue';
+import ModalPop from './sub-component/ModalPop.vue';
 export default {
+
+  components: {
+    AddTransaction, 
+    ModalPop
+  },
+  emits: ['show'],
   name: 'Transactions',
   data() {
     return {
+      searchTerm: '',
+      sortBy: 'latest',
+      categoryFilter: 'all',
       transactionStore: useTransactionStore(),
       transactions: [],
+      searchResults: [],
   currentPage: 1,
   itemsPerPage: 10,
+      showModal: false,
+      currentComponent: 'AddTransaction', // Default component to show in modal
       
     };
   },
   computed: {
-  paginatedTransactions() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
+  ...mapState(useTransactionStore, ['transactions']),
+   filteredTransactions() {
+     let filtered = [...this.transactions];
+     if (this.categoryFilter !== 'all') {
+      filtered = filtered.filter(t => 
+        t.category.toLowerCase() === this.categoryFilter.toLowerCase()
+      );
+    }
+
+     if( this.searchTerm.length >= 3) {
+       const term = this.searchTerm.toLowerCase().trim();
+       filtered = filtered.filter(t => t.name.toLowerCase().includes(term));
+     }
+
+     switch (this.sortBy) {
+       case 'latest':
+         filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+         break;
+       case 'oldest':
+         filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+         break;
+       case 'a-z':
+         filtered.sort((a, b) => a.name.localeCompare(b.name));
+         break;
+       case 'z-a':
+         filtered.sort((a, b) => b.name.localeCompare(a.name));
+         break;
+       case 'highest':
+         filtered.sort((a, b) => b.amount - a.amount);
+         break;
+       case 'lowest':
+         filtered.sort((a, b) => a.amount - b.amount);
+         break;
+     }
+      return filtered;
+    },
+   paginatedTransactions() {
+     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    return this.transactions.slice(start, end);
+    return this.filteredTransactions.slice(start, end);
   },
   totalPages() {
-    return Math.ceil(this.transactions.length / this.itemsPerPage);
-  }
-}
-,
-mounted() {
-  this.loadTransactions();
+    const list = this.searchResults.length ? this.searchResults : this.transactions;
+    return Math.ceil(list.length / this.itemsPerPage);
+  },
+  positiveTransactions() {
+    const list = this.searchResults.length ? this.searchResults : this.transactions;
+    return list.filter(t => t.type === 'income' || t.amount > 0);
+  },
+  negativeTransactions() {
+    const list = this.searchResults.length ? this.searchResults : this.transactions;
+    return list.filter(t => t.type === 'expense' || t.amount < 0);
+  },
 },
+// async mounted() {
+//   await this.loadTransactions();
+// },
 watch: {
   currentPage(newPage) {
     if (newPage < 1) {
@@ -36,6 +95,18 @@ watch: {
 },
  
 methods: {
+ 
+   toggleModal() {
+            this.showModal = !this.showModal;
+        },
+        closeModal() {
+            this.showModal = false;
+        },
+  showHuj(transaction) {
+    console.log('Hujer', transaction);
+
+  },
+  ...mapActions(useTransactionStore, ['getTransactions']),
   async loadTransactions() {
     try {
        await this.transactionStore.getTransactions();
@@ -44,8 +115,34 @@ methods: {
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }
+  },
+ async performSearch() {
+  const term = this.searchTerm.toLowerCase().trim();
+
+  if (term.length < 3) {
+    this.searchResults = []; // ← fallback to all
+  } else {
+    this.searchResults = this.transactions.filter(t =>
+      t.name.toLowerCase().includes(term)
+    );
   }
+
+  this.currentPage = 1;
 },
+
+},
+async mounted() {
+  await this.loadTransactions();
+  this.searchResults = []
+}
+// mounted() {
+//   this.loadTransactions();
+//   // this.transactions = this.transactionStore.transactions;
+//   // console.log(this.transactions);
+//   // this.$nextTick(() => {
+//   //   this.paginatedTransactions = this.transactions.slice(0, this.itemsPerPage);
+//   // });
+// }
 }
 </script>
 
@@ -58,8 +155,8 @@ methods: {
       <div class="fields">
         <div class="search-container">
           <div class="search">
-            <input type="text" placeholder="Search transaction">
-            <img src="../assets/icons/icon-search.svg" alt="lupa" class="search-icon">
+            <input type="text" placeholder="Search transaction" v-model="searchTerm" @keyup.enter="performSearch" @input="() => {if (!searchTerm) performSearch()}"/>
+            <img src="../assets/icons/icon-search.svg" alt="lupa" class="search-icon"  @click="performSearch" />
           </div>
         </div>
          <div class="checkbox">
@@ -69,7 +166,7 @@ methods: {
          
           
          <div class="select-sort">
-          <select id="sort">
+          <select id="sort" v-model="sortBy">
             <option value="latest">Latest</option>
             <option value="oldest">Oldest</option>
             <option value="a-z">A to Z</option>
@@ -84,7 +181,7 @@ methods: {
           <label for="category">Category</label>
           
           <div class="select-category">
-           <select id="category">
+           <select id="category" v-model="categoryFilter">
              <option value="all">All Transactions</option>
              <option value="entertainment">Entertainment</option>
              <option value="general">General</option>
@@ -117,9 +214,9 @@ methods: {
          </div>
         </section>
         <section class="transactions">
-          <div v-for="transaction in paginatedTransactions" :key="transaction.name" class="transaction">
+          <div v-for="transaction in paginatedTransactions" :key="transaction.name" class="transaction" @click="toggleModal(transaction)">
             <div class="avatar">
-              <img :src="transaction.avatar" alt="Avatar">
+              <img :src="transaction.avatar" alt="Avatar" >
               <p>{{ transaction.name }}</p>
             </div>
             <div class="details">
@@ -128,8 +225,8 @@ methods: {
               <p>{{ transaction.category }}</p>
               <p>{{ new Date(transaction.date).toLocaleDateString() }}</p>
              </span>
-              <span class="amount" :class="{ 'negative': transaction.amount < 0 }">
-                {{ transaction.amount < 0 ? '-' : '+' }}${{ Math.abs(transaction.amount).toFixed(2) }}
+              <span class="amount" :class="{ 'negative': negativeTransactions.includes(transaction) }">
+                {{ negativeTransactions.includes(transaction) ? '-' : '+' }}${{ Math.abs(transaction.amount).toFixed(2) }}
 
               </span>
             </div>
@@ -154,7 +251,19 @@ methods: {
 </span>
   <button class="pagination-btn btn" @click="currentPage++" :disabled="currentPage === totalPages"> Next <span><img src="../assets/icons/icon-caret-right.svg" alt=""></span></button>
 </div>
-
+<div class="add-transaction">
+  <ModalPop v-if="showModal" @close="closeModal">
+        <component
+          :is="currentComponent"
+          @switch-modal="switchModal"
+          @login-success="handleSuccess"
+          @success="handleSuccess"
+          @cancel="closeModal"
+          @close="closeModal"
+          @update="onProfileUpdate"
+        />
+      </ModalPop>
+</div>
     </section>
     
   </div>
@@ -162,6 +271,33 @@ methods: {
 </template>
 
 <style scoped>
+.add-transaction {
+  /* Add New Budget Button */
+  /* Main Content Title Button */
+/* Frame 529 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px;
+gap: 16px;
+cursor: pointer;
+
+width: 155px;
+height: 53px;
+
+background: #201F24;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
 .trans-container{
   /* Desktop - Transactions */
 
@@ -709,6 +845,7 @@ width: 50%;
 height: 40px;
 
 
+
 /* Inside auto layout */
 flex: none;
 order: 0;
@@ -725,8 +862,8 @@ flex-grow: 1;
 
 width: 40px;
 height: 40px;
+border-radius: 100%;
 
-background: url(emma-richardson.jpg), #F8F4F0;
 
 /* Inside auto layout */
 flex: none;

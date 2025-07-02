@@ -80,6 +80,7 @@ export const useUserStore = defineStore('user', {
       try {
         // Check if the user is already authenticated in the state
         if (this.user) {
+          this.isAuthenticated = true; // User is already authenticated
           return true;
         }
 
