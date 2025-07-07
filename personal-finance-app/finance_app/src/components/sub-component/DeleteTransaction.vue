@@ -2,6 +2,7 @@
 
 import data from'../../data/data.json'
 import CustomSelect from './CustomSelect.vue'
+
 export default {
   components: {
     CustomSelect

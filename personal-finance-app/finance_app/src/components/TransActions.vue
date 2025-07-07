@@ -3,11 +3,15 @@ import { useTransactionStore } from '../stores/useTransactionStore';
 import { mapState, mapActions } from 'pinia';
 import AddTransaction from './sub-component/AddTransaction.vue';
 import ModalPop from './sub-component/ModalPop.vue';
+import EditTransaction from './sub-component/EditTransaction.vue';
+import DeleteTransaction from './sub-component/DeleteTransaction.vue';
 export default {
 
   components: {
     AddTransaction, 
-    ModalPop
+    ModalPop,
+    EditTransaction,
+    DeleteTransaction,
   },
   emits: ['show'],
   name: 'Transactions',
@@ -22,11 +26,26 @@ export default {
   currentPage: 1,
   itemsPerPage: 10,
       showModal: false,
-      currentComponent: 'AddTransaction', // Default component to show in modal
+      currentComponent: null,
+      modalType: 'edit' ,// Default component to show in modal
+      activeTransaction: null, // Track the transaction being edited or deleted
+      menuVisible: false, 
       
     };
   },
   computed: {
+
+    currentComponent() {
+      switch (this.modalType) {
+       
+        case 'edit':
+          return EditTransaction;
+        case 'delete':
+          return DeleteTransaction;
+        default:
+          return null;
+      }
+    },
   ...mapState(useTransactionStore, ['transactions']),
    filteredTransactions() {
      let filtered = [...this.transactions];
@@ -95,17 +114,35 @@ watch: {
 },
  
 methods: {
- 
+  toggleMenue(transaction) {  
+    this.activeTransaction = this.activeTransaction === transaction ? null : transaction;
+    this.menuVisible = !this.menuVisible;
+   
+  },
+    handleClickOutside(event) {
+      const menu = this.$refs.menuRef;
+      if (menu && !menu.contains(event.target)) {
+        this.activeTransaction = null;
+      }
+    },
+     openModal(type,) {
+    console.log(type)
+    this.modalType = type;
+    this.showModal = true;
+
+  
+  },
+  closeModal() {
+    this.showModal = false;
+  
+  },
    toggleModal() {
             this.showModal = !this.showModal;
         },
         closeModal() {
             this.showModal = false;
         },
-  showHuj(transaction) {
-    console.log('Hujer', transaction);
-
-  },
+  
   ...mapActions(useTransactionStore, ['getTransactions']),
   async loadTransactions() {
     try {
@@ -131,10 +168,19 @@ methods: {
 },
 
 },
-async mounted() {
-  await this.loadTransactions();
-  this.searchResults = []
-}
+
+mounted() {
+  document.addEventListener('click', this.handleClickOutside);
+  this.loadTransactions();
+  // this.transactions = this.transactionStore.transactions;
+  // console.log(this.transactions);
+  // this.$nextTick(() => {
+  //   this.paginatedTransactions = this.transactions.slice(0, this.itemsPerPage);
+  // });
+},
+beforeUnmount() {
+  document.removeEventListener('click', this.handleClickOutside);
+},
 // mounted() {
 //   this.loadTransactions();
 //   // this.transactions = this.transactionStore.transactions;
@@ -148,6 +194,17 @@ async mounted() {
 
 <template>
   <div class="trans-container">
+     <ModalPop v-if="showModal" @close="closeModal">
+        <component
+          :is="currentComponent"
+          @switch-modal="switchModal"
+          @login-success="handleSuccess"
+          @success="handleSuccess"
+          @cancel="closeModal"
+          @close="closeModal"
+          @update="onProfileUpdate"
+        />
+      </ModalPop>
     <section class="title">
      <h2>Transactions</h2>
     </section>
@@ -201,6 +258,7 @@ async mounted() {
         
            
          </div>
+
       </div>
       <div class="body">
         <section class="transaction">
@@ -213,9 +271,18 @@ async mounted() {
           <p class="amount-p">Amount</p>
          </div>
         </section>
-        <section class="transactions">
-          <div v-for="transaction in paginatedTransactions" :key="transaction.name" class="transaction" @click="toggleModal(transaction)">
-            <div class="avatar">
+        <section class="transactions" @close="closeModal" ref="menuRef">
+          <div v-for="transaction in paginatedTransactions" :key="transaction.name" class="transaction" >
+             <div v-if ="activeTransaction === transaction" >
+           
+             <ul class="absolute">
+        <li @click.stop="openModal('edit')" class="px-edit px-p">Edit Transaction</li>
+        
+        <li @click.stop="openModal('delete')" class="px-delete">Delete Transaction</li>
+        
+      </ul>
+            </div>
+            <div  class="avatar" @click="toggleMenue(transaction)">
               <img :src="transaction.avatar" alt="Avatar" >
               <p>{{ transaction.name }}</p>
             </div>
@@ -230,7 +297,7 @@ async mounted() {
 
               </span>
             </div>
-            
+           
           </div>
         </section>
       </div>
@@ -251,19 +318,8 @@ async mounted() {
 </span>
   <button class="pagination-btn btn" @click="currentPage++" :disabled="currentPage === totalPages"> Next <span><img src="../assets/icons/icon-caret-right.svg" alt=""></span></button>
 </div>
-<div class="add-transaction">
-  <ModalPop v-if="showModal" @close="closeModal">
-        <component
-          :is="currentComponent"
-          @switch-modal="switchModal"
-          @login-success="handleSuccess"
-          @success="handleSuccess"
-          @cancel="closeModal"
-          @close="closeModal"
-          @update="onProfileUpdate"
-        />
-      </ModalPop>
-</div>
+
+ 
     </section>
     
   </div>
@@ -835,6 +891,7 @@ flex-grow: 0;
   /* Recipient or Sender */
 
 /* Auto layout */
+position: relative;
 display: flex;
 flex-direction: row;
 align-items: center;
@@ -1218,8 +1275,106 @@ cursor: pointer;
   background: #201F24;
   color: #FFFFFF;
 }
+.absolute {
+
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 16px;
+gap: 16px;
+
+position: relative;
+
+height: 91px;
+max-height: 300px;
+
+background: #FFFFFF;
+/* drop-shadow */
+box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+border-radius: 8px;
+
+}
+.px-edit {
+  /* Edit Budget */
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+  /* Edit Budget Text */
+  /* Green */
+
+width: 77px;
+height: 21px;
+
+padding-bottom: 2rem;
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
 
 
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.px-p {
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+  /* Divider Line */
+  border-bottom: 1px solid grey;
+  /* Line 1 */}
+.px-delete {
+  /* Delete Budget */
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+  /* Delete Budget Text */
+  /* Red */
+  /* Frame 591 */
+
+/* Auto layout */
+/* Green */
+
+width: 94px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #C94736;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+li
+
+{
+  cursor: pointer;
+  list-style: none;
+}
+li:hover {
+  background-color: #f0f0f0;
+}
+li:active {
+  background-color: #e0e0e0;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
 
 
