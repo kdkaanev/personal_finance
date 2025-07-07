@@ -276,9 +276,9 @@ beforeUnmount() {
              <div v-if ="activeTransaction === transaction" >
            
              <ul class="absolute">
-        <li @click.stop="openModal('edit')" class="px-edit px-p">Edit Transaction</li>
+        <li @click.stop="openModal('edit')" class="px-edit px-p">Edit</li>
         
-        <li @click.stop="openModal('delete')" class="px-delete">Delete Transaction</li>
+        <li @click.stop="openModal('delete')" class="px-delete">Delete </li>
         
       </ul>
             </div>
