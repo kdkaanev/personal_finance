@@ -8,10 +8,14 @@ export default {
   name: 'EditProfileForm',
   
   emits: ['close','update'],
+   props: {
+    id: Number
+  },
 
 
 data() {
   return {
+    loadedTransactionId: null,
     userStore: useUserStore(),
       transactionStore: useTransactionStore(),
       v$: useVuelidate(),
@@ -73,34 +77,61 @@ validations() {
     //const user = this.userStore.reAuthUser()
    
   },
-  methods: {
-  async submitTransaction() {
-    this.v$.$touch();
-    if (this.v$.$invalid) {
-        console.error('Form is invalid');
-        return;
-    }
-        const newTransaction = {
-            avatar: this.formAddTransaction.avatar,
-            name: this.formAddTransaction.name,
-            category: this.formAddTransaction.selectedCategory,
-            type: this.formAddTransaction.typeCategory,
-            amount: parseFloat(this.formAddTransaction.amount),
-            is_recurring: this.formAddTransaction.selectedRecurring,
-        };
-        try {
-            await this.transactionStore.addTransaction(newTransaction);
-            
-           
-            this.$emit('close');
-            
-        } catch (error) {
-            console.error('Error adding transaction:', error);
-            
-        }
-  
+    watch: {
+    id: {
+      immediate: true,
+      handler(newId) {
+        if (newId) this.loadTransaction(newId)
+      }
     }
   },
+  methods: {
+    async loadTransaction(id) {
+      try {
+        const transaction = await this.transactionStore.getTransactionById(id);
+        this.loadedTransactionId = transaction.id
+        if (transaction) {
+          this.formAddTransaction = {
+            avatar: transaction.avatar || '',
+            name: transaction.name || '',
+            selectedCategory: transaction.category || '',
+            typeCategory: transaction.type || '',
+            amount: transaction.amount || '',
+            selectedRecurring: transaction.is_recurring || false
+          };
+        }
+      } catch (error) {
+        console.error('Error loading transaction:', error);
+      }
+    },
+    async editTransaction() {
+      this.v$.$touch();
+      if (this.v$.$invalid) {
+        return;
+      }
+      try {
+        const updatedTransaction = {
+          avatar: this.formAddTransaction.avatar,
+          name: this.formAddTransaction.name,
+          category: this.formAddTransaction.selectedCategory,
+          type: this.formAddTransaction.typeCategory,
+          amount: parseFloat(this.formAddTransaction.amount),
+          is_recurring: this.formAddTransaction.selectedRecurring
+        };
+        
+
+
+        await this.transactionStore.editeTransaction(updatedTransaction,this.loadedTransactionId);
+        console.log(this.loadedTransactionId)
+        if (updatedTransaction) {
+          this.$emit('update', updatedTransaction);
+          this.$emit('close');
+        }
+      } catch (error) {
+        console.error('Error editing transaction:', error);
+      }
+    }
+  }
   
   
 };
@@ -122,7 +153,7 @@ validations() {
     </button>
   </section>
   <p class="text-sm">Edit info for transaction</p>
-  <form @submit.prevent="submitTransaction" class="space">
+  <form @submit.prevent="editTransaction" class="space">
     <div class="category" :errors="v$.formAddTransaction.avatar.$errors">
       <label for="avatar"  >Avatar</label>
       <input type="url" id="avatar" v-model="v$.formAddTransaction.avatar.$model" class="input" placeholder="https://example.com/avatar.jpg" >
@@ -417,11 +448,12 @@ align-items: flex-start;
 padding: 32px;
 gap: 20px;
     background: white;
+    overflow-y: auto;
     border-radius: 1rem;
     padding: 2rem;
     width: 560px;
     max-width: 560px;
-    height: 90%;
+    height: 90vh;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 
 

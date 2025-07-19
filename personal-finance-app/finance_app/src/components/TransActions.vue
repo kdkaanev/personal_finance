@@ -28,11 +28,17 @@ export default {
       showModal: false,
       currentComponent: null,
       modalType: 'edit' ,// Default component to show in modal
-      activeTransaction: null, // Track the transaction being edited or deleted
+      activeTransaction: null, // Track the currently active transaction for menu
+      selectedTransaction: null, // Track the transaction being edited or deleted
+      selectedTransactionId: null, // Track the ID of the transaction being edited or deleted
       menuVisible: false, 
       
     };
   },
+  // async created() {
+  //   // Load transactions when the component is created
+  //   await this.transactionStore.getTransactionById(id);
+  // },
   computed: {
 
     currentComponent() {
@@ -98,6 +104,7 @@ export default {
   negativeTransactions() {
     const list = this.searchResults.length ? this.searchResults : this.transactions;
     return list.filter(t => t.type === 'expense' || t.amount < 0);
+  
   },
 },
 // async mounted() {
@@ -119,16 +126,20 @@ methods: {
     this.menuVisible = !this.menuVisible;
    
   },
+
+
     handleClickOutside(event) {
       const menu = this.$refs.menuRef;
       if (menu && !menu.contains(event.target)) {
         this.activeTransaction = null;
       }
     },
-     openModal(type,) {
-    console.log(type)
+     openModal(type,id) {
+    
     this.modalType = type;
     this.showModal = true;
+    this.selectedTransactionId = id;
+    this.selectedTransaction = this.transactionStore.transactions.find(t => t.id === id);
 
   
   },
@@ -171,6 +182,7 @@ methods: {
 
 mounted() {
   document.addEventListener('click', this.handleClickOutside);
+  
   this.loadTransactions();
   // this.transactions = this.transactionStore.transactions;
   // console.log(this.transactions);
@@ -197,6 +209,8 @@ beforeUnmount() {
      <ModalPop v-if="showModal" @close="closeModal">
         <component
           :is="currentComponent"
+          :transaction="selectedTransaction"
+          :id="selectedTransactionId"
           @switch-modal="switchModal"
           @login-success="handleSuccess"
           @success="handleSuccess"
@@ -272,13 +286,13 @@ beforeUnmount() {
          </div>
         </section>
         <section class="transactions" @close="closeModal" ref="menuRef">
-          <div v-for="transaction in paginatedTransactions" :key="transaction.name" class="transaction" >
+          <div v-for="transaction in paginatedTransactions" :key="transaction.id" class="transaction" >
              <div v-if ="activeTransaction === transaction" >
            
              <ul class="absolute">
-        <li @click.stop="openModal('edit')" class="px-edit px-p">Edit</li>
+        <li @click.stop="openModal('edit', transaction.id)" class="px-edit px-p">Edit</li>
         
-        <li @click.stop="openModal('delete')" class="px-delete">Delete </li>
+        <li @click.stop="openModal('delete', transaction.id)" class="px-delete">Delete </li>
         
       </ul>
             </div>
@@ -292,7 +306,7 @@ beforeUnmount() {
               <p>{{ transaction.category }}</p>
               <p>{{ new Date(transaction.date).toLocaleDateString() }}</p>
              </span>
-              <span class="amount" :class="{ 'negative': negativeTransactions.includes(transaction) }">
+              <span  class="amount" :class="{ 'negative': negativeTransactions.includes(transaction) }">
                 {{ negativeTransactions.includes(transaction) ? '-' : '+' }}${{ Math.abs(transaction.amount).toFixed(2) }}
 
               </span>

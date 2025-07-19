@@ -31,7 +31,11 @@ export async function fetchTransactions() {
     throw new Error("CSRF token not found. Please ensure you are authenticated.");
   }
   try {
-    const response = await axiosFA.get(ENDPOINT);
+    const response = await axiosFA.get(`${ENDPOINT}`, {
+      headers: {
+        "X-CSRFToken": csrfToken, // Include CSRF token in the request headers
+      },
+    });
     return response.data; // Return the fetched transactions
   }
   catch (error) {
@@ -42,6 +46,25 @@ export async function fetchTransactions() {
 
 
 
+export async function fetchTransactionById(transactionId) {
+  await fetchCSRFToken(); // Ensure CSRF token is fetched before making requests
+  const csrfToken = getCookie("csrftoken");
+  if (!csrfToken) {
+    throw new Error("CSRF token not found. Please ensure you are authenticated.");
+  }
+  try {
+    const response = await axiosFA.get(`${ENDPOINT}${transactionId}`);
+    return response.data; // Return the fetched transaction
+  } catch (error) {
+    console.error("Error fetching transaction by ID:", error);
+    throw error; // Re-throw the error for further handling if needed
+  }
+}
+
+  
+
+
+
 export async function addTransaction(data) {
  await fetchCSRFToken(); // Ensure CSRF token is fetched before making requests
   const csrfToken = getCookie("csrftoken");
@@ -49,7 +72,7 @@ export async function addTransaction(data) {
     throw new Error("CSRF token not found. Please ensure you are authenticated.");
   }
   try {
-    const response = await axiosFA.post(ENDPOINT, 
+    const response = await axiosFA.post(`${ENDPOINT}`, 
       data,
       {
         headers: {
@@ -62,6 +85,27 @@ export async function addTransaction(data) {
     console.error("Error adding transaction:", error);
     throw error; // Re-throw the error for further handling if needed
   } 
+}
+
+export async function updateTransaction(data, transactionId) {
+  await fetchCSRFToken(); // Ensure CSRF token is fetched before making requests
+  const csrfToken = getCookie("csrftoken");
+  if (!csrfToken) {
+    throw new Error("CSRF token not found. Please ensure you are authenticated.");
+  }
+  try {
+    const response = await axiosFA.patch(`${ENDPOINT}${transactionId}/`,
+      data, 
+      {
+        headers: {
+          "X-CSRFToken": csrfToken, // Include CSRF token in the request headers
+        },
+      });
+    return response.data; // Return the updated transaction
+  } catch (error) {
+    console.error("Error updating transaction:", error);
+    throw error; // Re-throw the error for further handling if needed
+  }
 }
 export async function deleteTransaction(id) {
   try {
