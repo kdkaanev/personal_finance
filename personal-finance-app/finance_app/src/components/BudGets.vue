@@ -224,7 +224,7 @@ mounted() {
               <span class="dot" :style="{ backgroundColor: budget.theme }"></span>
               <h3>{{ budget.category }}</h3>
              </div>
-              <div class="edit-budget relative" @click="toggleMenu(budget.category)"><img src="../assets/icons/icon-ellipsis.svg" alt="">
+              <div class="edit-budget relative" @click="toggleMenu(budget.category)" ><img src="../assets/icons/icon-ellipsis.svg" alt="">
                 <div v-if="activeCardId === budget.category">
       <ul class="absolute">
         <li @click="openModal('edit')" class="px-edit px-p">Edit Budget</li>

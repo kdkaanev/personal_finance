@@ -1,8 +1,12 @@
 <script>
 
+
 import LogIn from '../components/auth-componenet/LogIn.vue';
 import SignUp from '../components/auth-componenet/SignUp.vue';
 import ModalPop from '../components/sub-component/ModalPop.vue';
+import { useUserStore } from '../stores/useUserStore';
+import { useRouter } from 'vue-router';
+
 
     export default {
         name: 'AuthPage',
@@ -17,6 +21,8 @@ import ModalPop from '../components/sub-component/ModalPop.vue';
                 showModal: false,
                 currentComponent: null,
                 modalType: 'signup', // 'login' or 'signup'
+                userStore: useUserStore(),
+                router: useRouter()
             };
         },
         methods: {
@@ -43,7 +49,15 @@ import ModalPop from '../components/sub-component/ModalPop.vue';
                 return 'LogIn';
             }
         }
-    }
+    },
+  async mounted() {
+            // Ensure the user is authenticated
+            await this.userStore.reAuthUser();
+            console.log('Authenticated:', this.userStore.isAuthenticated);
+            if (this.userStore.isAuthenticated) {
+                this.router.push('/home'); // Redirect to home if already authenticated
+            }
+        }
 };
 </script>
 

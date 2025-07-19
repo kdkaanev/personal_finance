@@ -1,426 +1,224 @@
 <script>
-
+import { useTransactionStore } from '../stores/useTransactionStore';
+import { mapState, mapActions } from 'pinia';
+import AddTransaction from './sub-component/AddTransaction.vue';
+import ModalPop from './sub-component/ModalPop.vue';
+import EditTransaction from './sub-component/EditTransaction.vue';
+import DeleteTransaction from './sub-component/DeleteTransaction.vue';
 export default {
+
+  components: {
+    AddTransaction, 
+    ModalPop,
+    EditTransaction,
+    DeleteTransaction,
+  },
+  emits: ['show'],
   name: 'Transactions',
   data() {
     return {
-      transactions: [
-    {
-      "avatar": "../assets/images/avatars/emma-richardson.jpg",
-      "name": "Emma Richardson",
-      "category": "General",
-      "date": "2024-08-19T14:23:11Z",
-      "amount": 75.50,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/savory-bites-bistro.jpg",
-      "name": "Savory Bites Bistro",
-      "category": "Dining Out",
-      "date": "2024-08-19T20:23:11Z",
-      "amount": -55.50,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/daniel-carter.jpg",
-      "name": "Daniel Carter",
-      "category": "General",
-      "date": "2024-08-18T09:45:32Z",
-      "amount": -42.30,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/sun-park.jpg",
-      "name": "Sun Park",
-      "category": "General",
-      "date": "2024-08-17T16:12:05Z",
-      "amount": 120.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/urban-services-hub.jpg",
-      "name": "Urban Services Hub",
-      "category": "General",
-      "date": "2024-08-17T21:08:09Z",
-      "amount": -65.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/liam-hughes.jpg",
-      "name": "Liam Hughes",
-      "category": "Groceries",
-      "date": "2024-08-15T18:20:33Z",
-      "amount": 65.75,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/lily-ramirez.jpg",
-      "name": "Lily Ramirez",
-      "category": "General",
-      "date": "2024-08-14T13:05:27Z",
-      "amount": 50.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/ethan-clark.jpg",
-      "name": "Ethan Clark",
-      "category": "Dining Out",
-      "date": "2024-08-13T20:15:59Z",
-      "amount": -32.50,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/james-thompson.jpg",
-      "name": "James Thompson",
-      "category": "Entertainment",
-      "date": "2024-08-11T15:45:38Z",
-      "amount": -5.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/pixel-playground.jpg",
-      "name": "Pixel Playground",
-      "category": "Entertainment",
-      "date": "2024-08-11T18:45:38Z",
-      "amount": -10.00,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/ella-phillips.jpg",
-      "name": "Ella Phillips",
-      "category": "Dining Out",
-      "date": "2024-08-10T19:22:51Z",
-      "amount": -45.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/sofia-peterson.jpg",
-      "name": "Sofia Peterson",
-      "category": "Transportation",
-      "date": "2024-08-08T08:55:17Z",
-      "amount": -15.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/mason-martinez.jpg",
-      "name": "Mason Martinez",
-      "category": "Lifestyle",
-      "date": "2024-08-07T17:40:29Z",
-      "amount": -35.25,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/green-plate-eatery.jpg",
-      "name": "Green Plate Eatery",
-      "category": "Groceries",
-      "date": "2024-08-06T08:25:44Z",
-      "amount": -78.50,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/sebastian-cook.jpg",
-      "name": "Sebastian Cook",
-      "category": "Transportation",
-      "date": "2024-08-06T10:05:44Z",
-      "amount": -22.50,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/william-harris.jpg",
-      "name": "William Harris",
-      "category": "Personal Care",
-      "date": "2024-08-05T14:30:56Z",
-      "amount": -10.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/elevate-education.jpg",
-      "name": "Elevate Education",
-      "category": "Education",
-      "date": "2024-08-04T11:15:22Z",
-      "amount": -50.00,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/serenity-spa-and-wellness.jpg",
-      "name": "Serenity Spa & Wellness",
-      "category": "Personal Care",
-      "date": "2024-08-03T14:00:37Z",
-      "amount": -30.00,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
-      "name": "Spark Electric Solutions",
-      "category": "Bills",
-      "date": "2024-08-02T09:25:11Z",
-      "amount": -100.00,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/rina-sato.jpg",
-      "name": "Rina Sato",
-      "category": "Bills",
-      "date": "2024-08-02T13:31:11Z",
-      "amount": -50.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/swift-ride-share.jpg",
-      "name": "Swift Ride Share",
-      "category": "Transportation",
-      "date": "2024-08-01T18:40:33Z",
-      "amount": -18.75,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/aqua-flow-utilities.jpg",
-      "name": "Aqua Flow Utilities",
-      "category": "Bills",
-      "date": "2024-07-30T13:20:14Z",
-      "amount": -100.00,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/ecofuel-energy.jpg",
-      "name": "EcoFuel Energy",
-      "category": "Bills",
-      "date": "2024-07-29T11:55:29Z",
-      "amount": -35.00,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/yuna-kim.jpg",
-      "name": "Yuna Kim",
-      "category": "Dining Out",
-      "date": "2024-07-29T13:51:29Z",
-      "amount": -28.50,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/flavor-fiesta.jpg",
-      "name": "Flavor Fiesta",
-      "category": "Dining Out",
-      "date": "2024-07-27T20:15:06Z",
-      "amount": -42.75,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/harper-edwards.jpg",
-      "name": "Harper Edwards",
-      "category": "Shopping",
-      "date": "2024-07-26T09:43:23Z",
-      "amount": -89.99,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/buzz-marketing-group.jpg",
-      "name": "Buzz Marketing Group",
-      "category": "General",
-      "date": "2024-07-26T14:40:23Z",
-      "amount": 3358.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/technova-innovations.jpg",
-      "name": "TechNova Innovations",
-      "category": "Shopping",
-      "date": "2024-07-25T16:25:37Z",
-      "amount": -29.99,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/bytewise.jpg",
-      "name": "ByteWise",
-      "category": "Lifestyle",
-      "date": "2024-07-23T09:35:14Z",
-      "amount": -49.99,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/nimbus-data-storage.jpg",
-      "name": "Nimbus Data Storage",
-      "category": "Bills",
-      "date": "2024-07-21T10:05:42Z",
-      "amount": -9.99,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/emma-richardson.jpg",
-      "name": "Emma Richardson",
-      "category": "General",
-      "date": "2024-07-20T17:30:55Z",
-      "amount": -25.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/daniel-carter.jpg",
-      "name": "Daniel Carter",
-      "category": "General",
-      "date": "2024-07-19T12:45:09Z",
-      "amount": 50.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/sun-park.jpg",
-      "name": "Sun Park",
-      "category": "General",
-      "date": "2024-07-18T19:20:23Z",
-      "amount": -38.50,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/harper-edwards.jpg",
-      "name": "Harper Edwards",
-      "category": "Shopping",
-      "date": "2024-07-17T14:55:37Z",
-      "amount": -29.99,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/liam-hughes.jpg",
-      "name": "Liam Hughes",
-      "category": "Groceries",
-      "date": "2024-07-16T10:10:51Z",
-      "amount": -52.75,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/lily-ramirez.jpg",
-      "name": "Lily Ramirez",
-      "category": "General",
-      "date": "2024-07-15T16:35:04Z",
-      "amount": 75.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/ethan-clark.jpg",
-      "name": "Ethan Clark",
-      "category": "Dining Out",
-      "date": "2024-07-14T20:50:18Z",
-      "amount": -41.25,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/rina-sato.jpg",
-      "name": "Rina Sato",
-      "category": "Entertainment",
-      "date": "2024-07-13T09:15:32Z",
-      "amount": -10.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/james-thompson.jpg",
-      "name": "James Thompson",
-      "category": "Bills",
-      "date": "2024-07-12T13:40:46Z",
-      "amount": -95.50,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/ella-phillips.jpg",
-      "name": "Ella Phillips",
-      "category": "Dining Out",
-      "date": "2024-07-11T18:05:59Z",
-      "amount": -33.75,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/yuna-kim.jpg",
-      "name": "Yuna Kim",
-      "category": "Dining Out",
-      "date": "2024-07-10T12:30:13Z",
-      "amount": -27.50,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/sofia-peterson.jpg",
-      "name": "Sofia Peterson",
-      "category": "Transportation",
-      "date": "2024-07-09T08:55:27Z",
-      "amount": -12.50,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/mason-martinez.jpg",
-      "name": "Mason Martinez",
-      "category": "Lifestyle",
-      "date": "2024-07-08T15:20:41Z",
-      "amount": -65.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/sebastian-cook.jpg",
-      "name": "Sebastian Cook",
-      "category": "Transportation",
-      "date": "2024-07-07T11:45:55Z",
-      "amount": -20.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/william-harris.jpg",
-      "name": "William Harris",
-      "category": "General",
-      "date": "2024-07-06T17:10:09Z",
-      "amount": 20.00,
-      "recurring": false
-    },
-    {
-      "avatar": "./assets/images/avatars/elevate-education.jpg",
-      "name": "Elevate Education",
-      "category": "Education",
-      "date": "2024-07-05T11:15:22Z",
-      "amount": -50.00,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/serenity-spa-and-wellness.jpg",
-      "name": "Serenity Spa & Wellness",
-      "category": "Personal Care",
-      "date": "2024-07-03T14:00:37Z",
-      "amount": -30.00,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
-      "name": "Spark Electric Solutions",
-      "category": "Bills",
-      "date": "2024-07-02T09:25:51Z",
-      "amount": -100.00,
-      "recurring": true
-    },
-    {
-      "avatar": "./assets/images/avatars/swift-ride-share.jpg",
-      "name": "Swift Ride Share",
-      "category": "Transportation",
-      "date": "2024-07-02T19:50:05Z",
-      "amount": -16.50,
-      "recurring": false
-    }
-  ],
+      searchTerm: '',
+      sortBy: 'latest',
+      categoryFilter: 'all',
+      transactionStore: useTransactionStore(),
+      transactions: [],
+      searchResults: [],
   currentPage: 1,
   itemsPerPage: 10,
+      showModal: false,
+      currentComponent: null,
+      modalType: 'edit' ,// Default component to show in modal
+      activeTransaction: null, // Track the currently active transaction for menu
+      selectedTransaction: null, // Track the transaction being edited or deleted
+      selectedTransactionId: null, // Track the ID of the transaction being edited or deleted
+      menuVisible: false, 
       
     };
   },
+  // async created() {
+  //   // Load transactions when the component is created
+  //   await this.transactionStore.getTransactionById(id);
+  // },
   computed: {
-  paginatedTransactions() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
+
+    currentComponent() {
+      switch (this.modalType) {
+       
+        case 'edit':
+          return EditTransaction;
+        case 'delete':
+          return DeleteTransaction;
+        default:
+          return null;
+      }
+    },
+  ...mapState(useTransactionStore, ['transactions']),
+   filteredTransactions() {
+     let filtered = [...this.transactions];
+     if (this.categoryFilter !== 'all') {
+      filtered = filtered.filter(t => 
+        t.category.toLowerCase() === this.categoryFilter.toLowerCase()
+      );
+    }
+
+     if( this.searchTerm.length >= 3) {
+       const term = this.searchTerm.toLowerCase().trim();
+       filtered = filtered.filter(t => t.name.toLowerCase().includes(term));
+     }
+
+     switch (this.sortBy) {
+       case 'latest':
+         filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+         break;
+       case 'oldest':
+         filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+         break;
+       case 'a-z':
+         filtered.sort((a, b) => a.name.localeCompare(b.name));
+         break;
+       case 'z-a':
+         filtered.sort((a, b) => b.name.localeCompare(a.name));
+         break;
+       case 'highest':
+         filtered.sort((a, b) => b.amount - a.amount);
+         break;
+       case 'lowest':
+         filtered.sort((a, b) => a.amount - b.amount);
+         break;
+     }
+      return filtered;
+    },
+   paginatedTransactions() {
+     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    return this.transactions.slice(start, end);
+    return this.filteredTransactions.slice(start, end);
   },
   totalPages() {
-    return Math.ceil(this.transactions.length / this.itemsPerPage);
+    const list = this.searchResults.length ? this.searchResults : this.transactions;
+    return Math.ceil(list.length / this.itemsPerPage);
+  },
+  positiveTransactions() {
+    const list = this.searchResults.length ? this.searchResults : this.transactions;
+    return list.filter(t => t.type === 'income' || t.amount > 0);
+  },
+  negativeTransactions() {
+    const list = this.searchResults.length ? this.searchResults : this.transactions;
+    return list.filter(t => t.type === 'expense' || t.amount < 0);
+  
+  },
+},
+// async mounted() {
+//   await this.loadTransactions();
+// },
+watch: {
+  currentPage(newPage) {
+    if (newPage < 1) {
+      this.currentPage = 1;
+    } else if (newPage > this.totalPages) {
+      this.currentPage = this.totalPages;
+    }
   }
-}
+},
+ 
+methods: {
+  toggleMenue(transaction) {  
+    this.activeTransaction = this.activeTransaction === transaction ? null : transaction;
+    this.menuVisible = !this.menuVisible;
+   
+  },
 
-    };
+
+    handleClickOutside(event) {
+      const menu = this.$refs.menuRef;
+      if (menu && !menu.contains(event.target)) {
+        this.activeTransaction = null;
+      }
+    },
+     openModal(type,id) {
     
+    this.modalType = type;
+    this.showModal = true;
+    this.selectedTransactionId = id;
+    this.selectedTransaction = this.transactionStore.transactions.find(t => t.id === id);
 
+  
+  },
+  closeModal() {
+    this.showModal = false;
+  
+  },
+   toggleModal() {
+            this.showModal = !this.showModal;
+        },
+        closeModal() {
+            this.showModal = false;
+        },
+  
+  ...mapActions(useTransactionStore, ['getTransactions']),
+  async loadTransactions() {
+    try {
+       await this.transactionStore.getTransactions();
+      this.transactions = this.transactionStore.transactions;
+    
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+    }
+  },
+ async performSearch() {
+  const term = this.searchTerm.toLowerCase().trim();
+
+  if (term.length < 3) {
+    this.searchResults = []; // ← fallback to all
+  } else {
+    this.searchResults = this.transactions.filter(t =>
+      t.name.toLowerCase().includes(term)
+    );
+  }
+
+  this.currentPage = 1;
+},
+
+},
+
+mounted() {
+  document.addEventListener('click', this.handleClickOutside);
+  
+  this.loadTransactions();
+  // this.transactions = this.transactionStore.transactions;
+  // console.log(this.transactions);
+  // this.$nextTick(() => {
+  //   this.paginatedTransactions = this.transactions.slice(0, this.itemsPerPage);
+  // });
+},
+beforeUnmount() {
+  document.removeEventListener('click', this.handleClickOutside);
+},
+// mounted() {
+//   this.loadTransactions();
+//   // this.transactions = this.transactionStore.transactions;
+//   // console.log(this.transactions);
+//   // this.$nextTick(() => {
+//   //   this.paginatedTransactions = this.transactions.slice(0, this.itemsPerPage);
+//   // });
+// }
+}
 </script>
 
 <template>
   <div class="trans-container">
+     <ModalPop v-if="showModal" @close="closeModal">
+        <component
+          :is="currentComponent"
+          :transaction="selectedTransaction"
+          :id="selectedTransactionId"
+          @switch-modal="switchModal"
+          @login-success="handleSuccess"
+          @success="handleSuccess"
+          @cancel="closeModal"
+          @close="closeModal"
+          @update="onProfileUpdate"
+        />
+      </ModalPop>
     <section class="title">
      <h2>Transactions</h2>
     </section>
@@ -428,8 +226,8 @@ export default {
       <div class="fields">
         <div class="search-container">
           <div class="search">
-            <input type="text" placeholder="Search transaction">
-            <img src="../assets/icons/icon-search.svg" alt="lupa" class="search-icon">
+            <input type="text" placeholder="Search transaction" v-model="searchTerm" @keyup.enter="performSearch" @input="() => {if (!searchTerm) performSearch()}"/>
+            <img src="../assets/icons/icon-search.svg" alt="lupa" class="search-icon"  @click="performSearch" />
           </div>
         </div>
          <div class="checkbox">
@@ -439,7 +237,7 @@ export default {
          
           
          <div class="select-sort">
-          <select id="sort">
+          <select id="sort" v-model="sortBy">
             <option value="latest">Latest</option>
             <option value="oldest">Oldest</option>
             <option value="a-z">A to Z</option>
@@ -454,7 +252,7 @@ export default {
           <label for="category">Category</label>
           
           <div class="select-category">
-           <select id="category">
+           <select id="category" v-model="categoryFilter">
              <option value="all">All Transactions</option>
              <option value="entertainment">Entertainment</option>
              <option value="general">General</option>
@@ -474,6 +272,7 @@ export default {
         
            
          </div>
+
       </div>
       <div class="body">
         <section class="transaction">
@@ -486,10 +285,19 @@ export default {
           <p class="amount-p">Amount</p>
          </div>
         </section>
-        <section class="transactions">
-          <div v-for="transaction in paginatedTransactions" :key="transaction.name" class="transaction">
-            <div class="avatar">
-              <img :src="transaction.avatar" alt="Avatar">
+        <section class="transactions" @close="closeModal" ref="menuRef">
+          <div v-for="transaction in paginatedTransactions" :key="transaction.id" class="transaction" >
+             <div v-if ="activeTransaction === transaction" >
+           
+             <ul class="absolute">
+        <li @click.stop="openModal('edit', transaction.id)" class="px-edit px-p">Edit</li>
+        
+        <li @click.stop="openModal('delete', transaction.id)" class="px-delete">Delete </li>
+        
+      </ul>
+            </div>
+            <div  class="avatar" @click="toggleMenue(transaction)">
+              <img :src="transaction.avatar" alt="Avatar" >
               <p>{{ transaction.name }}</p>
             </div>
             <div class="details">
@@ -498,12 +306,12 @@ export default {
               <p>{{ transaction.category }}</p>
               <p>{{ new Date(transaction.date).toLocaleDateString() }}</p>
              </span>
-              <span class="amount" :class="{ 'negative': transaction.amount < 0 }">
-                {{ transaction.amount < 0 ? '-' : '+' }}${{ Math.abs(transaction.amount).toFixed(2) }}
+              <span  class="amount" :class="{ 'negative': negativeTransactions.includes(transaction) }">
+                {{ negativeTransactions.includes(transaction) ? '-' : '+' }}${{ Math.abs(transaction.amount).toFixed(2) }}
 
               </span>
             </div>
-            
+           
           </div>
         </section>
       </div>
@@ -525,6 +333,7 @@ export default {
   <button class="pagination-btn btn" @click="currentPage++" :disabled="currentPage === totalPages"> Next <span><img src="../assets/icons/icon-caret-right.svg" alt=""></span></button>
 </div>
 
+ 
     </section>
     
   </div>
@@ -532,6 +341,33 @@ export default {
 </template>
 
 <style scoped>
+.add-transaction {
+  /* Add New Budget Button */
+  /* Main Content Title Button */
+/* Frame 529 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px;
+gap: 16px;
+cursor: pointer;
+
+width: 155px;
+height: 53px;
+
+background: #201F24;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
 .trans-container{
   /* Desktop - Transactions */
 
@@ -1069,6 +905,7 @@ flex-grow: 0;
   /* Recipient or Sender */
 
 /* Auto layout */
+position: relative;
 display: flex;
 flex-direction: row;
 align-items: center;
@@ -1077,6 +914,7 @@ gap: 16px;
 
 width: 50%;
 height: 40px;
+
 
 
 /* Inside auto layout */
@@ -1095,8 +933,8 @@ flex-grow: 1;
 
 width: 40px;
 height: 40px;
+border-radius: 100%;
 
-background: url(emma-richardson.jpg), #F8F4F0;
 
 /* Inside auto layout */
 flex: none;
@@ -1451,8 +1289,106 @@ cursor: pointer;
   background: #201F24;
   color: #FFFFFF;
 }
+.absolute {
+
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 16px;
+gap: 16px;
+
+position: relative;
+
+height: 91px;
+max-height: 300px;
+
+background: #FFFFFF;
+/* drop-shadow */
+box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+border-radius: 8px;
+
+}
+.px-edit {
+  /* Edit Budget */
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+  /* Edit Budget Text */
+  /* Green */
+
+width: 77px;
+height: 21px;
+
+padding-bottom: 2rem;
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #201F24;
 
 
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+.px-p {
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+  /* Divider Line */
+  border-bottom: 1px solid grey;
+  /* Line 1 */}
+.px-delete {
+  /* Delete Budget */
+  /* Dropdown - Edit Delete Budget  - For Mobile Only */
+  /* Delete Budget Text */
+  /* Red */
+  /* Frame 591 */
+
+/* Auto layout */
+/* Green */
+
+width: 94px;
+height: 21px;
+
+/* text-preset-4 */
+font-family: 'Public Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+color: #C94736;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+}
+li
+
+{
+  cursor: pointer;
+  list-style: none;
+}
+li:hover {
+  background-color: #f0f0f0;
+}
+li:active {
+  background-color: #e0e0e0;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
 
 
