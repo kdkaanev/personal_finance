@@ -1,149 +1,254 @@
-<script>
-
+<script setup>
+import { ref, computed , onMounted} from 'vue';
 import DounutChart from './sub-component/DounutChart.vue';
-import data from '../data/data.json';
 import BudgetInfo from './sub-component/BudgetInfo.vue';
 
 import ModalPop from './sub-component/ModalPop.vue';
 import AddBudget from './sub-component/AddBudget.vue';
 import EditBudget from './sub-component/EditBudget.vue';
 import DeleteBudget from './sub-component/DeleteBudget.vue';
+import { mapState, mapActions } from 'pinia'
+import { useBudgetStore } from '../stores/useBudgetStore';
+import { useTransactionStore } from '../stores/useTransactionStore';
 
 
+const budgetStore = useBudgetStore()
+const transactionStore = useTransactionStore()
 
+onMounted(() => {
+  budgetStore.getBudgets()
+  transactionStore.getTransactions()
+})
 
+// State
+const showModal = ref(false)
+const modalType = ref('add')
+const activeCardId = ref(null)
 
-export default {
-  name: "DropdownMenu",
-  name: 'BudGets',
-  components: {
-    DounutChart,
-    BudgetInfo,
-    ModalPop,
-    EditBudget,
-    AddBudget,
-    DeleteBudget
+// Computed
+const budgets = computed(() => budgetStore.budgets)
+const transactions = computed(() => transactionStore.transactions)
 
- 
-  },
-  data() {
+const groupedTransactions = computed(() => {
+  const grouped = {}
+  transactions.value.forEach(tx => {
+    const category = tx.category
+    if (!grouped[category]) grouped[category] = []
+    grouped[category].push(tx)
+  })
+  return grouped
+})
+
+const getTotalLimits = () => budgets.value.reduce((t, b) => t + b.maximum, 0)
+
+const segments = computed(() => {
+  return budgets.value.map(budget => {
+    const spent = transactions.value
+      .filter(tx => tx.category === budget.category)
+      .reduce((sum, tx) => sum + Math.abs(tx.amount), 0)
+
+    const percent = Math.min((spent / getTotalLimits()) * 100, 100)
+
     return {
-      allTransactons: data.transactions,
-      budgets: data.budgets,
-      pots: data.pots,
-      showModal: false,
-      modalType: 'add',
-      currentModal: null,
-      activeCardId: null,
-      menuVisible: false,
-      currentComponent: null,
-
-     
-      
-    
-    };
-  },
-  computed: {
-   groupedTransactions() {
-     const grouped = {};
-     this.allTransactons.forEach(transaction => {
-       const category = transaction.category;
-       if (!grouped[category]) {
-         grouped[category] = [];
-       }
-       grouped[category].push(transaction);
-     });
-     return grouped;
-    },
-    segments() {
-    return this.budgets.map(budget => {
-      const spent = this.allTransactons
-        .filter(tx => tx.category === budget.category)
-        .reduce((sum, tx) => sum + Math.abs(tx.amount), 0)
-
-      const percent = Math.min((spent / this.getTotalLImits()) * 100, 100)
-
-      return {
-        value: Math.round(percent),
-        color: budget.theme,
-        name: budget.category,
-        spent: spent,
-        budget: budget.maximum,
-     
-
-      }
-    })
-  },
-  currentComponent() {
-    let component;
-    if (this.modalType === 'add') {
-      component = AddBudget;
-    } else if (this.modalType === 'edit') {
-      component = EditBudget;
-    }else if (this.modalType === 'delete') {
-      component = DeleteBudget;
+      value: Math.round(percent),
+      color: budget.theme,
+      name: budget.category,
+      spent,
+      budget: budget.maximum
     }
-    
-    return component;
-    
-  },
+  })
+})
 
-  
-    
-    
-  },
-methods: {
-  openModal(type,) {
-    console.log(type)
-    this.modalType = type;
-    this.showModal = true;
+const currentComponent = computed(() => {
+  if (modalType.value === 'add') return AddBudget
+  if (modalType.value === 'edit') return EditBudget
+  if (modalType.value === 'delete') return DeleteBudget
+  return null
+})
 
-  
-  },
-  closeModal() {
-    this.showModal = false;
-  
-  },
-  handleSuccess(data) {
-    console.log('Budget saved:', data);
-    this.closeModal();
-    // Тук можеш да добавиш логика за обновяване на данните
-  },
-  getSpent(category) {
-    const transactions = this.groupedTransactions[category] || [];
-    const spent = transactions.reduce((total, transaction) => total - transaction.amount, 0);
-    return spent;
-  },
-  getUsagePercentage(category) {
-    const budget = this.budgets.find(b => b.category === category);
-    if (!budget) return 0;
-    const spent = this.getSpent(category);
-    const result = (spent / budget.maximum) * 100;
-    return Math.min(Math.max(result, 0), 100);
-  },
-  getTotalLImits() {
-    return this.budgets.reduce((total, budget) => total + budget.maximum, 0);
-  },
-  getTotalSpent() {
-    return this.segments.reduce((total, segment) => total + segment.spent, 0);
+// Methods
+function openModal(type) {
+  modalType.value = type
+  showModal.value = true
+}
 
-  },
-  toggleMenu(category) {
-      this.activeCardId = this.activeCardId === category ? null : category;
+function closeModal() {
+  showModal.value = false
+}
+
+function handleSuccess(data) {
+  console.log('Budget saved:', data)
+  closeModal()
+}
+
+function getSpent(category) {
+  const txs = groupedTransactions.value[category] || []
+  return txs.reduce((t, tx) => t - tx.amount, 0)
+}
+
+function getUsagePercentage(category) {
+  const budget = budgets.value.find(b => b.category === category)
+  if (!budget) return 0
+  const spent = getSpent(category)
+  return Math.min(Math.max((spent / budget.maximum) * 100, 0), 100)
+}
+
+function getTotalSpent() {
+  return segments.value.reduce((t, s) => t + s.spent, 0)
+}
+
+function toggleMenu(category) {
+  activeCardId.value = activeCardId.value === category ? null : category
+}
+
+
+// export default {
+//   name: "DropdownMenu",
+//   name: 'BudGets',
+//   components: {
+//     DounutChart,
+//     BudgetInfo,
+//     ModalPop,
+//     EditBudget,
+//     AddBudget,
+//     DeleteBudget
+
+ 
+//   },
+//    created() {
+//     // Load budgets and transactions when component is created
+//     this.getBudgets()
+//     this.getTransactions()
+//   },
+
+
+//   data() {
+//     return {
+//      budgetStore: useBudgetStore(),
+//       transactionStore: useTransactionStore(),
+//       showModal: false,
+//       modalType: 'add',
+//       currentModal: null,
+//       activeCardId: null,
+//       menuVisible: false,
+//       currentComponent: null,
+  
+
+
+     
       
-    },
+    
+//     };
+//   },
+//   computed: {
+      
+//     ...mapState(useBudgetStore, ['budgets']),
+//     ...mapState(useTransactionStore, ['transactions']),
+    
+//    groupedTransactions() {
+//      const grouped = {};
+//      this.allTransactons.forEach(transaction => {
+//        const category = transaction.category;
+//        if (!grouped[category]) {
+//          grouped[category] = [];
+//        }
+//        grouped[category].push(transaction);
+//      });
+//      return grouped;
+//     },
+//     segments() {
+    
+//       console.log('Budgets:', this.budgets);
+//       console.log('Transactions:', this.allTransactons);
+//     return this.budgets.value.map(budget => {
+//       const spent = this.allTransactons
+//         .filter(tx => tx.category === budget.category)
+//         .reduce((sum, tx) => sum + Math.abs(tx.amount), 0)
+
+//       const percent = Math.min((spent / this.getTotalLImits()) * 100, 100)
+
+//       return {
+//         value: Math.round(percent),
+//         color: budget.theme,
+//         name: budget.category,
+//         spent: spent,
+//         budget: budget.maximum,
+     
+
+//       }
+//     })
+//   },
+//   currentComponent() {
+//     let component;
+//     if (this.modalType === 'add') {
+//       component = AddBudget;
+//     } else if (this.modalType === 'edit') {
+//       component = EditBudget;
+//     }else if (this.modalType === 'delete') {
+//       component = DeleteBudget;
+//     }
+    
+//     return component;
+    
+//   },
+
+  
+    
+    
+//   },
+// methods: {
+//   openModal(type,) {
+//     console.log(type)
+//     this.modalType = type;
+//     this.showModal = true;
+
+  
+//   },
+//   closeModal() {
+//     this.showModal = false;
+  
+//   },
+//   handleSuccess(data) {
+//     console.log('Budget saved:', data);
+//     this.closeModal();
+//     // Тук можеш да добавиш логика за обновяване на данните
+//   },
+//   getSpent(category) {
+//     const transactions = this.groupedTransactions[category] || [];
+//     const spent = transactions.reduce((total, transaction) => total - transaction.amount, 0);
+//     return spent;
+//   },
+//   getUsagePercentage(category) {
+//     const budget = this.budgets.find(b => b.category === category);
+//     if (!budget) return 0;
+//     const spent = this.getSpent(category);
+//     const result = (spent / budget.maximum) * 100;
+//     return Math.min(Math.max(result, 0), 100);
+//   },
+//   getTotalLImits() {
+//     return this.budgets.reduce((total, budget) => total + budget.maximum, 0);
+//   },
+//   getTotalSpent() {
+//     return this.segments.reduce((total, segment) => total + segment.spent, 0);
+
+//   },
+//   toggleMenu(category) {
+//       this.activeCardId = this.activeCardId === category ? null : category;
+      
+//     },
+
     
 
-},
-mounted() {
-  // Example usage
+// },
+// mounted() {
+//   // Example usage
 
 
  
   
-},
+// },
 
-};
+// };
  
 
 
@@ -192,7 +297,7 @@ mounted() {
           <div class="spending-summary">
               <h3>Spending Summary</h3>
               <section class="spending-info">
-              <div v-for="budget in budgets" :key="budget" class="spending">
+              <div v-for="budget in budgets" :key="budget.category" class="spending">
                 <div class="spending-category">
                   <div class="line" :style="{ backgroundColor: budget.theme }"></div>
                   <h4>{{ budget.category }}</h4>
