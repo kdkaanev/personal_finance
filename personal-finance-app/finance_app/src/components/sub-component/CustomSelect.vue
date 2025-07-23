@@ -1,44 +1,58 @@
 <script>
-import data from '../../data/data.json';
+import { useBudgetStore } from '../../stores/useBudgetStore';
 
-export default {
+export default {    
+  name: 'CustomSelect',
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
   data() {
     return {
-      budgets: data.budgets,
+      budgets: useBudgetStore().budgets,
+      // Default values
       selectedBudget: null,
       selectedCategory: 'Entertainment',
       isOpen: false
     };
   },
+  watch: {
+    // Sync local selectedBudget with incoming v-model value
+    modelValue: {
+      immediate: true,
+      handler(val) {
+        this.selectedBudget = this.budgets.find(b => b.theme === val) || null;
+      }
+    }
+  },
   methods: {
     selectBudget(budget) {
       this.selectedBudget = budget;
       this.isOpen = false;
+      this.$emit('update:modelValue', budget.theme);
     },
 
-  getColorName(hex) {
-    const colorMap = {
-        '#F2CDAC': 'Navy',
-        '#277C78': 'Green',
-        '#826cb0': 'Purple',
-        '#93674f': 'Brown',
-        '#934f6f': 'Magneta',
-        '#82C9D7': 'Blue',
-        '#626070': 'Grey',
-        '#7f9161': 'Army',
-        '#af81ba': 'Pink',
-        '#cab361': 'Yellow',
+    getColorName(hex) {
+      const colorMap = {
+          '#F2CDAC': 'Navy',
+          '#277C78': 'Green',
+          '#826cb0': 'Purple',
+          '#93674f': 'Brown',
+          '#934f6f': 'Magneta',
+          '#82C9D7': 'Blue',
+          '#626070': 'Grey',
+          '#7f9161': 'Army',
+          '#af81ba': 'Pink',
+          '#cab361': 'Yellow',
 
 
 
-      // Add more mappings as needed
-    };
-    return colorMap[hex] || 'Unknown';
+        // Add more mappings as needed
+      };
+      return colorMap[hex] || 'Unknown';
+    }
+
   }
+}
 
-
-  }
-};
 </script>
 
 

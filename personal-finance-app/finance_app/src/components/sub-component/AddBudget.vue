@@ -1,90 +1,140 @@
-<script>
 
-import data from'../../data/data.json'
+<script setup>
+import { ref, reactive, watch } from 'vue'
+import useVuelidate from '@vuelidate/core'
+import { required, numeric, minValue } from '@vuelidate/validators'
+
+import { useBudgetStore } from '../../stores/useBudgetStore'
+import { useUserStore } from '../../stores/useUserStore'
+import { useTransactionStore } from '../../stores/useTransactionStore'
 import CustomSelect from './CustomSelect.vue'
-import EditBudget from './AddBudget.vue'
-export default {
-  components: {
-    CustomSelect
-    
-  },
-  name: 'BudgetModal',
-  data() {
-    return {
-      budgets: data.budgets,
-      selectedCategory: '',
-      selectedTheme: '',
-      categories: [
-          'Entertainment' ,
-          'Bills',
-          'Groceries',
-          'Dining Out',
-          'Transportation',
-          'Personal Care',
-          'Education',
-          'Livestyle',
-          'Shopping',
-          'General'
 
-      
-       
-       
-      ],
-     
-    }
-  },
-  methods: {
-    submitBudget() {
-      this.$emit('add', {
-        name: this.name,
-        amount: parseFloat(this.amount),
-        category: this.category
-      })
-      this.$emit('close')
-    }
+const emit = defineEmits(['add', 'close'])
+
+// Stores
+const budgetStore = useBudgetStore()
+useUserStore() // If needed
+useTransactionStore() // If needed
+
+// Form data
+const formAddBudget = reactive({
+  category: '',
+  maximum: '',
+  theme: ''
+})
+
+// Categories
+const categories = [
+  'Entertainment',
+  'Bills',
+  'Groceries',
+  'Dining Out',
+  'Transportation',
+  'Personal Care',
+  'Education',
+  'Livestyle',
+  'Shopping',
+  'General'
+]
+
+// Vuelidate rules
+const rules = {
+  category: { required },
+  maximum: { required, numeric, minValue: minValue(0) },
+  theme: { required }
+}
+
+// Create validation instance
+const v$ = useVuelidate(rules, formAddBudget)
+
+// Handle form submit
+const submitBudget = async () => {
+  v$.value.$touch()
+
+  if (v$.value.$invalid) return
+
+  const budget = {
+    category: formAddBudget.category,
+    maximum: Number(formAddBudget.maximum),
+    theme: formAddBudget.theme
+  }
+
+  try {
+    await budgetStore.addNewBudget(budget)
+   
+    emit('add', budget)
+    emit('close')
+  } catch (error) {
+    console.error('Error adding budget:', error)
   }
 }
+watch(() => budgetStore.budgets, (newBudgets) => {
+  if (newBudgets.length > 0) {
+    formAddBudget.theme = newBudgets[0].theme // Set default theme if budgets exist
+  }
+}, { immediate: true })
 </script>
 
 <template>
-   <div class="modal-backdrop" @click.self="$emit('close')">
+  <div class="modal-backdrop" @click.self="$emit('close')">
     <div class="modal-content">
-  
+      <section class="action">
+        <h1>Add New Budget</h1>
+        <button class="btn-secondary" @click="$emit('close')">
+          <img src="../../assets/icons/icon-close-modal.svg" alt="close" />
+        </button>
+      </section>
+      <p class="text-sm">
+        Choose a category to set a spending budget. These categories can help you monitor spending.
+      </p>
 
+      <form @submit.prevent="submitBudget" class="space">
+        <div class="category">
+          <label for="category">Budget Category</label>
+          <select
+            name="category"
+            id="category"
+            v-model="formAddBudget.category"
+            class="input"
+          >
+            <option value="" disabled>Select a category</option>
+            <option v-for="category in categories" :key="category" :value="category">
+              {{ category }}
+            </option>
+          </select>
+          <p v-if="v$.category.$error" class="error">
+            {{ v$.category.$errors[0].$message || 'Category is required' }}
+          </p>
+        </div>
 
+        <div class="maximum">
+          <label for="maximum">Maximum Spend</label>
+          <input
+            type="number"
+            id="maximum"
+            class="input"
+            v-model="formAddBudget.maximum"
+            placeholder="$ e.g. 2000"
+          />
+          <p v-if="v$.maximum.$error" class="error">
+            {{ v$.maximum.$errors[0].$message || 'Invalid amount' }}
+          </p>
+        </div>
 
-  <section class="action">
-    <h1>Add New Budget</h1>
-    <button class="btn-secondary" @click="$emit('close')">
-      <img src="../../assets/icons/icon-close-modal.svg" alt="close">
-    </button>
-  </section>
-  <p class="text-sm">Choose a category to set a spending budget. These categories can help you monitor spending.</p>
-  <form @submit.prevent="submitBudget" class="space">
-    <div class="category">
-      <label for="category"  >Budget Category</label>
-    <select name="category" id="category" v-model="selectedCategory">
-  
-      <option v-for="category in  categories " :key="category" :value="category" >
-        {{ category }}
-    </option>
-    </select>
+        <div class="theme">
+          <label for="theme">Theme</label>
+          <CustomSelect v-model="formAddBudget.theme" />
+          <p v-if="v$.theme.$error" class="error">
+            {{ v$.theme.$errors[0].$message || 'Theme is required' }}
+          </p>
+        </div>
+
+        <button type="submit" class="btn-primary">Add Budget</button>
+      </form>
     </div>
-    <div class="maximum">
-      <label for="maximum" >Maximum Spend</label>
-      <input type="number" id="maximum" v-model="amount" class="input" placeholder="$ e.g.2000" required>
-    </div>
-    <div class="theme">
-      <CustomSelect :budgets="budgets" v-model="selectedTheme" />
-    </div>
-    <button type="submit" class="btn-primary">Add Budget</button>
-   
-   
-  </form>
-  </div> 
-</div>
-
+  </div>
 </template>
+
 
 <style scoped>
   .maximum input {

@@ -43,6 +43,27 @@ export async function fetchBudgets() {
   }
 }
 
+export async function addBudgets(budgetData) {
+  
+  await fetchCSRFToken(); // Ensure CSRF token is fetched before making requests
+  const csrfToken = getCookie("csrftoken");
+  if (!csrfToken) {
+    throw new Error("CSRF token not found. Please ensure you are authenticated.");
+  }
+  try {
+    
+    const response = await axiosFA.post(`${ENDPOINT}`, budgetData, {
+      headers: {
+        "X-CSRFToken": csrfToken, // Include CSRF token in the request headers
+      },
+    });
+    return response.data; // Return the newly created budget
+  } catch (error) {
+    console.error("Error adding budget:", error);
+    throw error; // Re-throw the error for further handling if needed
+  }
+}
+
 export async function fetchBudgetById(budgetId) {
   await fetchCSRFToken(); // Ensure CSRF token is fetched before making requests
   const csrfToken = getCookie("csrftoken");

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { fetchBudgets, fetchBudgetById, updateBudget, deleteBudget} from '../services/budgetServices';
+import { fetchBudgets, fetchBudgetById, updateBudget, deleteBudget, addBudgets} from '../services/budgetServices';
 
 function getCookie(name) {
   const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -22,6 +22,20 @@ export const useBudgetStore = defineStore('budget', {
         this.budgets = budgets;
       } catch (error) {
         console.error("Error fetching budgets:", error);
+      } finally {
+        this.is_loading = false;
+      }
+    },
+
+    async addNewBudget(budgetData) {
+      this.is_loading = true;
+      try {
+        const newBudget = await addBudgets(budgetData);
+        this.budgets.push(newBudget); // Add the new budget to the store
+        return true; // Indicate success
+      } catch (error) {
+        console.error("Error adding budget:", error);
+        return false; // Indicate failure
       } finally {
         this.is_loading = false;
       }
