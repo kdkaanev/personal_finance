@@ -1,65 +1,53 @@
-<script>
+
+
+<script setup>
+import { ref, computed, watch } from 'vue';
 import { useBudgetStore } from '../../stores/useBudgetStore';
 
-export default {    
-  name: 'CustomSelect',
-  props: ['modelValue'],
-  emits: ['update:modelValue'],
-  data() {
-    return {
-      budgets: useBudgetStore().budgets,
-      // Default values
-      selectedBudget: null,
-      selectedCategory: 'Entertainment',
-      isOpen: false
-    };
-  },
-  watch: {
-    // Sync local selectedBudget with incoming v-model value
-    modelValue: {
-      immediate: true,
-      handler(val) {
-        this.selectedBudget = this.budgets.find(b => b.theme === val) || null;
-      }
-    }
-  },
-  methods: {
-    selectBudget(budget) {
-      this.selectedBudget = budget;
-      this.isOpen = false;
-      this.$emit('update:modelValue', budget.theme);
-    },
-
-    getColorName(hex) {
-      const colorMap = {
-          '#F2CDAC': 'Navy',
-          '#277C78': 'Green',
-          '#826cb0': 'Purple',
-          '#93674f': 'Brown',
-          '#934f6f': 'Magneta',
-          '#82C9D7': 'Blue',
-          '#626070': 'Grey',
-          '#7f9161': 'Army',
-          '#af81ba': 'Pink',
-          '#cab361': 'Yellow',
-
-
-
-        // Add more mappings as needed
-      };
-      return colorMap[hex] || 'Unknown';
-    }
-
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true
   }
-}
+});
+const emit = defineEmits(['update:modelValue']);
+
+const selectedColor = ref(props.modelValue); // Default color
+const isOpen = ref(false);
+
+watch(() => props.modelValue, (newValue) => {
+  selectedColor.value = newValue;
+});
+
+  const colorMap = {
+    '#F2CDAC': 'Navy',
+    '#277C78': 'Green',
+    '#826cb0': 'Purple',
+    '#93674f': 'Brown',
+    '#934f6f': 'Magneta',
+    '#82C9D7': 'Blue',
+    '#626070': 'Grey',
+    '#7f9161': 'Army',
+    '#af81ba': 'Pink',
+    '#cab361': 'Yellow'
+  };
+ 
+const getColorName = (hex) => {
+ return colorMap[hex] || 'Unknown';
+};
+const selectColor = (hex) => {
+  selectedColor.value = hex;
+  emit('update:modelValue', hex);
+  isOpen.value = false;
+  
+};
 
 </script>
 
 
-
 <template>
     <section class="theme">
-        <h3 class="label">Theme</h3>
+        
         <div>
         
         <div @click="isOpen = !isOpen" class="select-dropdown">
@@ -67,9 +55,10 @@ export default {
             <section class="info">
                 <span 
        class="dot" 
-       :style="{ backgroundColor: selectedBudget?.theme || '#ccc' }"
-     ></span>
-     {{ getColorName(selectedBudget?.theme) }}
+       :style="{ backgroundColor: selectedColor || '#ccc' }"
+     >
+    </span>
+     {{ getColorName(selectedColor) }}
             </section>
    
      
@@ -79,18 +68,16 @@ export default {
   
       <ul v-if="isOpen" class="dropdown-list">
         <li 
-          v-for="budget in budgets" 
-          :key="budget.category" 
-          @click="selectBudget(budget)"
-          class="dropdown-item"
-        >
-        
-           <span class="name-theme">
-            <div class="dot" :style="{ backgroundColor: budget.theme }"></div>
-            {{ getColorName(budget.theme) }}
-           </span>
-    
-       
+        v-for="(name ,xex) in colorMap"
+        :key="xex"
+        @click="selectColor(xex)"
+        class="dropdown-item"
+    >
+      <span class="name-theme">
+        <div class="dot" :style="{ backgroundColor: xex }"></div>
+        {{ name }}
+       </span>
+
             <span class="status"><img src="../../assets/icons/icon-selected.svg" alt=""></span>
         
         </li>
@@ -304,6 +291,7 @@ flex-grow: 0;
 
 /* Auto layout */
 display: flex;
+
 flex-direction: column;
 justify-content: center;
 align-items: flex-start;

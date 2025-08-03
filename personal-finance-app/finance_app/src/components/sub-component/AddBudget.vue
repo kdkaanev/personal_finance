@@ -1,6 +1,6 @@
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { required, numeric, minValue } from '@vuelidate/validators'
 
@@ -10,6 +10,9 @@ import { useTransactionStore } from '../../stores/useTransactionStore'
 import CustomSelect from './CustomSelect.vue'
 
 const emit = defineEmits(['add', 'close'])
+const onColorSelected = (hex) => {
+  formAddBudget.theme = color
+}
 
 // Stores
 const budgetStore = useBudgetStore()
@@ -44,6 +47,10 @@ const rules = {
   theme: { required }
 }
 
+const availableCategories = computed(() => {
+  const usedCategories = budgetStore.budgets.map(b => b.category)
+  return categories.filter(category => !usedCategories.includes(category))  
+})
 // Create validation instance
 const v$ = useVuelidate(rules, formAddBudget)
 
@@ -98,7 +105,7 @@ watch(() => budgetStore.budgets, (newBudgets) => {
             class="input"
           >
             <option value="" disabled>Select a category</option>
-            <option v-for="category in categories" :key="category" :value="category">
+            <option v-for="category in availableCategories" :key="category" :value="category">
               {{ category }}
             </option>
           </select>
@@ -349,6 +356,7 @@ flex-direction: column;
 align-items: flex-start;
 padding: 32px;
 gap: 20px;
+overflow-y: auto;
     background: white;
     border-radius: 1rem;
     padding: 2rem;
