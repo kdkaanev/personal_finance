@@ -130,7 +130,9 @@ watch(() => budgetStore.budgets, (newBudgets) => {
 
         <div class="theme">
           <label for="theme">Theme</label>
-          <CustomSelect v-model="formAddBudget.theme" />
+          <CustomSelect v-model="formAddBudget.theme" 
+          :used-colors="budgetStore.budgets.map(b => b.theme)"
+          />
           <p v-if="v$.theme.$error" class="error">
             {{ v$.theme.$errors[0].$message || 'Theme is required' }}
           </p>
@@ -144,6 +146,9 @@ watch(() => budgetStore.budgets, (newBudgets) => {
 
 
 <style scoped>
+
+
+
   .maximum input {
     /* Maximum Spend */
     /* Content */

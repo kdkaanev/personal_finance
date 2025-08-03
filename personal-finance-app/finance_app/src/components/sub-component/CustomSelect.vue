@@ -8,6 +8,10 @@ const props = defineProps({
   modelValue: {
     type: String,
     required: true
+  }, 
+  usedColors: {
+    type: Array,
+    default: () => []
   }
 });
 const emit = defineEmits(['update:modelValue']);
@@ -36,7 +40,8 @@ const getColorName = (hex) => {
  return colorMap[hex] || 'Unknown';
 };
 const selectColor = (hex) => {
-  selectedColor.value = hex;
+  const usedColors = props.usedColors.includes(hex) && hex !== selectedColor.value;
+  if (usedColors) return;
   emit('update:modelValue', hex);
   isOpen.value = false;
   
@@ -76,9 +81,11 @@ const selectColor = (hex) => {
       <span class="name-theme">
         <div class="dot" :style="{ backgroundColor: xex }"></div>
         {{ name }}
-       </span>
-
-            <span class="status"><img src="../../assets/icons/icon-selected.svg" alt=""></span>
+ <span v-if="usedColors.includes(xex) && xex !== selectedColor" class="used-note">
+              — already used
+            </span>
+                  
+        </span>
         
         </li>
       </ul>
@@ -89,6 +96,16 @@ const selectColor = (hex) => {
   
 
   <style scoped>
+
+  .disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.used-note {
+  font-size: 0.8rem;
+  color: #a00;
+  margin-left: 8px;
+}
   .name-theme {
    /* Frame 574 */
 
